@@ -1,0 +1,10 @@
+{
+  "id": "11",
+  "name": "部分一致（AI出力が元情報のサブセット）",
+  "description": "AI出力が元情報の一部のみ含む。欠落を検出すべき。",
+  "category": "partial",
+  "expected_match": false,
+  "expected_similarity": "medium",
+  "source": "APIエンドポイント:\n- GET /users - ユーザー一覧取得\n- POST /users - ユーザー作成\n- GET /users/:id - ユーザー詳細取得\n- PUT /users/:id - ユーザー更新\n- DELETE /users/:id - ユーザー削除\n- GET /users/:id/posts - ユーザーの投稿一覧\n- POST /users/:id/posts - 投稿作成\n- GET /posts - 全投稿一覧\n- GET /posts/:id - 投稿詳細\n- DELETE /posts/:id - 投稿削除",
+  "ai_output": "APIエンドポイント:\n- GET /users - ユーザー一覧取得\n- POST /users - ユーザー作成\n- GET /users/:id - ユーザー詳細取得\n- PUT /users/:id - ユーザー更新\n- DELETE /users/:id - ユーザー削除"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "02",
+  "name": "空白・改行の違い",
+  "description": "タブ/スペース、改行コード、末尾空白の違い。許容すべき差分。",
+  "category": "whitespace",
+  "expected_match": true,
+  "expected_similarity": "high",
+  "source": "会社名\t設立年\t従業員数\n株式会社ABC\t2010年\t150名\n株式会社DEF\t2015年\t80名\n株式会社GHI\t2020年\t30名",
+  "ai_output": "会社名  設立年  従業員数\n株式会社ABC  2010年  150名\n株式会社DEF  2015年  80名\n株式会社GHI  2020年  30名"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "01",
+  "name": "完全一致",
+  "description": "元情報とAI出力が完全に一致するケース。ベースラインとして使用。",
+  "category": "exact",
+  "expected_match": true,
+  "expected_similarity": "high",
+  "source": "商品名\t価格\t在庫\nりんご\t150円\t20個\nみかん\t100円\t35個\nバナナ\t200円\t15個",
+  "ai_output": "商品名\t価格\t在庫\nりんご\t150円\t20個\nみかん\t100円\t35個\nバナナ\t200円\t15個"
+}

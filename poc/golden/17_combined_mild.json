@@ -1,0 +1,10 @@
+{
+  "id": "17",
+  "name": "複合: 軽度の差異（許容範囲）",
+  "description": "空白+全角半角+順序の組み合わせ。すべて許容すべき差分。",
+  "category": "combined",
+  "expected_match": true,
+  "expected_similarity": "high",
+  "source": "環境変数:\nＤＢ＿ＨＯＳＴ＝localhost\nＤＢ＿ＰＯＲＴ＝5432\nＤＢ＿ＮＡＭＥ＝myapp\nＲＥＤＩＳ＿ＵＲＬ＝redis://localhost:6379\nＡＰＩ＿ＫＥＹ＝sk-xxxx",
+  "ai_output": "環境変数:\nAPI_KEY=sk-xxxx\nDB_HOST=localhost\nDB_NAME=myapp\nDB_PORT=5432\nREDIS_URL=redis://localhost:6379"
+}

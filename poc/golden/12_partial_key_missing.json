@@ -1,0 +1,10 @@
+{
+  "id": "12",
+  "name": "重要項目の欠落",
+  "description": "テーブルの列（キー情報）が欠落している。検出すべき。",
+  "category": "partial",
+  "expected_match": false,
+  "expected_similarity": "medium",
+  "source": "社員名\t部署\t役職\t入社年\t年収（万円）\n田中太郎\t開発部\tマネージャー\t2015\t800\n鈴木花子\t営業部\tリーダー\t2018\t650\n佐藤一郎\t人事部\t部長\t2010\t950\n高橋美咲\t開発部\tエンジニア\t2022\t500",
+  "ai_output": "社員名\t部署\t役職\n田中太郎\t開発部\tマネージャー\n鈴木花子\t営業部\tリーダー\n佐藤一郎\t人事部\t部長\n高橋美咲\t開発部\tエンジニア"
+}
