@@ -1,0 +1,10 @@
+{
+  "id": "19",
+  "name": "複合: 重度の差異（欠落+追加+言い換え）",
+  "description": "情報の欠落、余分な追加、言い換えがすべて含まれる。不一致として検出すべき。",
+  "category": "combined",
+  "expected_match": false,
+  "expected_similarity": "low",
+  "source": "技術スタック:\nフロントエンド: React 18, TypeScript 5.3, Tailwind CSS 3.4\nバックエンド: Node.js 20, Express 4.18, Prisma 5.8\nデータベース: PostgreSQL 16, Redis 7.2\nインフラ: AWS (ECS Fargate, RDS, ElastiCache)\nCI/CD: GitHub Actions\n監視: Datadog, PagerDuty",
+  "ai_output": "技術スタック:\nフロントエンド: Next.js 14, TypeScript, Tailwind CSS\nバックエンド: Node.js, Express, Drizzle ORM\nデータベース: PostgreSQL, Redis\nインフラ: AWS (ECS, RDS)\nCI/CD: GitHub Actions, ArgoCD\n監視: Grafana, Prometheus"
+}

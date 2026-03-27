@@ -1,0 +1,10 @@
+{
+  "id": "15",
+  "name": "Markdown→プレーンテキスト",
+  "description": "元情報がMarkdown記法、AI出力がプレーンテキスト。内容は同一。",
+  "category": "format",
+  "expected_match": true,
+  "expected_similarity": "high",
+  "source": "## 必要条件\n\n- **Node.js** >= 18.0\n- **npm** >= 9.0\n- **PostgreSQL** >= 15\n\n### オプション\n\n- `Redis` >= 7.0（キャッシュ用）\n- `Nginx`（リバースプロキシ）",
+  "ai_output": "必要条件:\n- Node.js 18.0以上\n- npm 9.0以上\n- PostgreSQL 15以上\n\nオプション:\n- Redis 7.0以上（キャッシュ用）\n- Nginx（リバースプロキシ）"
+}

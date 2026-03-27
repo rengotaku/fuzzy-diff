@@ -1,0 +1,10 @@
+{
+  "id": "03",
+  "name": "全角半角の違い",
+  "description": "全角数字/英字と半角数字/英字の混在。正規化で吸収すべき差分。",
+  "category": "normalize",
+  "expected_match": true,
+  "expected_similarity": "high",
+  "source": "項目１：サーバーＡ（CPU：４コア、メモリ：１６ＧＢ）\n項目２：サーバーＢ（CPU：８コア、メモリ：３２ＧＢ）\n項目３：サーバーＣ（CPU：１６コア、メモリ：６４ＧＢ）",
+  "ai_output": "項目1: サーバーA (CPU: 4コア、メモリ: 16GB)\n項目2: サーバーB (CPU: 8コア、メモリ: 32GB)\n項目3: サーバーC (CPU: 16コア、メモリ: 64GB)"
+}

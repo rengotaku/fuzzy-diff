@@ -1,0 +1,10 @@
+{
+  "id": "13",
+  "name": "余分な項目の追加",
+  "description": "AI出力に元情報にない項目が追加されている。ハルシネーションの可能性。",
+  "category": "extra",
+  "expected_match": false,
+  "expected_similarity": "medium",
+  "source": "対応言語:\n- JavaScript\n- Python\n- Go\n- Rust",
+  "ai_output": "対応言語:\n- JavaScript\n- TypeScript\n- Python\n- Go\n- Rust\n- Java\n- C++"
+}

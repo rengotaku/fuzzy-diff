@@ -1,0 +1,10 @@
+{
+  "id": "14",
+  "name": "テーブル→リスト形式への変換",
+  "description": "元情報がテーブル形式、AI出力がリスト形式。内容は同一。",
+  "category": "format",
+  "expected_match": true,
+  "expected_similarity": "high",
+  "source": "名前\tOS\tCPU\tRAM\nweb-01\tUbuntu 22.04\t4 vCPU\t8GB\ndb-01\tUbuntu 22.04\t8 vCPU\t32GB\ncache-01\tAlpine 3.18\t2 vCPU\t4GB",
+  "ai_output": "- web-01: Ubuntu 22.04, 4 vCPU, 8GB RAM\n- db-01: Ubuntu 22.04, 8 vCPU, 32GB RAM\n- cache-01: Alpine 3.18, 2 vCPU, 4GB RAM"
+}

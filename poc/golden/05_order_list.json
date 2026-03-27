@@ -1,0 +1,10 @@
+{
+  "id": "05",
+  "name": "リスト項目の順序違い",
+  "description": "同じ項目が含まれているが並び順が異なる。内容は一致。",
+  "category": "order",
+  "expected_match": true,
+  "expected_similarity": "high",
+  "source": "対応ブラウザ:\n1. Google Chrome\n2. Mozilla Firefox\n3. Safari\n4. Microsoft Edge\n5. Opera",
+  "ai_output": "対応ブラウザ:\n1. Safari\n2. Google Chrome\n3. Microsoft Edge\n4. Mozilla Firefox\n5. Opera"
+}
