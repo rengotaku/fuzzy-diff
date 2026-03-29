@@ -1,0 +1,15 @@
+// T003: 公開APIエントリポイント（スタブ）
+
+export { compare } from "./comparator/index.js";
+export { normalize } from "./normalizer/index.js";
+export { detectFormat, parse } from "./parser/index.js";
+export type {
+  ComparisonInput,
+  NormalizedText,
+  DetectedFormat,
+  FormatType,
+  ParsedRecord,
+  DiffItem,
+  ComparisonResult,
+  CompareOptions,
+} from "./types.js";
