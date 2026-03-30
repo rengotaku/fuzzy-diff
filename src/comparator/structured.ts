@@ -46,7 +46,48 @@ export function compareStructured(
     return compareRows(source.rows, target.rows);
   }
 
-  // 両方ヘッダーあり → 正規化キーでマッチング
+  // 両方ヘッダーあり → カラム完全性チェック + 行マッチング
+  const sourceHeaders = new Set(source.headers!);
+  const targetHeaders = new Set(target.headers!);
+
+  const missingColumns: string[] = [];
+  for (const h of sourceHeaders) {
+    if (!targetHeaders.has(h)) missingColumns.push(h);
+  }
+  const extraColumns: string[] = [];
+  for (const h of targetHeaders) {
+    if (!sourceHeaders.has(h)) extraColumns.push(h);
+  }
+
+  // カラム欠落がある場合はペナルティ
+  if (missingColumns.length > 0 || extraColumns.length > 0) {
+    const columnScore = 1 - (missingColumns.length + extraColumns.length) /
+      (sourceHeaders.size + extraColumns.length);
+
+    const rowResult = compareRows(source.rows, target.rows);
+    const penalizedScore = Math.round(rowResult.score * columnScore * 100) / 100;
+
+    const columnDiffs: DiffItem[] = [
+      ...missingColumns.map((col): DiffItem => ({
+        type: "removed",
+        path: `column:${col}`,
+        sourceValue: col,
+        targetValue: null,
+      })),
+      ...extraColumns.map((col): DiffItem => ({
+        type: "added",
+        path: `column:${col}`,
+        sourceValue: null,
+        targetValue: col,
+      })),
+    ];
+
+    return {
+      score: penalizedScore,
+      diffs: [...columnDiffs, ...rowResult.diffs],
+    };
+  }
+
   return compareRows(source.rows, target.rows);
 }
 
