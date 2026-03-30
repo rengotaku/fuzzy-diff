@@ -126,7 +126,7 @@ function compareRows(
 
     for (let j = 0; j < targetRows.length; j++) {
       if (usedTargetIndices.has(j)) continue;
-      const score = compareRecords(sourceRow, targetRows[j]);
+      const score = compareRecords(sourceRow, targetRows[j]!);
       if (score > bestScore) {
         bestScore = score;
         bestIndex = j;
@@ -138,7 +138,7 @@ function compareRows(
       rowScores.push(bestScore);
 
       if (bestScore < 1.0) {
-        const targetRow = targetRows[bestIndex];
+        const targetRow = targetRows[bestIndex]!;
         const rowDiffs = diffRecords(sourceRow, targetRow);
         diffs.push(...rowDiffs);
       }
@@ -201,7 +201,7 @@ function diffRecords(
     const tv = target[key];
 
     if (sv === undefined) {
-      diffs.push({ type: "added", path: key, sourceValue: null, targetValue: tv });
+      diffs.push({ type: "added", path: key, sourceValue: null, targetValue: tv ?? null });
     } else if (tv === undefined) {
       diffs.push({ type: "removed", path: key, sourceValue: sv, targetValue: null });
     } else if (sv !== tv) {

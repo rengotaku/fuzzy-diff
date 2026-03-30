@@ -21,14 +21,14 @@ export function parseYaml(text: string): ParsedRecord {
       if (current !== null) {
         items.push(current);
       }
-      current = { [dashMatch[1]]: dashMatch[2] };
+      current = { [dashMatch[1]!]: dashMatch[2]! };
       continue;
     }
 
     // "key: value" パターン（現在の項目の属性）
     const kvMatch = trimmed.match(/^(\S+?):\s+(.+)$/);
     if (kvMatch && current !== null) {
-      current[kvMatch[1]] = kvMatch[2];
+      current[kvMatch[1]!] = kvMatch[2]!;
     }
   }
 
@@ -40,6 +40,6 @@ export function parseYaml(text: string): ParsedRecord {
     return { headers: null, rows: [] };
   }
 
-  const headers = Object.keys(items[0]);
+  const headers = Object.keys(items[0]!);
   return { headers, rows: items };
 }

@@ -1,4 +1,4 @@
-// T002: 共通型定義
+// 共通型定義
 
 export interface ComparisonInput {
   readonly source: string;

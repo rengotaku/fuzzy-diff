@@ -33,7 +33,7 @@ export function detectFormat(text: string): DetectedFormat {
   }
 
   // INI: check for [section] pattern
-  if (/^\[.+\]$/.test(lines[0].trim())) {
+  if (/^\[.+\]$/.test(lines[0]!.trim())) {
     const hasKeyValue = lines.some((l) => /^[^[\]]+=[^=]/.test(l.trim()));
     if (hasKeyValue) {
       return { type: "ini", confidence: 0.9 };
@@ -50,13 +50,13 @@ export function detectFormat(text: string): DetectedFormat {
 
   // TSV: consistent tab counts across lines
   const tabCounts = lines.map((l) => (l.match(/\t/g) ?? []).length);
-  if (tabCounts[0] > 0 && tabCounts.every((c) => c === tabCounts[0])) {
+  if (tabCounts[0]! > 0 && tabCounts.every((c) => c === tabCounts[0])) {
     return { type: "tsv", confidence: 0.9 };
   }
 
   // CSV: consistent comma counts across lines
   const commaCounts = lines.map((l) => (l.match(/,/g) ?? []).length);
-  if (commaCounts[0] > 0 && commaCounts.every((c) => c === commaCounts[0])) {
+  if (commaCounts[0]! > 0 && commaCounts.every((c) => c === commaCounts[0])) {
     return { type: "csv", confidence: 0.85 };
   }
 

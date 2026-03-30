@@ -13,12 +13,12 @@ export function parseCsv(text: string, delimiter: string): ParsedRecord {
     return { headers: null, rows: [] };
   }
 
-  const headers = lines[0].split(delimiter).map((h) => h.trim());
+  const headers = lines[0]!.split(delimiter).map((h) => h.trim());
   const rows = lines.slice(1).map((line) => {
     const values = line.split(delimiter).map((v) => v.trim());
     const record: Record<string, string> = {};
     for (let i = 0; i < headers.length; i++) {
-      record[headers[i]] = values[i] ?? "";
+      record[headers[i]!] = values[i] ?? "";
     }
     return record;
   });

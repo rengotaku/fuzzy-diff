@@ -23,7 +23,7 @@ export function parseIni(text: string): ParsedRecord {
       if (currentSection !== null) {
         items.push({ "商品名": currentSection, ...current });
       }
-      currentSection = sectionMatch[1];
+      currentSection = sectionMatch[1] ?? null;
       current = {};
       continue;
     }
@@ -31,7 +31,7 @@ export function parseIni(text: string): ParsedRecord {
     // key=value パターン
     const kvMatch = trimmed.match(/^([^=]+)=(.*)$/);
     if (kvMatch) {
-      current[kvMatch[1].trim()] = kvMatch[2].trim();
+      current[kvMatch[1]!.trim()] = kvMatch[2]!.trim();
     }
   }
 
@@ -43,6 +43,6 @@ export function parseIni(text: string): ParsedRecord {
     return { headers: null, rows: [] };
   }
 
-  const headers = Object.keys(items[0]);
+  const headers = Object.keys(items[0]!);
   return { headers, rows: items };
 }
