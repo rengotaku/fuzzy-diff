@@ -1,11 +1,14 @@
-// 比較パイプライン: 正規化 → テキスト比較 → スコアリング
+// 比較パイプライン: フォーマット検出 → 正規化 → パース → 比較 → スコアリング
 
 import type { CompareOptions, ComparisonResult, DiffItem } from "../types.js";
 import { normalize } from "../normalizer/index.js";
+import { detectFormat, parse } from "../parser/index.js";
 import { compareText } from "./text.js";
+import { compareStructured } from "./structured.js";
 import { calculateScore, isMatch } from "./scorer.js";
 
 export { compareText } from "./text.js";
+export { compareStructured } from "./structured.js";
 export { calculateScore, isMatch } from "./scorer.js";
 
 /**
@@ -13,8 +16,9 @@ export { calculateScore, isMatch } from "./scorer.js";
  *
  * パイプライン:
  * 1. 正規化（オプションで無効化可能）
- * 2. fuzzball によるテキスト fuzzy 比較
- * 3. スコアリング + match 判定
+ * 2. フォーマット検出
+ * 3. 構造化比較 or テキスト fuzzy 比較
+ * 4. スコアリング + match 判定
  */
 export function compare(
   source: string,
@@ -23,6 +27,10 @@ export function compare(
 ): ComparisonResult {
   const shouldNormalize = options?.normalize ?? true;
 
+  // フォーマット検出は正規化前（タブ等が保持された状態）で行う
+  const sourceFormat = detectFormat(source);
+  const targetFormat = detectFormat(target);
+
   const normalizedSource = shouldNormalize
     ? normalize(source).normalized
     : source;
@@ -30,6 +38,49 @@ export function compare(
     ? normalize(target).normalized
     : target;
 
+  // 両方が構造化フォーマットの場合: 構造化比較を試行
+  if (sourceFormat.type !== "plain" && targetFormat.type !== "plain") {
+    // パースは元テキストで行う（構造を保持するため）
+    const sourceParsed = parse(source, sourceFormat.type);
+    const targetParsed = parse(target, targetFormat.type);
+
+    if (sourceParsed.rows.length > 0 && targetParsed.rows.length > 0) {
+      const structuredResult = compareStructured(sourceParsed, targetParsed);
+
+      // 構造化比較とテキスト比較の高い方を採用
+      const textFuzzScore = compareText(normalizedSource, normalizedTarget);
+      const textScore = calculateScore(textFuzzScore);
+
+      const finalScore = Math.max(structuredResult.score, textScore);
+      const matched = isMatch(finalScore, options?.threshold);
+
+      // ヘッダー欠落の場合はstructuredの結果を優先（低スコアになるべき）
+      const hasHeaderMismatch =
+        (sourceParsed.headers !== null && targetParsed.headers === null) ||
+        (sourceParsed.headers === null && targetParsed.headers !== null);
+
+      if (hasHeaderMismatch) {
+        const hScore = structuredResult.score;
+        return {
+          score: hScore,
+          match: isMatch(hScore, options?.threshold),
+          diffs: structuredResult.diffs,
+          sourceFormat,
+          targetFormat,
+        };
+      }
+
+      return {
+        score: finalScore,
+        match: matched,
+        diffs: structuredResult.diffs,
+        sourceFormat,
+        targetFormat,
+      };
+    }
+  }
+
+  // テキスト比較
   const fuzzScore = compareText(normalizedSource, normalizedTarget);
   const score = calculateScore(fuzzScore);
   const matched = isMatch(score, options?.threshold);
@@ -41,14 +92,13 @@ export function compare(
     score,
     match: matched,
     diffs,
-    sourceFormat: { type: "plain", confidence: 1.0 },
-    targetFormat: { type: "plain", confidence: 1.0 },
+    sourceFormat,
+    targetFormat,
   };
 }
 
 /**
  * 正規化後のテキスト間の差分を生成する。
- * Phase 3 では行ベースの簡易差分のみ。
  */
 function buildDiffs(source: string, target: string): readonly DiffItem[] {
   const sourceLines = new Set(
