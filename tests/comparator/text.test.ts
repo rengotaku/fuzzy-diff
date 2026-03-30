@@ -7,9 +7,9 @@ describe("compareText", () => {
       expect(compareText("hello", "hello")).toBe(100);
     });
 
-    it("空文字列同士はスコア0を返す（fuzzball仕様）", () => {
-      // fuzzball returns 0 for empty strings
-      expect(compareText("", "")).toBe(0);
+    it("空文字列同士はスコア100を返す（完全一致扱い）", () => {
+      // 仕様: 両方空文字 → match（類似度 1.0）
+      expect(compareText("", "")).toBe(100);
     });
   });
 
