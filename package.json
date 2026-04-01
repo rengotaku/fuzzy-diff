@@ -1,0 +1,34 @@
+{
+  "name": "verify-ai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "tsc",
+    "lint": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rengotaku/verify-ai.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/rengotaku/verify-ai/issues"
+  },
+  "homepage": "https://github.com/rengotaku/verify-ai#readme",
+  "dependencies": {
+    "diff": "^8.0.4",
+    "fuzzball": "^2.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
+  }
+}

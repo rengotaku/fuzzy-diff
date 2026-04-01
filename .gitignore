@@ -1,0 +1,4 @@
+specs/
+.specify/
+node_modules/
+dist/
