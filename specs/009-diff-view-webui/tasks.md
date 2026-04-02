@@ -128,16 +128,16 @@ parallel_groups:
 
 ### Implementation (GREEN)
 
-- [ ] T030 RED テストを読む: specs/009-diff-view-webui/red-tests/ph3-test.md
-- [ ] T031 [P] [US2] 差分色定義を実装: `web/src/theme/diffColors.ts`（added=amber, removed=red, changed=blue）
-- [ ] T032 [P] [US2] DiffList コンポーネントを実装: `web/src/components/DiffList.tsx`（差分種別ごとの色分け、path/sourceValue/targetValue 表示）
-- [ ] T033 [US2] App.tsx に DiffList を統合: `web/src/App.tsx`
-- [ ] T034 `cd web && npm test` で PASS (GREEN) を確認
+- [x] T030 RED テストを読む: specs/009-diff-view-webui/red-tests/ph3-test.md
+- [x] T031 [P] [US2] 差分色定義を実装: `web/src/theme/diffColors.ts`（added=amber, removed=red, changed=blue）
+- [x] T032 [P] [US2] DiffList コンポーネントを実装: `web/src/components/DiffList.tsx`（差分種別ごとの色分け、path/sourceValue/targetValue 表示）
+- [x] T033 [US2] App.tsx に DiffList を統合: `web/src/App.tsx`
+- [x] T034 `cd web && npm test` で PASS (GREEN) を確認
 
 ### Verification
 
-- [ ] T035 `cd web && npm test` で全テストパスを確認（US1含むリグレッションなし）
-- [ ] T036 生成: specs/009-diff-view-webui/tasks/ph3-output.md
+- [x] T035 `cd web && npm test` で全テストパスを確認（US1含むリグレッションなし）
+- [x] T036 生成: specs/009-diff-view-webui/tasks/ph3-output.md
 
 **Checkpoint**: 差分リストが色分けハイライト付きで表示される
 

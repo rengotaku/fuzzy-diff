@@ -5,8 +5,9 @@ import { AppRouter } from "@/router";
 import { theme } from "@/theme";
 import { CompareForm } from "@/components/CompareForm";
 import { ResultSummary } from "@/components/ResultSummary";
+import { DiffList } from "@/components/DiffList";
 
-export { CompareForm, ResultSummary };
+export { CompareForm, ResultSummary, DiffList };
 
 function App() {
   return (
