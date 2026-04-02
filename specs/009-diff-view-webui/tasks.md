@@ -173,15 +173,15 @@ parallel_groups:
 
 ### Implementation (GREEN)
 
-- [ ] T043 RED テストを読む: specs/009-diff-view-webui/red-tests/ph4-test.md
-- [ ] T044 [US3] ResultSummary に一致時の表示を追加: `web/src/components/ResultSummary.tsx`（一致アイコン/メッセージ）
-- [ ] T045 [US3] DiffList に空リスト時のメッセージを追加: `web/src/components/DiffList.tsx`（「差分なし」表示）
-- [ ] T046 `cd web && npm test` で PASS (GREEN) を確認
+- [x] T043 RED テストを読む: specs/009-diff-view-webui/red-tests/ph4-test.md
+- [x] T044 [US3] ResultSummary に一致時の表示を追加: `web/src/components/ResultSummary.tsx`（一致アイコン/メッセージ）
+- [x] T045 [US3] DiffList に空リスト時のメッセージを追加: `web/src/components/DiffList.tsx`（「差分なし」表示）※Phase 3で実装済み、追加不要
+- [x] T046 `cd web && npm test` で PASS (GREEN) を確認
 
 ### Verification
 
-- [ ] T047 `cd web && npm test` で全テストパスを確認（US1, US2含むリグレッションなし）
-- [ ] T048 生成: specs/009-diff-view-webui/tasks/ph4-output.md
+- [x] T047 `cd web && npm test` で全テストパスを確認（US1, US2含むリグレッションなし）
+- [x] T048 生成: specs/009-diff-view-webui/tasks/ph4-output.md
 
 **Checkpoint**: 一致/不一致の両パターンで適切な結果が表示される
 

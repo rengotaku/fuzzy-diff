@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
+import Alert from "@mui/material/Alert";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useCompareStore } from "@/stores/compareStore";
 
 export function ResultSummary() {
@@ -20,11 +22,18 @@ export function ResultSummary() {
     return null;
   }
 
+  const isPerfectMatch = result.match && result.score === 1.0 && result.diffs.length === 0;
+
   return (
     <Box sx={{ mt: 2 }}>
-      <Typography variant="h6">
-        {result.match ? "一致" : "不一致"}
-      </Typography>
+      <Alert
+        severity={result.match ? "success" : "warning"}
+        data-testid={isPerfectMatch ? "match-success" : undefined}
+        icon={isPerfectMatch ? <CheckCircleIcon /> : undefined}
+        sx={{ mb: 1 }}
+      >
+        {isPerfectMatch ? "完全一致" : result.match ? "一致" : "不一致"}
+      </Alert>
       <Typography>
         スコア: {result.score}
       </Typography>
