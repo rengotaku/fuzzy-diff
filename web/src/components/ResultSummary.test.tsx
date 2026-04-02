@@ -207,6 +207,111 @@ describe("ResultSummary", () => {
     });
   });
 
+  // --- US3: 一致時の成功表示 ---
+
+  describe("一致時の成功表示（US3）", () => {
+    it("match=true, score=1.0, diffs=[] の場合に成功インジケータが表示される", () => {
+      const result: ComparisonResult = {
+        score: 1.0,
+        match: true,
+        diffs: [],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      // 完全一致時に成功を示すビジュアルインジケータが存在する
+      expect(screen.getByTestId("match-success")).toBeInTheDocument();
+    });
+
+    it("match=true の場合に成功を示すアラート/カードが表示される", () => {
+      const result: ComparisonResult = {
+        score: 0.95,
+        match: true,
+        diffs: [],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      // 成功アラート（role="alert" で severity="success" 相当）
+      const successAlert = screen.getByRole("alert");
+      expect(successAlert).toBeInTheDocument();
+    });
+
+    it("match=false の場合に警告/エラーを示すアラートが表示される", () => {
+      const result: ComparisonResult = {
+        score: 0.5,
+        match: false,
+        diffs: [
+          { type: "changed", path: "row[0]", sourceValue: "a", targetValue: "b" },
+        ],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      // 不一致時にも警告アラートが表示される
+      const warningAlert = screen.getByRole("alert");
+      expect(warningAlert).toBeInTheDocument();
+    });
+
+    it("完全一致時にチェックマークアイコンが表示される", () => {
+      const result: ComparisonResult = {
+        score: 1.0,
+        match: true,
+        diffs: [],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      const { container } = render(<ResultSummary />);
+      // CheckCircle アイコンまたは同等のアイコンが表示される
+      const icon = container.querySelector("[data-testid='CheckCircleIcon']") ??
+                   container.querySelector("svg.MuiSvgIcon-root");
+      expect(icon).not.toBeNull();
+    });
+
+    it("完全一致時に「完全一致」のテキストが表示される", () => {
+      const result: ComparisonResult = {
+        score: 1.0,
+        match: true,
+        diffs: [],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      // score=1.0 かつ diffs=[] の場合に「完全一致」という明確なメッセージ
+      expect(screen.getByText(/完全一致/)).toBeInTheDocument();
+    });
+  });
+
   // --- エッジケース ---
 
   describe("エッジケース", () => {

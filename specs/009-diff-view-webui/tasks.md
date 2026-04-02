@@ -166,10 +166,10 @@ parallel_groups:
 
 ### Test Implementation (RED)
 
-- [ ] T039 [US3] ResultSummary の一致表示テストを追加: `web/src/components/ResultSummary.test.tsx`（match=true, score=1.0, diffs=[] 時の表示確認）
-- [ ] T040 [US3] DiffList の空リスト表示テストを追加: `web/src/components/DiffList.test.tsx`（diffs=[] 時に「差分なし」メッセージ表示）
-- [ ] T041 `cd web && npm test` で FAIL (RED) を確認
-- [ ] T042 RED出力を生成: specs/009-diff-view-webui/red-tests/ph4-test.md
+- [x] T039 [US3] ResultSummary の一致表示テストを追加: `web/src/components/ResultSummary.test.tsx`（match=true, score=1.0, diffs=[] 時の表示確認）
+- [x] T040 [US3] DiffList の空リスト表示テストを追加: `web/src/components/DiffList.test.tsx`（diffs=[] 時に「差分なし」メッセージ表示）※Phase 3で実装済み、テスト既存PASS
+- [x] T041 `cd web && npm test` で FAIL (RED) を確認
+- [x] T042 RED出力を生成: specs/009-diff-view-webui/red-tests/ph4-test.md
 
 ### Implementation (GREEN)
 
