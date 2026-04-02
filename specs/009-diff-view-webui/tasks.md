@@ -72,12 +72,12 @@ parallel_groups:
 
 ### Test Implementation (RED)
 
-- [ ] T009 [P] [US1] Zustand store のテストを実装: `web/src/stores/compareStore.test.ts`（初期状態、入力更新、比較結果セット、エラーセット）
-- [ ] T010 [P] [US1] useCompare hook のテストを実装: `web/src/hooks/useCompare.test.ts`（compare()呼び出し、結果の状態反映、バリデーションエラー）
-- [ ] T011 [P] [US1] CompareForm コンポーネントのテストを実装: `web/src/components/CompareForm.test.tsx`（テキストエリア2つの表示、比較ボタン、バリデーション）
-- [ ] T012 [P] [US1] ResultSummary コンポーネントのテストを実装: `web/src/components/ResultSummary.test.tsx`（match/score表示、結果なし時の非表示）
-- [ ] T013 `cd web && npm test` で FAIL (RED) を確認
-- [ ] T014 RED出力を生成: specs/009-diff-view-webui/red-tests/ph2-test.md
+- [x] T009 [P] [US1] Zustand store のテストを実装: `web/src/stores/compareStore.test.ts`（初期状態、入力更新、比較結果セット、エラーセット）
+- [x] T010 [P] [US1] useCompare hook のテストを実装: `web/src/hooks/useCompare.test.ts`（compare()呼び出し、結果の状態反映、バリデーションエラー）
+- [x] T011 [P] [US1] CompareForm コンポーネントのテストを実装: `web/src/components/CompareForm.test.tsx`（テキストエリア2つの表示、比較ボタン、バリデーション）
+- [x] T012 [P] [US1] ResultSummary コンポーネントのテストを実装: `web/src/components/ResultSummary.test.tsx`（match/score表示、結果なし時の非表示）
+- [x] T013 `cd web && npm test` で FAIL (RED) を確認
+- [x] T014 RED出力を生成: specs/009-diff-view-webui/red-tests/ph2-test.md
 
 ### Implementation (GREEN)
 
