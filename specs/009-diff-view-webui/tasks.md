@@ -121,10 +121,10 @@ parallel_groups:
 
 ### Test Implementation (RED)
 
-- [ ] T026 [P] [US2] 差分色定義のテストを実装: `web/src/theme/diffColors.test.ts`（added/removed/changed の色マッピング）
-- [ ] T027 [P] [US2] DiffList コンポーネントのテストを実装: `web/src/components/DiffList.test.tsx`（差分種別ごとのハイライト色、sourceValue/targetValue の両方表示、空リスト時の表示）
-- [ ] T028 `cd web && npm test` で FAIL (RED) を確認
-- [ ] T029 RED出力を生成: specs/009-diff-view-webui/red-tests/ph3-test.md
+- [x] T026 [P] [US2] 差分色定義のテストを実装: `web/src/theme/diffColors.test.ts`（added/removed/changed の色マッピング）
+- [x] T027 [P] [US2] DiffList コンポーネントのテストを実装: `web/src/components/DiffList.test.tsx`（差分種別ごとのハイライト色、sourceValue/targetValue の両方表示、空リスト時の表示）
+- [x] T028 `cd web && npm test` で FAIL (RED) を確認
+- [x] T029 RED出力を生成: specs/009-diff-view-webui/red-tests/ph3-test.md
 
 ### Implementation (GREEN)
 
