@@ -81,18 +81,18 @@ parallel_groups:
 
 ### Implementation (GREEN)
 
-- [ ] T015 RED テストを読む: specs/009-diff-view-webui/red-tests/ph2-test.md
-- [ ] T016 [P] [US1] Zustand store を実装: `web/src/stores/compareStore.ts`（CompareState: source, target, result, isComparing, error）
-- [ ] T017 [P] [US1] useCompare hook を実装: `web/src/hooks/useCompare.ts`（verify-aiのcompare()呼び出し、バリデーション、状態更新）
-- [ ] T018 [P] [US1] CompareForm コンポーネントを実装: `web/src/components/CompareForm.tsx`（source/target テキストエリア、比較ボタン、react-hook-form + Zod バリデーション）
-- [ ] T019 [P] [US1] ResultSummary コンポーネントを実装: `web/src/components/ResultSummary.tsx`（match/score/diffsカウント表示）
-- [ ] T020 [US1] App.tsx にCompareForm + ResultSummary を統合: `web/src/App.tsx`
-- [ ] T021 `cd web && npm test` で PASS (GREEN) を確認
+- [x] T015 RED テストを読む: specs/009-diff-view-webui/red-tests/ph2-test.md
+- [x] T016 [P] [US1] Zustand store を実装: `web/src/stores/compareStore.ts`（CompareState: source, target, result, isComparing, error）
+- [x] T017 [P] [US1] useCompare hook を実装: `web/src/hooks/useCompare.ts`（verify-aiのcompare()呼び出し、バリデーション、状態更新）
+- [x] T018 [P] [US1] CompareForm コンポーネントを実装: `web/src/components/CompareForm.tsx`（source/target テキストエリア、比較ボタン、react-hook-form + Zod バリデーション）
+- [x] T019 [P] [US1] ResultSummary コンポーネントを実装: `web/src/components/ResultSummary.tsx`（match/score/diffsカウント表示）
+- [x] T020 [US1] App.tsx にCompareForm + ResultSummary を統合: `web/src/App.tsx`
+- [x] T021 `cd web && npm test` で PASS (GREEN) を確認
 
 ### Verification
 
-- [ ] T022 `cd web && npm test` で全テストパスを確認（リグレッションなし）
-- [ ] T023 生成: specs/009-diff-view-webui/tasks/ph2-output.md
+- [x] T022 `cd web && npm test` で全テストパスを確認（リグレッションなし）
+- [x] T023 生成: specs/009-diff-view-webui/tasks/ph2-output.md
 
 **Checkpoint**: テキスト入力→比較実行→サマリー表示のフローが動作する
 
