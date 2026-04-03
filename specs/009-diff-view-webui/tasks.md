@@ -201,21 +201,21 @@ parallel_groups:
 
 ### Input
 
-- [ ] T049 セットアップ分析を読む: specs/009-diff-view-webui/tasks/ph1-output.md
-- [ ] T050 前フェーズの出力を読む: specs/009-diff-view-webui/tasks/ph4-output.md
+- [x] T049 セットアップ分析を読む: specs/009-diff-view-webui/tasks/ph1-output.md
+- [x] T050 前フェーズの出力を読む: specs/009-diff-view-webui/tasks/ph4-output.md
 
 ### Implementation
 
-- [ ] T051 [P] `web/wrangler.toml` のプロジェクト名・デプロイ設定を更新
-- [ ] T052 [P] `web/` で `npm run lint` を実行し、Lint エラーを修正
-- [ ] T053 [P] `web/` で `npm run build` が成功することを確認
-- [ ] T054 不要なボイラープレートコード・サンプルファイルを削除
+- [x] T051 [P] `web/wrangler.toml` のプロジェクト名・デプロイ設定を更新
+- [x] T052 [P] `web/` で `npm run lint` を実行し、Lint エラーを修正
+- [x] T053 [P] `web/` で `npm run build` が成功することを確認
+- [x] T054 不要なボイラープレートコード・サンプルファイルを削除
 
 ### Verification
 
-- [ ] T055 `cd web && npm test` で全テストパスを確認
-- [ ] T056 `cd web && npm run build` でビルド成功を確認
-- [ ] T057 生成: specs/009-diff-view-webui/tasks/ph5-output.md
+- [x] T055 `cd web && npm test` で全テストパスを確認
+- [x] T056 `cd web && npm run build` でビルド成功を確認
+- [x] T057 生成: specs/009-diff-view-webui/tasks/ph5-output.md
 
 ---
 

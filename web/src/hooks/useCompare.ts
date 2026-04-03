@@ -2,7 +2,7 @@ import { compare } from "verify-ai";
 import { useCompareStore } from "@/stores/compareStore";
 
 export function useCompare() {
-  const { source, target, setResult, setIsComparing, setError } =
+  const { setResult, setIsComparing, setError } =
     useCompareStore.getState();
 
   const runCompare = () => {
@@ -20,7 +20,7 @@ export function useCompare() {
     setIsComparing(true);
 
     try {
-      const result = compare({ source: currentSource, target: currentTarget });
+      const result = compare(currentSource, currentTarget);
       setResult(result);
     } catch (err) {
       const message = err instanceof Error ? err.message : "比較に失敗しました";

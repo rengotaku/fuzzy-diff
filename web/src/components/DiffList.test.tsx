@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, within } from "@/test/test-utils";
+import { describe, it, expect } from "vitest";
+import { render, screen } from "@/test/test-utils";
 import { DiffList } from "./DiffList";
 import type { DiffItem } from "verify-ai";
 

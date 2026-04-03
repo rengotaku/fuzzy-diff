@@ -43,9 +43,7 @@ describe("useCompare", () => {
         result.current.runCompare();
       });
 
-      expect(mockCompare).toHaveBeenCalledWith(
-        { source: "hello", target: "hello" },
-      );
+      expect(mockCompare).toHaveBeenCalledWith("hello", "hello");
     });
 
     it("比較結果を store に反映する", () => {
@@ -230,9 +228,7 @@ describe("useCompare", () => {
         result.current.runCompare();
       });
 
-      expect(mockCompare).toHaveBeenCalledWith(
-        { source: specialText, target: "normal" },
-      );
+      expect(mockCompare).toHaveBeenCalledWith(specialText, "normal");
     });
 
     it("再比較時に前回のエラーがクリアされる", () => {

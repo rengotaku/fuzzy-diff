@@ -33,7 +33,7 @@ describe("ResultSummary", () => {
 
   describe("結果なしの場合", () => {
     it("result が null の場合コンポーネントが表示されない", () => {
-      const { container } = render(<ResultSummary />);
+      render(<ResultSummary />);
       // 結果がない場合、サマリー要素が表示されないことを確認
       expect(screen.queryByText(/スコア|score/i)).not.toBeInTheDocument();
       expect(screen.queryByText(/一致|match/i)).not.toBeInTheDocument();

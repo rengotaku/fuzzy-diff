@@ -10,7 +10,7 @@ const DIFF_LABELS: Record<DiffItem["type"], string> = {
 };
 
 interface DiffListProps {
-  diffs: DiffItem[];
+  diffs: readonly DiffItem[];
 }
 
 export function DiffList({ diffs }: DiffListProps) {

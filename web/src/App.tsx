@@ -1,21 +1,23 @@
-import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { AppRouter } from "@/router";
+import Container from "@mui/material/Container";
 import { theme } from "@/theme";
 import { CompareForm } from "@/components/CompareForm";
 import { ResultSummary } from "@/components/ResultSummary";
 import { DiffList } from "@/components/DiffList";
-
-export { CompareForm, ResultSummary, DiffList };
+import { useCompareStore } from "@/stores/compareStore";
 
 function App() {
+  const result = useCompareStore((state) => state.result);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <BrowserRouter>
-        <AppRouter />
-      </BrowserRouter>
+      <Container maxWidth="md" sx={{ py: 4 }}>
+        <CompareForm />
+        <ResultSummary />
+        {result && <DiffList diffs={result.diffs} />}
+      </Container>
     </ThemeProvider>
   );
 }
