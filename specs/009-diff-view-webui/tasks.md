@@ -68,7 +68,7 @@ parallel_groups:
 
 ### Input
 
-- [ ] T008 前フェーズの出力を読む: specs/009-diff-view-webui/tasks/ph1-output.md
+- [x] T008 前フェーズの出力を読む: specs/009-diff-view-webui/tasks/ph1-output.md
 
 ### Test Implementation (RED)
 
@@ -116,8 +116,8 @@ parallel_groups:
 
 ### Input
 
-- [ ] T024 セットアップ分析を読む: specs/009-diff-view-webui/tasks/ph1-output.md
-- [ ] T025 前フェーズの出力を読む: specs/009-diff-view-webui/tasks/ph2-output.md
+- [x] T024 セットアップ分析を読む: specs/009-diff-view-webui/tasks/ph1-output.md
+- [x] T025 前フェーズの出力を読む: specs/009-diff-view-webui/tasks/ph2-output.md
 
 ### Test Implementation (RED)
 
@@ -161,8 +161,8 @@ parallel_groups:
 
 ### Input
 
-- [ ] T037 セットアップ分析を読む: specs/009-diff-view-webui/tasks/ph1-output.md
-- [ ] T038 前フェーズの出力を読む: specs/009-diff-view-webui/tasks/ph3-output.md
+- [x] T037 セットアップ分析を読む: specs/009-diff-view-webui/tasks/ph1-output.md
+- [x] T038 前フェーズの出力を読む: specs/009-diff-view-webui/tasks/ph3-output.md
 
 ### Test Implementation (RED)
 
@@ -304,10 +304,10 @@ specs/009-diff-view-webui/
 ```
 
 **Checklist**:
-- [ ] 入力バリデーションテスト（空文字、片方のみ）
-- [ ] compare() 呼び出しテスト（正常系、エラー系）
-- [ ] 状態管理テスト（store の状態遷移）
-- [ ] UI表示テスト（コンポーネントレンダリング、色分け）
+- [x] 入力バリデーションテスト（空文字、片方のみ）
+- [x] compare() 呼び出しテスト（正常系、エラー系）
+- [x] 状態管理テスト（store の状態遷移）
+- [x] UI表示テスト（コンポーネントレンダリング、色分け）
 
 ---
 
