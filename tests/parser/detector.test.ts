@@ -48,6 +48,24 @@ describe("detectFormat", () => {
     });
   });
 
+  describe("Markdownテーブル検出", () => {
+    it("パイプテーブルを検出する", () => {
+      const result = detectFormat("| A | B |\n| --- | --- |\n| 1 | 2 |");
+      expect(result.type).toBe("markdown-table");
+      expect(result.confidence).toBeGreaterThanOrEqual(0.8);
+    });
+
+    it("アラインメント付きテーブルを検出する", () => {
+      const result = detectFormat("| A | B |\n| :---: | ---: |\n| 1 | 2 |");
+      expect(result.type).toBe("markdown-table");
+    });
+
+    it("先頭パイプなしのテーブルを検出する", () => {
+      const result = detectFormat("A | B\n--- | ---\n1 | 2");
+      expect(result.type).toBe("markdown-table");
+    });
+  });
+
   describe("プレーンテキスト", () => {
     it("構造化されていないテキストはplainを返す", () => {
       const result = detectFormat("これは普通のテキストです。");

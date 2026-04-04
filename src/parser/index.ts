@@ -6,12 +6,14 @@ import { parseJson } from "./json-parser.js";
 import { parseCsv } from "./csv-parser.js";
 import { parseYaml } from "./yaml-parser.js";
 import { parseIni } from "./ini-parser.js";
+import { parseMarkdownTable } from "./markdown-table-parser.js";
 
 export { detectFormat } from "./detector.js";
 export { parseJson } from "./json-parser.js";
 export { parseCsv } from "./csv-parser.js";
 export { parseYaml } from "./yaml-parser.js";
 export { parseIni } from "./ini-parser.js";
+export { parseMarkdownTable } from "./markdown-table-parser.js";
 
 /**
  * テキストをパースして構造化中間表現に変換する。
@@ -34,6 +36,8 @@ export function parse(text: string, format?: FormatType): ParsedRecord {
       return parseYaml(text);
     case "ini":
       return parseIni(text);
+    case "markdown-table":
+      return parseMarkdownTable(text);
     case "plain":
       return { headers: null, rows: [] };
   }

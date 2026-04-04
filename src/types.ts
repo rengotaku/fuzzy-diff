@@ -10,7 +10,7 @@ export interface NormalizedText {
   readonly normalized: string;
 }
 
-export type FormatType = "json" | "csv" | "tsv" | "yaml" | "ini" | "array" | "plain";
+export type FormatType = "json" | "csv" | "tsv" | "yaml" | "ini" | "array" | "markdown-table" | "plain";
 
 export interface DetectedFormat {
   readonly type: FormatType;

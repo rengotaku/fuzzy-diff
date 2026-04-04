@@ -7,14 +7,6 @@
  * 3. 数値中のカンマ除去（日付のカンマは除外）
  */
 
-/** 日本語数量単位の乗数マッピング */
-const UNIT_MULTIPLIERS: ReadonlyMap<string, number> = new Map([
-  ["千", 1_000],
-  ["万", 10_000],
-  ["億", 100_000_000],
-  ["兆", 1_000_000_000_000],
-]);
-
 /**
  * 「1億2500万円」のような複合数量表現を展開する
  *
@@ -84,7 +76,7 @@ function removeYenSymbol(text: string): string {
  */
 function removeNumericCommas(text: string): string {
   // 数値中のカンマを除去: 1桁以上の数字 + (,3桁数字)+ のパターン
-  return text.replace(/(\d),(\d{3})/g, (match, before, after) => {
+  return text.replace(/(\d),(\d{3})/g, (_match, before, after) => {
     return `${before}${after}`;
   });
 }

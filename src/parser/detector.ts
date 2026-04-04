@@ -32,6 +32,18 @@ export function detectFormat(text: string): DetectedFormat {
     return { type: "plain", confidence: 0.5 };
   }
 
+  // Markdown table: 2行目が区切り行（:?-+:? のセル）
+  if (lines.length >= 2) {
+    const secondLine = lines[1]!.trim();
+    const delimCells = secondLine.replace(/^\|/, "").replace(/\|$/, "").split("|");
+    const isDelimiterRow = delimCells.length >= 1 &&
+      delimCells.every((cell) => /^\s*:?-+:?\s*$/.test(cell));
+    const hasPipe = lines[0]!.includes("|") || secondLine.includes("|");
+    if (isDelimiterRow && hasPipe) {
+      return { type: "markdown-table", confidence: 0.9 };
+    }
+  }
+
   // INI: check for [section] pattern
   if (/^\[.+\]$/.test(lines[0]!.trim())) {
     const hasKeyValue = lines.some((l) => /^[^[\]]+=[^=]/.test(l.trim()));
