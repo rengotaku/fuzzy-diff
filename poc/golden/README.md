@@ -36,7 +36,7 @@
 
 ## 2. フォーマット総当たり比較 (formats/)
 
-同じデータを6つのフォーマットで表現し、全ペア（36通り）で比較を行う。
+同じデータを7つのフォーマットで表現し、全ペア（49通り）で比較を行う。
 
 ### ソースファイル
 
@@ -46,20 +46,20 @@
 | `formats/json.txt` | JSON | オブジェクト配列（キー付き） |
 | `formats/csv.txt` | CSV | カンマ区切りテーブル（ヘッダーあり） |
 | `formats/yaml.txt` | YAML | キー:値リスト |
-| `formats/array.txt` | Array | JSON二次元配列（ヘッダーなし） |
+| `formats/array.txt` | Array | JSON二次元配列（先頭行ヘッダー） |
 | `formats/ini.txt` | INI | セクション形式 |
+| `formats/markdown-table.txt` | Markdown Table | GFM形式のパイプテーブル |
 
 ### 期待結果マトリクス (`formats/matrix.json`)
 
-`A->B` = Aをソース、Bをもう一方として比較した場合の期待結果。
+`A->B` = Aをソース、Bをもう一方として比較した場合の期待結果。全フォーマットで先頭行/キーがヘッダーとして対応するため、全ペアで match を期待する。
 
-|  | tsv | json | csv | yaml | array | ini |
-|---|---|---|---|---|---|---|
-| **tsv** | match | match | match | match | **mismatch** | match |
-| **json** | match | match | match | match | **mismatch** | match |
-| **csv** | match | match | match | match | **mismatch** | match |
-| **yaml** | match | match | match | match | **mismatch** | match |
-| **array** | **mismatch** | **mismatch** | **mismatch** | **mismatch** | match | **mismatch** |
-| **ini** | match | match | match | match | **mismatch** | match |
-
-`array` のみ mismatch になる理由: ヘッダー（キー名）が含まれないため、他フォーマットとの比較では情報（何の値か）が欠落している。
+|  | tsv | json | csv | yaml | array | ini | markdown-table |
+|---|---|---|---|---|---|---|---|
+| **tsv** | match | match | match | match | match | match | match |
+| **json** | match | match | match | match | match | match | match |
+| **csv** | match | match | match | match | match | match | match |
+| **yaml** | match | match | match | match | match | match | match |
+| **array** | match | match | match | match | match | match | match |
+| **ini** | match | match | match | match | match | match | match |
+| **markdown-table** | match | match | match | match | match | match | match |

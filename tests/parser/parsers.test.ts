@@ -13,12 +13,20 @@ describe("parseJson", () => {
     expect(result.rows[0]).toEqual({ "商品名": "りんご", "価格": "150円" });
   });
 
-  it("JSON二次元配列をヘッダーなしでパースする", () => {
-    const input = '[["りんご","150円"],["みかん","100円"]]';
+  it("JSON二次元配列の先頭行をヘッダーとしてパースする", () => {
+    const input = '[["商品名","価格"],["りんご","150円"],["みかん","100円"]]';
+    const result = parseJson(input);
+    expect(result.headers).toEqual(["商品名", "価格"]);
+    expect(result.rows).toHaveLength(2);
+    expect(result.rows[0]).toEqual({ "商品名": "りんご", "価格": "150円" });
+  });
+
+  it("数値を含む二次元配列はヘッダーなしでパースする", () => {
+    const input = '[[1,2,3],[4,5,6]]';
     const result = parseJson(input);
     expect(result.headers).toBeNull();
     expect(result.rows).toHaveLength(2);
-    expect(result.rows[0]).toEqual({ "0": "りんご", "1": "150円" });
+    expect(result.rows[0]).toEqual({ "0": "1", "1": "2", "2": "3" });
   });
 });
 
