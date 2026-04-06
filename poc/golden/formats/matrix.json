@@ -6,19 +6,19 @@
     "json": "JSONオブジェクト配列（キー付き）",
     "csv": "カンマ区切りテーブル（ヘッダーあり）",
     "yaml": "YAML風キー:値リスト",
-    "array": "JSON二次元配列（ヘッダーなし）",
+    "array": "JSON二次元配列（先頭行ヘッダー）",
     "ini": "INI風セクション形式",
     "markdown-table": "Markdownパイプテーブル（GFM形式）"
   },
   "notes": {
-    "array": "ヘッダー（キー名）が含まれないため、他フォーマットとの比較では情報欠落として扱う"
+    "array": "二次元配列の先頭行をヘッダーとして扱うため、他フォーマットと同等の情報量を持つ"
   },
   "matrix": {
     "tsv->tsv":     { "expected_match": true,  "expected_similarity": "high",   "note": "同一フォーマット" },
     "tsv->json":    { "expected_match": true,  "expected_similarity": "high",   "note": "キーと値が保持される" },
     "tsv->csv":     { "expected_match": true,  "expected_similarity": "high",   "note": "区切り文字のみ異なる" },
     "tsv->yaml":    { "expected_match": true,  "expected_similarity": "high",   "note": "キー:値形式で保持" },
-    "tsv->array":   { "expected_match": false, "expected_similarity": "medium", "note": "ヘッダー（キー名）が欠落" },
+    "tsv->array":   { "expected_match": true,  "expected_similarity": "high",   "note": "先頭行ヘッダーで保持" },
     "tsv->ini":     { "expected_match": true,  "expected_similarity": "high",   "note": "セクション名=商品名、キー=列名" },
     "tsv->markdown-table": { "expected_match": true, "expected_similarity": "high", "note": "ヘッダー+データが保持される" },
 
@@ -26,7 +26,7 @@
     "json->json":   { "expected_match": true,  "expected_similarity": "high",   "note": "同一フォーマット" },
     "json->csv":    { "expected_match": true,  "expected_similarity": "high",   "note": "キーがヘッダーに対応" },
     "json->yaml":   { "expected_match": true,  "expected_similarity": "high",   "note": "キー:値の構造が類似" },
-    "json->array":  { "expected_match": false, "expected_similarity": "medium", "note": "キー名が欠落" },
+    "json->array":  { "expected_match": true,  "expected_similarity": "high",   "note": "先頭行ヘッダーでキーに対応" },
     "json->ini":    { "expected_match": true,  "expected_similarity": "high",   "note": "キーが保持される" },
     "json->markdown-table": { "expected_match": true, "expected_similarity": "high", "note": "キーがヘッダーに対応" },
 
@@ -34,7 +34,7 @@
     "csv->json":    { "expected_match": true,  "expected_similarity": "high",   "note": "ヘッダーがキーに対応" },
     "csv->csv":     { "expected_match": true,  "expected_similarity": "high",   "note": "同一フォーマット" },
     "csv->yaml":    { "expected_match": true,  "expected_similarity": "high",   "note": "ヘッダーがキーに対応" },
-    "csv->array":   { "expected_match": false, "expected_similarity": "medium", "note": "ヘッダー（キー名）が欠落" },
+    "csv->array":   { "expected_match": true,  "expected_similarity": "high",   "note": "先頭行ヘッダーで対応" },
     "csv->ini":     { "expected_match": true,  "expected_similarity": "high",   "note": "ヘッダーがキーに対応" },
     "csv->markdown-table": { "expected_match": true, "expected_similarity": "high", "note": "ヘッダー+データが保持される" },
 
@@ -42,23 +42,23 @@
     "yaml->json":   { "expected_match": true,  "expected_similarity": "high",   "note": "キー:値の構造が類似" },
     "yaml->csv":    { "expected_match": true,  "expected_similarity": "high",   "note": "キーがヘッダーに対応" },
     "yaml->yaml":   { "expected_match": true,  "expected_similarity": "high",   "note": "同一フォーマット" },
-    "yaml->array":  { "expected_match": false, "expected_similarity": "medium", "note": "キー名が欠落" },
+    "yaml->array":  { "expected_match": true,  "expected_similarity": "high",   "note": "先頭行ヘッダーで対応" },
     "yaml->ini":    { "expected_match": true,  "expected_similarity": "high",   "note": "キーが保持される" },
     "yaml->markdown-table": { "expected_match": true, "expected_similarity": "high", "note": "キーがヘッダーに対応" },
 
-    "array->tsv":   { "expected_match": false, "expected_similarity": "medium", "note": "ヘッダー（キー名）が欠落" },
-    "array->json":  { "expected_match": false, "expected_similarity": "medium", "note": "キー名が欠落" },
-    "array->csv":   { "expected_match": false, "expected_similarity": "medium", "note": "ヘッダー（キー名）が欠落" },
-    "array->yaml":  { "expected_match": false, "expected_similarity": "medium", "note": "キー名が欠落" },
+    "array->tsv":   { "expected_match": true,  "expected_similarity": "high",   "note": "先頭行ヘッダーで対応" },
+    "array->json":  { "expected_match": true,  "expected_similarity": "high",   "note": "先頭行ヘッダーでキーに対応" },
+    "array->csv":   { "expected_match": true,  "expected_similarity": "high",   "note": "先頭行ヘッダーで対応" },
+    "array->yaml":  { "expected_match": true,  "expected_similarity": "high",   "note": "先頭行ヘッダーで対応" },
     "array->array": { "expected_match": true,  "expected_similarity": "high",   "note": "同一フォーマット" },
-    "array->ini":   { "expected_match": false, "expected_similarity": "medium", "note": "双方ともキー構造が異なる" },
-    "array->markdown-table": { "expected_match": false, "expected_similarity": "medium", "note": "キー名が欠落" },
+    "array->ini":   { "expected_match": true,  "expected_similarity": "high",   "note": "先頭行ヘッダーで対応" },
+    "array->markdown-table": { "expected_match": true, "expected_similarity": "high", "note": "先頭行ヘッダーで対応" },
 
     "ini->tsv":     { "expected_match": true,  "expected_similarity": "high",   "note": "セクション名+キーが対応" },
     "ini->json":    { "expected_match": true,  "expected_similarity": "high",   "note": "セクション名+キーが対応" },
     "ini->csv":     { "expected_match": true,  "expected_similarity": "high",   "note": "セクション名+キーが対応" },
     "ini->yaml":    { "expected_match": true,  "expected_similarity": "high",   "note": "キーが保持される" },
-    "ini->array":   { "expected_match": false, "expected_similarity": "medium", "note": "キー名が欠落" },
+    "ini->array":   { "expected_match": true,  "expected_similarity": "high",   "note": "先頭行ヘッダーで対応" },
     "ini->ini":     { "expected_match": true,  "expected_similarity": "high",   "note": "同一フォーマット" },
     "ini->markdown-table": { "expected_match": true, "expected_similarity": "high", "note": "ヘッダー+データが保持される" },
 
@@ -66,7 +66,7 @@
     "markdown-table->json":  { "expected_match": true,  "expected_similarity": "high",   "note": "ヘッダーがキーに対応" },
     "markdown-table->csv":   { "expected_match": true,  "expected_similarity": "high",   "note": "ヘッダー+データが保持される" },
     "markdown-table->yaml":  { "expected_match": true,  "expected_similarity": "high",   "note": "ヘッダーがキーに対応" },
-    "markdown-table->array": { "expected_match": false, "expected_similarity": "medium", "note": "ヘッダー（キー名）が欠落" },
+    "markdown-table->array": { "expected_match": true,  "expected_similarity": "high",   "note": "先頭行ヘッダーで対応" },
     "markdown-table->ini":   { "expected_match": true,  "expected_similarity": "high",   "note": "ヘッダー+データが保持される" },
     "markdown-table->markdown-table": { "expected_match": true, "expected_similarity": "high", "note": "同一フォーマット" }
   }
