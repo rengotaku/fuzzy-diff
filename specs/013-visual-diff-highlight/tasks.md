@@ -127,23 +127,23 @@ parallel_groups:
 
 ### Input
 
-- [ ] T020 セットアップ分析を読む: `specs/013-visual-diff-highlight/tasks/ph1-output.md`
-- [ ] T021 前フェーズ出力を読む: `specs/013-visual-diff-highlight/tasks/ph2-output.md`
+- [x] T020 セットアップ分析を読む: `specs/013-visual-diff-highlight/tasks/ph1-output.md`
+- [x] T021 前フェーズ出力を読む: `specs/013-visual-diff-highlight/tasks/ph2-output.md`
 
 ### Test Implementation (RED)
 
-- [ ] T022 [P] [US1] SideBySideView のテストを実装: `web/src/components/SideBySideView.test.tsx`
+- [x] T022 [P] [US1] SideBySideView のテストを実装: `web/src/components/SideBySideView.test.tsx`
   - source と target が左右に表示されること
   - 差分箇所がハイライトされること
   - ハイライトが値部分のみであること（フォーマット構文を含まない）
   - 差分がない場合にハイライトなしで表示されること
   - 片方が空の場合に「テキストなし」が表示されること
-- [ ] T023 [P] [US3] DiffViewSwitcher のテストを実装: `web/src/components/DiffViewSwitcher.test.tsx`
+- [x] T023 [P] [US3] DiffViewSwitcher のテストを実装: `web/src/components/DiffViewSwitcher.test.tsx`
   - 3つのビューモード（list / side-by-side / inline）が表示されること
   - クリックで viewMode が切り替わること
   - デフォルトで side-by-side が選択されていること
-- [ ] T024 `cd web && npm test` で FAIL を確認 (RED)
-- [ ] T025 RED 出力を生成: `specs/013-visual-diff-highlight/red-tests/ph3-test.md`
+- [x] T024 `cd web && npm test` で FAIL を確認 (RED)
+- [x] T025 RED 出力を生成: `specs/013-visual-diff-highlight/red-tests/ph3-test.md`
 
 ### Implementation (GREEN)
 
