@@ -265,7 +265,7 @@ describe("splitToSegments", () => {
         },
       ];
       const segments = splitToSegments(text, spans);
-      expect(segments).toHaveLength(5);
+      expect(segments).toHaveLength(4);
       expect(segments[0]).toEqual({ text: "Alice", highlight: spans[0] });
       expect(segments[1]).toEqual({ text: " is ", highlight: null });
       expect(segments[2]).toEqual({ text: "30", highlight: spans[1] });

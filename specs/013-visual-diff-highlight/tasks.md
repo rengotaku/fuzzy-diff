@@ -91,19 +91,19 @@ parallel_groups:
 
 ### Implementation (GREEN)
 
-- [ ] T012 RED テストを読む: `specs/013-visual-diff-highlight/red-tests/ph2-test.md`
-- [ ] T013 [P] 型定義を作成: `web/src/utils/highlightMapper.ts`（HighlightSpan, TextSegment, DiffViewMode 型）
-- [ ] T014 [P] highlightMapper を実装: `web/src/utils/highlightMapper.ts`
+- [x] T012 RED テストを読む: `specs/013-visual-diff-highlight/red-tests/ph2-test.md`
+- [x] T013 [P] 型定義を作成: `web/src/utils/highlightMapper.ts`（HighlightSpan, TextSegment, DiffViewMode 型）
+- [x] T014 [P] highlightMapper を実装: `web/src/utils/highlightMapper.ts`
   - `findHighlightSpans(text: string, diffs: DiffItem[], side: "source" | "target"): HighlightSpan[]`
   - `splitToSegments(text: string, spans: HighlightSpan[]): TextSegment[]`
-- [ ] T015 [P] HighlightedText コンポーネントを実装: `web/src/components/HighlightedText.tsx`
-- [ ] T016 compareStore に viewMode を追加: `web/src/stores/compareStore.ts`
-- [ ] T017 `cd web && npm test` で PASS を確認 (GREEN)
+- [x] T015 [P] HighlightedText コンポーネントを実装: `web/src/components/HighlightedText.tsx`
+- [x] T016 compareStore に viewMode を追加: `web/src/stores/compareStore.ts`
+- [x] T017 `cd web && npm test` で PASS を確認 (GREEN)
 
 ### Verification
 
-- [ ] T018 `cd web && npm test` で全テスト通過を確認（既存テストの回帰なし）
-- [ ] T019 フェーズ出力を生成: `specs/013-visual-diff-highlight/tasks/ph2-output.md`
+- [x] T018 `cd web && npm test` で全テスト通過を確認（既存テストの回帰なし）
+- [x] T019 フェーズ出力を生成: `specs/013-visual-diff-highlight/tasks/ph2-output.md`
 
 **Checkpoint**: highlightMapper と HighlightedText が独立して動作すること
 
