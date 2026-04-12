@@ -10,6 +10,7 @@ describe("useCompareStore", () => {
       result: null,
       isComparing: false,
       error: null,
+      viewMode: "side-by-side",
     });
   });
 
@@ -184,6 +185,42 @@ describe("useCompareStore", () => {
     });
   });
 
+  // --- viewMode ---
+
+  describe("viewMode", () => {
+    it("デフォルトが 'side-by-side' である", () => {
+      const state = useCompareStore.getState();
+      expect(state.viewMode).toBe("side-by-side");
+    });
+
+    it("setViewMode で 'list' に切替可能", () => {
+      const { setViewMode } = useCompareStore.getState();
+      setViewMode("list");
+      expect(useCompareStore.getState().viewMode).toBe("list");
+    });
+
+    it("setViewMode で 'inline' に切替可能", () => {
+      const { setViewMode } = useCompareStore.getState();
+      setViewMode("inline");
+      expect(useCompareStore.getState().viewMode).toBe("inline");
+    });
+
+    it("setViewMode で 'side-by-side' に切替可能", () => {
+      const { setViewMode } = useCompareStore.getState();
+      setViewMode("list");
+      setViewMode("side-by-side");
+      expect(useCompareStore.getState().viewMode).toBe("side-by-side");
+    });
+
+    it("viewMode の変更が他の状態に影響しない", () => {
+      const { setSource, setViewMode } = useCompareStore.getState();
+      setSource("hello");
+      setViewMode("inline");
+      expect(useCompareStore.getState().source).toBe("hello");
+      expect(useCompareStore.getState().viewMode).toBe("inline");
+    });
+  });
+
   // --- reset ---
 
   describe("reset", () => {
@@ -199,6 +236,7 @@ describe("useCompareStore", () => {
         targetFormat: { type: "plain", confidence: 1.0 },
       });
       state.setError("error");
+      state.setViewMode("inline");
 
       useCompareStore.getState().reset();
 
@@ -208,6 +246,7 @@ describe("useCompareStore", () => {
       expect(resetState.result).toBeNull();
       expect(resetState.isComparing).toBe(false);
       expect(resetState.error).toBeNull();
+      expect(resetState.viewMode).toBe("side-by-side");
     });
   });
 });

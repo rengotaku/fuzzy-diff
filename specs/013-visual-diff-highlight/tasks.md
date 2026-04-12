@@ -70,24 +70,24 @@ parallel_groups:
 
 ### Input
 
-- [ ] T006 前フェーズ出力を読む: `specs/013-visual-diff-highlight/tasks/ph1-output.md`
+- [x] T006 前フェーズ出力を読む: `specs/013-visual-diff-highlight/tasks/ph1-output.md`
 
 ### Test Implementation (RED)
 
-- [ ] T007 [P] highlightMapper のテストを実装: `web/src/utils/highlightMapper.test.ts`
+- [x] T007 [P] highlightMapper のテストを実装: `web/src/utils/highlightMapper.test.ts`
   - DiffItem の sourceValue/targetValue から元テキスト内の位置を特定できること
   - 同じ値が複数回出現する場合に順序を保持すること
   - path が空文字の場合に行単位で検索すること
   - 値が見つからない場合に空配列を返すこと
-- [ ] T008 [P] HighlightedText のテストを実装: `web/src/components/HighlightedText.test.tsx`
+- [x] T008 [P] HighlightedText のテストを実装: `web/src/components/HighlightedText.test.tsx`
   - TextSegment[] をハイライト付き span で描画すること
   - ハイライトなしセグメントが通常テキストで描画されること
   - 差分タイプに応じた色が適用されること
-- [ ] T009 [P] compareStore 拡張のテストを実装: `web/src/stores/compareStore.test.ts`
+- [x] T009 [P] compareStore 拡張のテストを実装: `web/src/stores/compareStore.test.ts`
   - viewMode のデフォルトが "side-by-side" であること
   - setViewMode で切替可能であること
-- [ ] T010 `cd web && npm test` で FAIL を確認 (RED)
-- [ ] T011 RED 出力を生成: `specs/013-visual-diff-highlight/red-tests/ph2-test.md`
+- [x] T010 `cd web && npm test` で FAIL を確認 (RED)
+- [x] T011 RED 出力を生成: `specs/013-visual-diff-highlight/red-tests/ph2-test.md`
 
 ### Implementation (GREEN)
 
