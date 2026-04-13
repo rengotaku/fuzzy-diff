@@ -223,19 +223,19 @@ parallel_groups:
 
 ### Input
 
-- [ ] T045 セットアップ分析を読む: `specs/013-visual-diff-highlight/tasks/ph1-output.md`
-- [ ] T046 前フェーズ出力を読む: `specs/013-visual-diff-highlight/tasks/ph4-output.md`
+- [x] T045 セットアップ分析を読む: `specs/013-visual-diff-highlight/tasks/ph1-output.md`
+- [x] T046 前フェーズ出力を読む: `specs/013-visual-diff-highlight/tasks/ph4-output.md`
 
 ### Implementation
 
-- [ ] T047 [P] quickstart.md の動作確認手順を実施: `specs/013-visual-diff-highlight/quickstart.md`
-- [ ] T048 [P] 不要な import やデッドコードを整理
-- [ ] T049 `cd web && npm run build` でビルド確認（TypeScript 型チェック + Vite ビルド）
+- [x] T047 [P] quickstart.md の動作確認手順を実施: `specs/013-visual-diff-highlight/quickstart.md`
+- [x] T048 [P] 不要な import やデッドコードを整理
+- [x] T049 `cd web && npm run build` でビルド確認（TypeScript 型チェック + Vite ビルド）
 
 ### Verification
 
-- [ ] T050 `cd web && npm test` で全テスト通過を確認
-- [ ] T051 フェーズ出力を生成: `specs/013-visual-diff-highlight/tasks/ph5-output.md`
+- [x] T050 `cd web && npm test` で全テスト通過を確認
+- [x] T051 フェーズ出力を生成: `specs/013-visual-diff-highlight/tasks/ph5-output.md`
 
 ---
 

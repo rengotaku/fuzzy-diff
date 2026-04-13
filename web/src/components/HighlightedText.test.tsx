@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@/test/test-utils";
 import { HighlightedText } from "./HighlightedText";
-import { diffColors } from "@/theme/diffColors";
 import type { TextSegment } from "@/utils/highlightMapper";
 
 describe("HighlightedText", () => {

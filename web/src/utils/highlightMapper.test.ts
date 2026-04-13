@@ -4,7 +4,7 @@ import {
   findHighlightSpans,
   splitToSegments,
 } from "./highlightMapper";
-import type { HighlightSpan, TextSegment } from "./highlightMapper";
+import type { HighlightSpan } from "./highlightMapper";
 
 describe("findHighlightSpans", () => {
   // --- 基本的な位置特定 ---
