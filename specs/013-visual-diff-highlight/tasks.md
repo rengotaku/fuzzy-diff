@@ -180,18 +180,18 @@ parallel_groups:
 
 ### Input
 
-- [ ] T034 セットアップ分析を読む: `specs/013-visual-diff-highlight/tasks/ph1-output.md`
-- [ ] T035 前フェーズ出力を読む: `specs/013-visual-diff-highlight/tasks/ph3-output.md`
+- [x] T034 セットアップ分析を読む: `specs/013-visual-diff-highlight/tasks/ph1-output.md`
+- [x] T035 前フェーズ出力を読む: `specs/013-visual-diff-highlight/tasks/ph3-output.md`
 
 ### Test Implementation (RED)
 
-- [ ] T036 [P] [US2] InlineView のテストを実装: `web/src/components/InlineView.test.tsx`
+- [x] T036 [P] [US2] InlineView のテストを実装: `web/src/components/InlineView.test.tsx`
   - source と target が上下に表示されること
   - 差分箇所がハイライトされること
   - side-by-side と同じ差分箇所がハイライトされること
   - 差分がない場合にハイライトなしで表示されること
-- [ ] T037 `cd web && npm test` で FAIL を確認 (RED)
-- [ ] T038 RED 出力を生成: `specs/013-visual-diff-highlight/red-tests/ph4-test.md`
+- [x] T037 `cd web && npm test` で FAIL を確認 (RED)
+- [x] T038 RED 出力を生成: `specs/013-visual-diff-highlight/red-tests/ph4-test.md`
 
 ### Implementation (GREEN)
 
