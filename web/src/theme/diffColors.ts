@@ -1,14 +1,14 @@
 export const diffColors = {
   added: {
-    background: "#fff8e1",
-    text: "#e65100",
+    background: "rgb(255, 248, 225)",
+    text: "rgb(230, 81, 0)",
   },
   removed: {
-    background: "#ffebee",
-    text: "#b71c1c",
+    background: "rgb(255, 235, 238)",
+    text: "rgb(183, 28, 28)",
   },
   changed: {
-    background: "#e3f2fd",
-    text: "#0d47a1",
+    background: "rgb(227, 242, 253)",
+    text: "rgb(13, 71, 161)",
   },
 } as const;

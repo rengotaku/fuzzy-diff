@@ -147,17 +147,17 @@ parallel_groups:
 
 ### Implementation (GREEN)
 
-- [ ] T026 RED テストを読む: `specs/013-visual-diff-highlight/red-tests/ph3-test.md`
-- [ ] T027 [P] [US1] SideBySideView コンポーネントを実装: `web/src/components/SideBySideView.tsx`
-- [ ] T028 [P] [US3] DiffViewSwitcher コンポーネントを実装: `web/src/components/DiffViewSwitcher.tsx`
-- [ ] T029 [US1] [US3] App.tsx を統合: DiffViewSwitcher + ビューモードに応じた表示切替: `web/src/App.tsx`
-- [ ] T030 コンポーネントの re-export を更新: `web/src/components/index.ts`
-- [ ] T031 `cd web && npm test` で PASS を確認 (GREEN)
+- [x] T026 RED テストを読む: `specs/013-visual-diff-highlight/red-tests/ph3-test.md`
+- [x] T027 [P] [US1] SideBySideView コンポーネントを実装: `web/src/components/SideBySideView.tsx`
+- [x] T028 [P] [US3] DiffViewSwitcher コンポーネントを実装: `web/src/components/DiffViewSwitcher.tsx`
+- [x] T029 [US1] [US3] App.tsx を統合: DiffViewSwitcher + ビューモードに応じた表示切替: `web/src/App.tsx`
+- [x] T030 コンポーネントの re-export を更新: `web/src/components/index.ts`
+- [x] T031 `cd web && npm test` で PASS を確認 (GREEN)
 
 ### Verification
 
-- [ ] T032 `cd web && npm test` で全テスト通過を確認（既存テストの回帰なし）
-- [ ] T033 フェーズ出力を生成: `specs/013-visual-diff-highlight/tasks/ph3-output.md`
+- [x] T032 `cd web && npm test` で全テスト通過を確認（既存テストの回帰なし）
+- [x] T033 フェーズ出力を生成: `specs/013-visual-diff-highlight/tasks/ph3-output.md`
 
 **Checkpoint**: Side-by-side ビューが動作し、リスト/side-by-side 切替が可能。MVP として単独デモ可能。
 

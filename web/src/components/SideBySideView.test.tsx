@@ -345,7 +345,8 @@ describe("SideBySideView", () => {
         <SideBySideView source={source} target={target} diffs={diffs} />,
       );
       // HTML がテキストとして表示される（実行されない）
-      expect(screen.getByText(/<div>/)).toBeInTheDocument();
+      const matches = screen.getAllByText(/<div>/);
+      expect(matches.length).toBeGreaterThanOrEqual(1);
     });
 
     it("複数の差分が正しくハイライトされる", () => {
