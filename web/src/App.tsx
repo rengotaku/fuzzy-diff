@@ -8,6 +8,7 @@ import { ResultSummary } from "@/components/ResultSummary";
 import { DiffList } from "@/components/DiffList";
 import { DiffViewSwitcher } from "@/components/DiffViewSwitcher";
 import { SideBySideView } from "@/components/SideBySideView";
+import { InlineView } from "@/components/InlineView";
 import { useCompareStore } from "@/stores/compareStore";
 
 function App() {
@@ -35,7 +36,13 @@ function App() {
                 diffs={result.diffs}
               />
             )}
-            {viewMode === "inline" && <DiffList diffs={result.diffs} />}
+            {viewMode === "inline" && (
+              <InlineView
+                source={source}
+                target={target}
+                diffs={result.diffs}
+              />
+            )}
           </>
         )}
       </Container>

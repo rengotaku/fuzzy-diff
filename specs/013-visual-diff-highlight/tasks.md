@@ -195,15 +195,15 @@ parallel_groups:
 
 ### Implementation (GREEN)
 
-- [ ] T039 RED テストを読む: `specs/013-visual-diff-highlight/red-tests/ph4-test.md`
-- [ ] T040 [US2] InlineView コンポーネントを実装: `web/src/components/InlineView.tsx`
-- [ ] T041 [US2] App.tsx のビュー切替に inline ケースを追加: `web/src/App.tsx`
-- [ ] T042 `cd web && npm test` で PASS を確認 (GREEN)
+- [x] T039 RED テストを読む: `specs/013-visual-diff-highlight/red-tests/ph4-test.md`
+- [x] T040 [US2] InlineView コンポーネントを実装: `web/src/components/InlineView.tsx`
+- [x] T041 [US2] App.tsx のビュー切替に inline ケースを追加: `web/src/App.tsx`
+- [x] T042 `cd web && npm test` で PASS を確認 (GREEN)
 
 ### Verification
 
-- [ ] T043 `cd web && npm test` で全テスト通過を確認（既存テストの回帰なし）
-- [ ] T044 フェーズ出力を生成: `specs/013-visual-diff-highlight/tasks/ph4-output.md`
+- [x] T043 `cd web && npm test` で全テスト通過を確認（既存テストの回帰なし）
+- [x] T044 フェーズ出力を生成: `specs/013-visual-diff-highlight/tasks/ph4-output.md`
 
 **Checkpoint**: 3ビュー（リスト・side-by-side・インライン）すべてが動作すること
 
