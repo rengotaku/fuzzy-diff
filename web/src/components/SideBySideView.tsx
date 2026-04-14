@@ -1,0 +1,70 @@
+import type { DiffItem } from "verify-ai";
+import { findHighlightSpans, splitToSegments } from "@/utils/highlightMapper";
+import { HighlightedText } from "@/components/HighlightedText";
+
+interface SideBySideViewProps {
+  source: string;
+  target: string;
+  diffs: readonly DiffItem[];
+}
+
+const paneStyle: React.CSSProperties = {
+  flex: 1,
+  padding: "12px",
+  fontFamily: "monospace",
+  whiteSpace: "pre-wrap",
+  wordBreak: "break-word",
+  overflow: "auto",
+  border: "1px solid #e0e0e0",
+  borderRadius: "4px",
+  minHeight: "100px",
+};
+
+const containerStyle: React.CSSProperties = {
+  display: "flex",
+  gap: "16px",
+  width: "100%",
+};
+
+const emptyStyle: React.CSSProperties = {
+  color: "#9e9e9e",
+  fontStyle: "italic",
+};
+
+function Pane({
+  text,
+  diffs,
+  side,
+  testId,
+}: {
+  text: string;
+  diffs: readonly DiffItem[];
+  side: "source" | "target";
+  testId: string;
+}) {
+  if (!text) {
+    return (
+      <div data-testid={testId} style={paneStyle}>
+        <span style={emptyStyle}>テキストなし</span>
+      </div>
+    );
+  }
+
+  const spans = findHighlightSpans(text, [...diffs], side);
+  const segments = splitToSegments(text, spans);
+
+  return (
+    <div data-testid={testId} style={paneStyle}>
+      <HighlightedText segments={segments} />
+    </div>
+  );
+}
+
+export function SideBySideView({ source, target, diffs }: SideBySideViewProps) {
+  return (
+    <div style={containerStyle}>
+      <Pane text={source} diffs={diffs} side="source" testId="source-pane" />
+      <Pane text={target} diffs={diffs} side="target" testId="target-pane" />
+    </div>
+  );
+}
