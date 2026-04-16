@@ -284,14 +284,133 @@ export interface SideBySideLinePair {
 
 /**
  * source と target から Side-by-Side 表示用の行ペアを生成する。
- * 片方にのみ行が存在する場合はプレースホルダー（null）を挿入する。
- *
- * TODO: Phase 4 GREEN で実装する
+ * 片方にのみ行が存在する場合はプレースホルダー（isPlaceholder: true, lineNumber: null）を挿入する。
+ * 左右の行番号はそれぞれ独立した 1 から始まる連番を付与する。
  */
 export function buildSideBySidePairs(
-  _source: string,
-  _target: string,
-  _diffs: readonly DiffItem[],
+  source: string,
+  target: string,
+  diffs: readonly DiffItem[],
 ): SideBySideLinePair[] {
-  throw new Error("buildSideBySidePairs is not implemented yet");
+  if (!source && !target) return [];
+
+  const sourceLines = source ? source.split("\n") : [];
+  const targetLines = target ? target.split("\n") : [];
+
+  // source のみの場合: 全行が left、right はプレースホルダー
+  if (!source) {
+    let rightLineNumber = 0;
+    return targetLines.map((line) => {
+      rightLineNumber++;
+      const right = {
+        lineNumber: rightLineNumber,
+        text: line,
+        type: "added" as const,
+        isPlaceholder: false,
+      };
+      return {
+        left: { lineNumber: null, text: "", type: "unchanged" as const, isPlaceholder: true },
+        right,
+        leftLineNumber: null,
+        rightLineNumber: rightLineNumber,
+      };
+    });
+  }
+
+  if (!target) {
+    let leftLineNumber = 0;
+    return sourceLines.map((line) => {
+      leftLineNumber++;
+      const left = {
+        lineNumber: leftLineNumber,
+        text: line,
+        type: "removed" as const,
+        isPlaceholder: false,
+      };
+      return {
+        left,
+        right: { lineNumber: null, text: "", type: "unchanged" as const, isPlaceholder: true },
+        leftLineNumber: leftLineNumber,
+        rightLineNumber: null,
+      };
+    });
+  }
+
+  // 構造文字のみの行を除外してペアリング
+  const sourceIndices = sourceLines
+    .map((_, i) => i)
+    .filter((i) => !isStructuralLine(sourceLines[i]));
+  const targetIndices = targetLines
+    .map((_, i) => i)
+    .filter((i) => !isStructuralLine(targetLines[i]));
+
+  const pairs = pairRecordLines(sourceLines, targetLines, sourceIndices, targetIndices, diffs);
+
+  // 結果を組み立て（左右独立行番号）
+  const result: SideBySideLinePair[] = [];
+  let leftLineNumber = 0;
+  let rightLineNumber = 0;
+
+  for (const pair of pairs) {
+    if (pair.sourceIdx !== null && pair.targetIdx !== null) {
+      leftLineNumber++;
+      rightLineNumber++;
+      result.push({
+        left: {
+          lineNumber: leftLineNumber,
+          text: sourceLines[pair.sourceIdx],
+          type: "unchanged",
+          isPlaceholder: false,
+        },
+        right: {
+          lineNumber: rightLineNumber,
+          text: targetLines[pair.targetIdx],
+          type: "unchanged",
+          isPlaceholder: false,
+        },
+        leftLineNumber: leftLineNumber,
+        rightLineNumber: rightLineNumber,
+      });
+    } else if (pair.sourceIdx !== null) {
+      // source のみ: right はプレースホルダー
+      leftLineNumber++;
+      result.push({
+        left: {
+          lineNumber: leftLineNumber,
+          text: sourceLines[pair.sourceIdx],
+          type: "removed",
+          isPlaceholder: false,
+        },
+        right: {
+          lineNumber: null,
+          text: "",
+          type: "unchanged",
+          isPlaceholder: true,
+        },
+        leftLineNumber: leftLineNumber,
+        rightLineNumber: null,
+      });
+    } else if (pair.targetIdx !== null) {
+      // target のみ: left はプレースホルダー
+      rightLineNumber++;
+      result.push({
+        left: {
+          lineNumber: null,
+          text: "",
+          type: "unchanged",
+          isPlaceholder: true,
+        },
+        right: {
+          lineNumber: rightLineNumber,
+          text: targetLines[pair.targetIdx],
+          type: "added",
+          isPlaceholder: false,
+        },
+        leftLineNumber: null,
+        rightLineNumber: rightLineNumber,
+      });
+    }
+  }
+
+  return result;
 }
