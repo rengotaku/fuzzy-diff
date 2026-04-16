@@ -361,4 +361,382 @@ describe("ResultSummary", () => {
       expect(screen.getByText(/100/)).toBeInTheDocument();
     });
   });
+
+  // ===================================================================
+  // Phase 2 (US1): 類似度バッジ + 差分種別バッジ
+  // ===================================================================
+
+  // --- 類似度バッジ色分け ---
+
+  describe("類似度バッジ色分け（US1: FR-001）", () => {
+    it("score=0.95（95%） → success バッジ（緑）が表示される", () => {
+      const result: ComparisonResult = {
+        score: 0.95,
+        match: true,
+        diffs: [],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      // 類似度パーセンテージが表示される
+      expect(screen.getByText(/95%/)).toBeInTheDocument();
+      // success variant の Badge が使われている（緑系クラス）
+      const badges = screen.getAllByTestId("badge");
+      const similarityBadge = badges.find((b) => b.textContent?.includes("95%"));
+      expect(similarityBadge).toBeDefined();
+      expect(similarityBadge!.className).toContain("bg-green-100");
+    });
+
+    it("score=0.80（80%） → success バッジ（緑、境界値）", () => {
+      const result: ComparisonResult = {
+        score: 0.8,
+        match: true,
+        diffs: [],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      expect(screen.getByText(/80%/)).toBeInTheDocument();
+      const badges = screen.getAllByTestId("badge");
+      const similarityBadge = badges.find((b) => b.textContent?.includes("80%"));
+      expect(similarityBadge).toBeDefined();
+      expect(similarityBadge!.className).toContain("bg-green-100");
+    });
+
+    it("score=0.65（65%） → warning バッジ（黄）が表示される", () => {
+      const result: ComparisonResult = {
+        score: 0.65,
+        match: true,
+        diffs: [
+          { type: "changed", path: "a", sourceValue: "x", targetValue: "y" },
+        ],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      expect(screen.getByText(/65%/)).toBeInTheDocument();
+      const badges = screen.getAllByTestId("badge");
+      const similarityBadge = badges.find((b) => b.textContent?.includes("65%"));
+      expect(similarityBadge).toBeDefined();
+      expect(similarityBadge!.className).toContain("bg-yellow-100");
+    });
+
+    it("score=0.50（50%） → warning バッジ（黄、境界値）", () => {
+      const result: ComparisonResult = {
+        score: 0.5,
+        match: false,
+        diffs: [
+          { type: "changed", path: "a", sourceValue: "x", targetValue: "y" },
+        ],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      expect(screen.getByText(/50%/)).toBeInTheDocument();
+      const badges = screen.getAllByTestId("badge");
+      const similarityBadge = badges.find((b) => b.textContent?.includes("50%"));
+      expect(similarityBadge).toBeDefined();
+      expect(similarityBadge!.className).toContain("bg-yellow-100");
+    });
+
+    it("score=0.30（30%） → destructive バッジ（赤）が表示される", () => {
+      const result: ComparisonResult = {
+        score: 0.3,
+        match: false,
+        diffs: [
+          { type: "removed", path: "a", sourceValue: "x", targetValue: null },
+          { type: "removed", path: "b", sourceValue: "y", targetValue: null },
+        ],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      expect(screen.getByText(/30%/)).toBeInTheDocument();
+      const badges = screen.getAllByTestId("badge");
+      const similarityBadge = badges.find((b) => b.textContent?.includes("30%"));
+      expect(similarityBadge).toBeDefined();
+      expect(similarityBadge!.className).toContain("bg-red-100");
+    });
+
+    it("score=0.0（0%） → destructive バッジ（赤）", () => {
+      const result: ComparisonResult = {
+        score: 0.0,
+        match: false,
+        diffs: [
+          { type: "removed", path: "a", sourceValue: "x", targetValue: null },
+        ],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      expect(screen.getByText(/0%/)).toBeInTheDocument();
+      const badges = screen.getAllByTestId("badge");
+      const similarityBadge = badges.find((b) => b.textContent?.includes("0%"));
+      expect(similarityBadge).toBeDefined();
+      expect(similarityBadge!.className).toContain("bg-red-100");
+    });
+  });
+
+  // --- 差分種別バッジ横並び ---
+
+  describe("差分種別バッジ横並び（US1: FR-002）", () => {
+    it("added バッジに +N 形式で件数が表示される", () => {
+      const result: ComparisonResult = {
+        score: 0.7,
+        match: false,
+        diffs: [
+          { type: "added", path: "a", sourceValue: null, targetValue: "new1" },
+          { type: "added", path: "b", sourceValue: null, targetValue: "new2" },
+          { type: "removed", path: "c", sourceValue: "old", targetValue: null },
+        ],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      // +2 の added バッジ
+      expect(screen.getByText(/\+2/)).toBeInTheDocument();
+    });
+
+    it("removed バッジに -N 形式で件数が表示される", () => {
+      const result: ComparisonResult = {
+        score: 0.6,
+        match: false,
+        diffs: [
+          { type: "removed", path: "a", sourceValue: "x", targetValue: null },
+          { type: "removed", path: "b", sourceValue: "y", targetValue: null },
+          { type: "removed", path: "c", sourceValue: "z", targetValue: null },
+        ],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      // -3 の removed バッジ
+      expect(screen.getByText(/-3/)).toBeInTheDocument();
+    });
+
+    it("changed バッジに ~N 形式で件数が表示される", () => {
+      const result: ComparisonResult = {
+        score: 0.8,
+        match: true,
+        diffs: [
+          { type: "changed", path: "a", sourceValue: "x", targetValue: "y" },
+        ],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      // ~1 の changed バッジ
+      expect(screen.getByText(/~1/)).toBeInTheDocument();
+    });
+
+    it("added/removed/changed が混在する場合、3種のバッジが全て表示される", () => {
+      const result: ComparisonResult = {
+        score: 0.5,
+        match: false,
+        diffs: [
+          { type: "added", path: "a", sourceValue: null, targetValue: "new" },
+          { type: "removed", path: "b", sourceValue: "old", targetValue: null },
+          { type: "changed", path: "c", sourceValue: "x", targetValue: "y" },
+        ],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      expect(screen.getByText(/\+1/)).toBeInTheDocument();
+      expect(screen.getByText(/-1/)).toBeInTheDocument();
+      expect(screen.getByText(/~1/)).toBeInTheDocument();
+    });
+
+    it("added バッジは added variant のクラスを持つ", () => {
+      const result: ComparisonResult = {
+        score: 0.7,
+        match: false,
+        diffs: [
+          { type: "added", path: "a", sourceValue: null, targetValue: "new" },
+        ],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      const badges = screen.getAllByTestId("badge");
+      const addedBadge = badges.find((b) => b.textContent?.includes("+1"));
+      expect(addedBadge).toBeDefined();
+      expect(addedBadge!.className).toContain("bg-diff-added-bg");
+    });
+
+    it("removed バッジは removed variant のクラスを持つ", () => {
+      const result: ComparisonResult = {
+        score: 0.5,
+        match: false,
+        diffs: [
+          { type: "removed", path: "a", sourceValue: "x", targetValue: null },
+        ],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      const badges = screen.getAllByTestId("badge");
+      const removedBadge = badges.find((b) => b.textContent?.includes("-1"));
+      expect(removedBadge).toBeDefined();
+      expect(removedBadge!.className).toContain("bg-diff-removed-bg");
+    });
+
+    it("changed バッジは changed variant のクラスを持つ", () => {
+      const result: ComparisonResult = {
+        score: 0.6,
+        match: false,
+        diffs: [
+          { type: "changed", path: "a", sourceValue: "x", targetValue: "y" },
+        ],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      const badges = screen.getAllByTestId("badge");
+      const changedBadge = badges.find((b) => b.textContent?.includes("~1"));
+      expect(changedBadge).toBeDefined();
+      expect(changedBadge!.className).toContain("bg-diff-changed-bg");
+    });
+  });
+
+  // --- 完全一致時の表示 ---
+
+  describe("完全一致時のバッジ表示（US1）", () => {
+    it("score=1.0, diffs=[] → 100% 緑バッジが表示される", () => {
+      const result: ComparisonResult = {
+        score: 1.0,
+        match: true,
+        diffs: [],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      expect(screen.getByText(/100%/)).toBeInTheDocument();
+      const badges = screen.getAllByTestId("badge");
+      const perfectBadge = badges.find((b) => b.textContent?.includes("100%"));
+      expect(perfectBadge).toBeDefined();
+      expect(perfectBadge!.className).toContain("bg-green-100");
+    });
+
+    it("完全一致時、差分種別バッジは表示されない（または全て0件）", () => {
+      const result: ComparisonResult = {
+        score: 1.0,
+        match: true,
+        diffs: [],
+        sourceFormat: { type: "plain", confidence: 1.0 },
+        targetFormat: { type: "plain", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      // +N, -N, ~N のバッジが表示されない
+      expect(screen.queryByText(/\+\d+/)).not.toBeInTheDocument();
+      expect(screen.queryByText(/-\d+/)).not.toBeInTheDocument();
+      expect(screen.queryByText(/~\d+/)).not.toBeInTheDocument();
+    });
+  });
+
+  // --- 比較中のスピナー表示（Badge との共存確認） ---
+
+  describe("比較中のスピナー表示（US1 拡張）", () => {
+    it("比較中はバッジが表示されずスピナーのみ表示される", () => {
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result: null, isComparing: true };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      expect(screen.getByText(/比較中/)).toBeInTheDocument();
+      // バッジは表示されない
+      expect(screen.queryAllByTestId("badge")).toHaveLength(0);
+    });
+  });
 });
