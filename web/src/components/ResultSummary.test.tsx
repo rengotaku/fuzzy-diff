@@ -43,7 +43,7 @@ describe("ResultSummary", () => {
   // --- match 表示 ---
 
   describe("match 表示", () => {
-    it("match: true の場合「一致」が表示される", () => {
+    it("match: true, diffs: [] の場合「完全一致」が表示される", () => {
       const result: ComparisonResult = {
         score: 1.0,
         match: true,
@@ -59,6 +59,27 @@ describe("ResultSummary", () => {
 
       render(<ResultSummary />);
       expect(screen.getByText(/一致/i)).toBeInTheDocument();
+    });
+
+    it("match: true, diffs > 0 の場合「部分一致」が表示される", () => {
+      const result: ComparisonResult = {
+        score: 0.86,
+        match: true,
+        diffs: [
+          { type: "changed", path: "age", sourceValue: "30", targetValue: "31" },
+          { type: "changed", path: "city", sourceValue: "大阪", targetValue: "名古屋" },
+        ],
+        sourceFormat: { type: "csv", confidence: 1.0 },
+        targetFormat: { type: "json", confidence: 1.0 },
+      };
+
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = { result, isComparing: false };
+        return selector ? (selector as (s: typeof state) => unknown)(state) : state;
+      });
+
+      render(<ResultSummary />);
+      expect(screen.getByText(/部分一致/)).toBeInTheDocument();
     });
 
     it("match: false の場合「不一致」が表示される", () => {
