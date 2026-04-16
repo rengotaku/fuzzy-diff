@@ -195,4 +195,102 @@ describe("HighlightedText", () => {
       expect(container.textContent).toContain("line3");
     });
   });
+
+  // --- Phase 3: US2 Tailwind 化後のブリンクアニメーション維持 ---
+
+  describe("Tailwind 化後のブリンクアニメーション維持（US2）", () => {
+    it("ハイライトセグメントにブリンクアニメーション用のクラスまたはスタイルが適用される", () => {
+      const diffItem = {
+        type: "changed" as const,
+        path: "x",
+        sourceValue: "old",
+        targetValue: "new",
+      };
+      const segments: TextSegment[] = [
+        {
+          text: "old",
+          highlight: {
+            start: 0,
+            end: 3,
+            diffType: "changed",
+            diffItem,
+          },
+        },
+      ];
+      const { container } = render(
+        <HighlightedText
+          segments={segments}
+          hoveredDiffItem={diffItem}
+          onHoverDiffItem={() => {}}
+        />,
+      );
+      const highlightedSpan = container.querySelector("[data-diff-type='changed']") as HTMLElement;
+      expect(highlightedSpan).not.toBeNull();
+      // Tailwind 化後もブリンクアニメーションが維持されること
+      // animate-diff-blink クラスまたは animation スタイルが適用される
+      const hasBlinkClass = highlightedSpan.className.includes("animate-diff-blink");
+      const hasBlinkStyle = highlightedSpan.style.animation?.includes("blink");
+      expect(hasBlinkClass || hasBlinkStyle).toBe(true);
+    });
+
+    it("ホバーしていないセグメントにはブリンクアニメーションが適用されない", () => {
+      const diffItem = {
+        type: "changed" as const,
+        path: "x",
+        sourceValue: "old",
+        targetValue: "new",
+      };
+      const otherDiffItem = {
+        type: "changed" as const,
+        path: "y",
+        sourceValue: "aaa",
+        targetValue: "bbb",
+      };
+      const segments: TextSegment[] = [
+        {
+          text: "old",
+          highlight: {
+            start: 0,
+            end: 3,
+            diffType: "changed",
+            diffItem,
+          },
+        },
+      ];
+      const { container } = render(
+        <HighlightedText
+          segments={segments}
+          hoveredDiffItem={otherDiffItem}
+          onHoverDiffItem={() => {}}
+        />,
+      );
+      const highlightedSpan = container.querySelector("[data-diff-type='changed']") as HTMLElement;
+      expect(highlightedSpan).not.toBeNull();
+      // ブリンクが適用されていないこと
+      const hasBlinkClass = highlightedSpan.className.includes("animate-diff-blink");
+      const hasBlinkStyle = highlightedSpan.style.animation?.includes("blink");
+      expect(hasBlinkClass || hasBlinkStyle).toBe(false);
+    });
+
+    it("Tailwind 化後もハイライト色が適用される（bg-* クラスまたは inline style）", () => {
+      const segments: TextSegment[] = [
+        {
+          text: "added-text",
+          highlight: {
+            start: 0,
+            end: 10,
+            diffType: "added",
+            diffItem: { type: "added", path: "x", sourceValue: null, targetValue: "added-text" },
+          },
+        },
+      ];
+      const { container } = render(<HighlightedText segments={segments} />);
+      const addedSpan = container.querySelector("[data-diff-type='added']") as HTMLElement;
+      expect(addedSpan).not.toBeNull();
+      // Tailwind クラス(bg-diff-added-bg)または inline style で色が適用されていること
+      const hasTailwindBg = addedSpan.className.includes("bg-");
+      const hasInlineStyle = Boolean(addedSpan.style.backgroundColor);
+      expect(hasTailwindBg || hasInlineStyle).toBe(true);
+    });
+  });
 });

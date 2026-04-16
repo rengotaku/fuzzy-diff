@@ -253,4 +253,83 @@ describe("InlineView", () => {
       expect(allLines.length).toBeGreaterThanOrEqual(1);
     });
   });
+
+  // --- Phase 3: US2 行番号・プレフィックスグレー・モノスペース ---
+
+  describe("行番号表示", () => {
+    it("各行の左端に行番号が表示される", () => {
+      const source = "line1\nline2\nline3";
+      const target = "line1\nline2\nline3";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <InlineView source={source} target={target} diffs={diffs} />,
+      );
+      const lineNumberElements = container.querySelectorAll("[data-line-number]");
+      expect(lineNumberElements.length).toBe(3);
+      expect(lineNumberElements[0].textContent).toBe("1");
+      expect(lineNumberElements[1].textContent).toBe("2");
+      expect(lineNumberElements[2].textContent).toBe("3");
+    });
+
+    it("changed-source と changed-target にも行番号が表示される", () => {
+      const source = "value: old";
+      const target = "value: new";
+      const diffs: DiffItem[] = [
+        { type: "changed", path: "value", sourceValue: "old", targetValue: "new" },
+      ];
+      const { container } = render(
+        <InlineView source={source} target={target} diffs={diffs} />,
+      );
+      const lineNumberElements = container.querySelectorAll("[data-line-number]");
+      expect(lineNumberElements.length).toBeGreaterThanOrEqual(2);
+      // 行番号が1から連番であること
+      const numbers = Array.from(lineNumberElements).map((el) => el.textContent);
+      expect(numbers[0]).toBe("1");
+      expect(numbers[1]).toBe("2");
+    });
+
+    it("行番号が固定幅のカラムに表示される", () => {
+      const source = "aaa\nbbb";
+      const target = "aaa\nbbb";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <InlineView source={source} target={target} diffs={diffs} />,
+      );
+      const lineNumberElements = container.querySelectorAll("[data-line-number]");
+      expect(lineNumberElements.length).toBeGreaterThan(0);
+      // 固定幅を持つ要素であること（min-width または w-* クラス）
+      const firstLineNum = lineNumberElements[0] as HTMLElement;
+      expect(firstLineNum.className).toMatch(/w-|min-w/);
+    });
+  });
+
+  describe("プレフィックス記号のグレー表示", () => {
+    it("プレフィックス記号がグレーカラーで表示される", () => {
+      const source = "old line";
+      const target = "old line\nnew line";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <InlineView source={source} target={target} diffs={diffs} />,
+      );
+      // プレフィックス表示用要素に text-gray-400 等のグレークラスが適用されていること
+      const prefixElements = container.querySelectorAll("[data-prefix]");
+      expect(prefixElements.length).toBeGreaterThan(0);
+      const prefixEl = prefixElements[0] as HTMLElement;
+      expect(prefixEl.className).toMatch(/text-gray/);
+    });
+  });
+
+  describe("モノスペースフォント", () => {
+    it("ビューア全体に font-mono クラスが適用される", () => {
+      const source = "line1";
+      const target = "line1";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <InlineView source={source} target={target} diffs={diffs} />,
+      );
+      const view = container.querySelector("[data-testid='inline-view']") as HTMLElement;
+      expect(view).not.toBeNull();
+      expect(view.className).toMatch(/font-mono/);
+    });
+  });
 });

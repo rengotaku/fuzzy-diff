@@ -418,4 +418,86 @@ describe("SideBySideView", () => {
       expect(changedSpans?.length).toBe(100);
     });
   });
+
+  // --- Phase 3: US2 行番号・ホバーエフェクト ---
+
+  describe("行番号表示（US2）", () => {
+    it("source ペインに行番号が表示される", () => {
+      const source = "line1\nline2\nline3";
+      const target = "line1\nline2\nline3";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={source} target={target} diffs={diffs} />,
+      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const lineNumbers = sourcePane?.querySelectorAll("[data-line-number]");
+      expect(lineNumbers).toBeDefined();
+      expect(lineNumbers!.length).toBe(3);
+      expect(lineNumbers![0].textContent).toBe("1");
+      expect(lineNumbers![1].textContent).toBe("2");
+      expect(lineNumbers![2].textContent).toBe("3");
+    });
+
+    it("target ペインに行番号が表示される", () => {
+      const source = "aaa\nbbb";
+      const target = "aaa\nbbb";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={source} target={target} diffs={diffs} />,
+      );
+      const targetPane = container.querySelector("[data-testid='target-pane']");
+      const lineNumbers = targetPane?.querySelectorAll("[data-line-number]");
+      expect(lineNumbers).toBeDefined();
+      expect(lineNumbers!.length).toBe(2);
+      expect(lineNumbers![0].textContent).toBe("1");
+      expect(lineNumbers![1].textContent).toBe("2");
+    });
+
+    it("行番号がグレー背景の固定幅カラムに表示される", () => {
+      const source = "hello";
+      const target = "hello";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={source} target={target} diffs={diffs} />,
+      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const lineNumEl = sourcePane?.querySelector("[data-line-number]") as HTMLElement;
+      expect(lineNumEl).not.toBeNull();
+      // 固定幅クラスが適用されていること
+      expect(lineNumEl.className).toMatch(/w-|min-w/);
+    });
+  });
+
+  describe("ホバーエフェクト（US2）", () => {
+    it("各行にホバー用のトランジションクラスが適用される", () => {
+      const source = "line1\nline2";
+      const target = "line1\nline2";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={source} target={target} diffs={diffs} />,
+      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const lineRows = sourcePane?.querySelectorAll("[data-line-row]");
+      expect(lineRows).toBeDefined();
+      expect(lineRows!.length).toBeGreaterThan(0);
+      // hover クラスまたは transition クラスが含まれること
+      const firstRow = lineRows![0] as HTMLElement;
+      expect(firstRow.className).toMatch(/hover:|transition/);
+    });
+  });
+
+  describe("モノスペースフォント（US2）", () => {
+    it("各ペインに font-mono クラスが適用される", () => {
+      const source = "text";
+      const target = "text";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={source} target={target} diffs={diffs} />,
+      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']") as HTMLElement;
+      const targetPane = container.querySelector("[data-testid='target-pane']") as HTMLElement;
+      expect(sourcePane.className).toMatch(/font-mono/);
+      expect(targetPane.className).toMatch(/font-mono/);
+    });
+  });
 });
