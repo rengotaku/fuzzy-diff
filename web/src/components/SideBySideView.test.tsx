@@ -500,4 +500,199 @@ describe("SideBySideView", () => {
       expect(targetPane.className).toMatch(/font-mono/);
     });
   });
+
+  // ============================================================
+  // Phase 4: US3 — 同期スクロール・プレースホルダー・左右独立行番号
+  // ============================================================
+
+  describe("同期スクロール（US3）", () => {
+    it("左ペインをスクロールすると右ペインも同期する", () => {
+      const sourceLines = Array.from({ length: 50 }, (_, i) => `source-line-${i}`).join("\n");
+      const targetLines = Array.from({ length: 50 }, (_, i) => `target-line-${i}`).join("\n");
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={sourceLines} target={targetLines} diffs={diffs} />,
+      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']") as HTMLElement;
+      const targetPane = container.querySelector("[data-testid='target-pane']") as HTMLElement;
+      expect(sourcePane).not.toBeNull();
+      expect(targetPane).not.toBeNull();
+
+      // scrollTop を設定してスクロールイベントを発火
+      Object.defineProperty(sourcePane, "scrollTop", { value: 100, writable: true });
+      sourcePane.dispatchEvent(new Event("scroll"));
+
+      // 右ペインの scrollTop が同期されること
+      expect(targetPane.scrollTop).toBe(100);
+    });
+
+    it("右ペインをスクロールすると左ペインも同期する", () => {
+      const sourceLines = Array.from({ length: 50 }, (_, i) => `source-line-${i}`).join("\n");
+      const targetLines = Array.from({ length: 50 }, (_, i) => `target-line-${i}`).join("\n");
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={sourceLines} target={targetLines} diffs={diffs} />,
+      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']") as HTMLElement;
+      const targetPane = container.querySelector("[data-testid='target-pane']") as HTMLElement;
+
+      Object.defineProperty(targetPane, "scrollTop", { value: 200, writable: true });
+      targetPane.dispatchEvent(new Event("scroll"));
+
+      expect(sourcePane.scrollTop).toBe(200);
+    });
+
+    it("scrollLeft も同期される", () => {
+      const longLine = "x".repeat(500);
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={longLine} target={longLine} diffs={diffs} />,
+      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']") as HTMLElement;
+      const targetPane = container.querySelector("[data-testid='target-pane']") as HTMLElement;
+
+      Object.defineProperty(sourcePane, "scrollLeft", { value: 50, writable: true });
+      Object.defineProperty(sourcePane, "scrollTop", { value: 0, writable: true });
+      sourcePane.dispatchEvent(new Event("scroll"));
+
+      expect(targetPane.scrollLeft).toBe(50);
+    });
+  });
+
+  describe("空行プレースホルダー（US3）", () => {
+    it("source にのみ行がある場合、target 側にプレースホルダーが表示される", () => {
+      const source = "line1\nline2\nline3";
+      const target = "line1";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={source} target={target} diffs={diffs} />,
+      );
+      const targetPane = container.querySelector("[data-testid='target-pane']");
+      // プレースホルダー行は data-placeholder 属性を持つ
+      const placeholders = targetPane?.querySelectorAll("[data-placeholder]");
+      expect(placeholders).toBeDefined();
+      expect(placeholders!.length).toBeGreaterThan(0);
+    });
+
+    it("target にのみ行がある場合、source 側にプレースホルダーが表示される", () => {
+      const source = "line1";
+      const target = "line1\nline2\nline3";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={source} target={target} diffs={diffs} />,
+      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const placeholders = sourcePane?.querySelectorAll("[data-placeholder]");
+      expect(placeholders).toBeDefined();
+      expect(placeholders!.length).toBeGreaterThan(0);
+    });
+
+    it("プレースホルダー行にグレー背景クラスが適用される", () => {
+      const source = "line1\nline2";
+      const target = "line1";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={source} target={target} diffs={diffs} />,
+      );
+      const targetPane = container.querySelector("[data-testid='target-pane']");
+      const placeholder = targetPane?.querySelector("[data-placeholder]") as HTMLElement;
+      expect(placeholder).not.toBeNull();
+      // グレー背景クラス（bg-gray-*）が適用されること
+      expect(placeholder.className).toMatch(/bg-gray/);
+    });
+
+    it("プレースホルダー行にボーダークラスが適用される", () => {
+      const source = "line1\nline2";
+      const target = "line1";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={source} target={target} diffs={diffs} />,
+      );
+      const targetPane = container.querySelector("[data-testid='target-pane']");
+      const placeholder = targetPane?.querySelector("[data-placeholder]") as HTMLElement;
+      expect(placeholder).not.toBeNull();
+      // ボーダークラスが適用されること
+      expect(placeholder.className).toMatch(/border/);
+    });
+
+    it("プレースホルダー行には行番号が表示されない", () => {
+      const source = "line1\nline2";
+      const target = "line1";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={source} target={target} diffs={diffs} />,
+      );
+      const targetPane = container.querySelector("[data-testid='target-pane']");
+      const placeholder = targetPane?.querySelector("[data-placeholder]");
+      expect(placeholder).not.toBeNull();
+      // プレースホルダー内の行番号要素は空またはない
+      const lineNumEl = placeholder?.querySelector("[data-line-number]");
+      if (lineNumEl) {
+        expect(lineNumEl.textContent?.trim()).toBe("");
+      }
+    });
+  });
+
+  describe("左右独立行番号（US3）", () => {
+    it("source 側の行番号が 1 から始まる連番で表示される", () => {
+      const source = "a\nb\nc";
+      const target = "a\nb\nc";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={source} target={target} diffs={diffs} />,
+      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const lineNumbers = sourcePane?.querySelectorAll("[data-line-number]");
+      expect(lineNumbers).toBeDefined();
+      expect(lineNumbers!.length).toBe(3);
+      expect(lineNumbers![0].textContent).toBe("1");
+      expect(lineNumbers![1].textContent).toBe("2");
+      expect(lineNumbers![2].textContent).toBe("3");
+    });
+
+    it("target 側の行番号が source とは独立して 1 から始まる", () => {
+      const source = "a\nb\nc";
+      const target = "x\ny";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={source} target={target} diffs={diffs} />,
+      );
+      const targetPane = container.querySelector("[data-testid='target-pane']");
+      // プレースホルダーでない行番号だけを収集
+      const allLineNums = targetPane?.querySelectorAll("[data-line-number]");
+      const nonEmptyLineNums = Array.from(allLineNums ?? []).filter(
+        (el) => el.textContent?.trim() !== "",
+      );
+      expect(nonEmptyLineNums.length).toBe(2);
+      expect(nonEmptyLineNums[0].textContent).toBe("1");
+      expect(nonEmptyLineNums[1].textContent).toBe("2");
+    });
+
+    it("source が 5 行、target が 3 行の場合、それぞれ独立した行番号", () => {
+      const source = "a\nb\nc\nd\ne";
+      const target = "a\nb\nc";
+      const diffs: DiffItem[] = [];
+      const { container } = render(
+        <SideBySideView source={source} target={target} diffs={diffs} />,
+      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const targetPane = container.querySelector("[data-testid='target-pane']");
+
+      // source 側は 1..5
+      const sourceLineNums = sourcePane?.querySelectorAll("[data-line-number]");
+      const sourceNonEmpty = Array.from(sourceLineNums ?? []).filter(
+        (el) => el.textContent?.trim() !== "",
+      );
+      expect(sourceNonEmpty.length).toBe(5);
+      expect(sourceNonEmpty[4].textContent).toBe("5");
+
+      // target 側は 1..3（プレースホルダーを除く）
+      const targetLineNums = targetPane?.querySelectorAll("[data-line-number]");
+      const targetNonEmpty = Array.from(targetLineNums ?? []).filter(
+        (el) => el.textContent?.trim() !== "",
+      );
+      expect(targetNonEmpty.length).toBe(3);
+      expect(targetNonEmpty[2].textContent).toBe("3");
+    });
+  });
 });

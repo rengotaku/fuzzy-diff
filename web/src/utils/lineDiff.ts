@@ -262,3 +262,36 @@ function makeDiffLine(
     lineNumber,
   };
 }
+
+// --- Phase 4: US3 Side-by-Side ペア生成 ---
+
+export interface SideBySideLinePair {
+  readonly left: {
+    readonly lineNumber: number | null;
+    readonly text: string;
+    readonly type: string;
+    readonly isPlaceholder: boolean;
+  } | null;
+  readonly right: {
+    readonly lineNumber: number | null;
+    readonly text: string;
+    readonly type: string;
+    readonly isPlaceholder: boolean;
+  } | null;
+  readonly leftLineNumber: number | null;
+  readonly rightLineNumber: number | null;
+}
+
+/**
+ * source と target から Side-by-Side 表示用の行ペアを生成する。
+ * 片方にのみ行が存在する場合はプレースホルダー（null）を挿入する。
+ *
+ * TODO: Phase 4 GREEN で実装する
+ */
+export function buildSideBySidePairs(
+  _source: string,
+  _target: string,
+  _diffs: readonly DiffItem[],
+): SideBySideLinePair[] {
+  throw new Error("buildSideBySidePairs is not implemented yet");
+}
