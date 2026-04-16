@@ -1,12 +1,15 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import type { DiffItem } from "verify-ai";
-import { diffColors } from "@/theme/diffColors";
 
 const DIFF_LABELS: Record<DiffItem["type"], string> = {
   added: "追加",
   removed: "欠落",
   changed: "変更",
+};
+
+const typeClasses: Record<DiffItem["type"], string> = {
+  added: "bg-diff-added-bg text-diff-added-text border-l-4 border-diff-added-text",
+  removed: "bg-diff-removed-bg text-diff-removed-text border-l-4 border-diff-removed-text",
+  changed: "bg-diff-changed-bg text-diff-changed-text border-l-4 border-diff-changed-text",
 };
 
 interface DiffListProps {
@@ -16,53 +19,38 @@ interface DiffListProps {
 export function DiffList({ diffs }: DiffListProps) {
   if (diffs.length === 0) {
     return (
-      <Box sx={{ p: 2 }}>
-        <Typography>差分なし</Typography>
-      </Box>
+      <div className="p-4">
+        <p className="text-sm text-gray-600">差分なし</p>
+      </div>
     );
   }
 
   return (
-    <Box component="ul" sx={{ listStyle: "none", m: 0, p: 0 }}>
-      {diffs.map((diff, index) => {
-        const colors = diffColors[diff.type];
-        return (
-          <Box
-            key={index}
-            component="li"
-            data-diff-type={diff.type}
-            sx={{
-              backgroundColor: colors.background,
-              color: colors.text,
-              p: 1.5,
-              mb: 1,
-              borderRadius: 1,
-              borderLeft: `4px solid ${colors.text}`,
-            }}
-          >
-            <Typography variant="caption" sx={{ fontWeight: "bold", display: "block" }}>
-              {DIFF_LABELS[diff.type]}
-            </Typography>
-            <Typography variant="body2" sx={{ fontFamily: "monospace", mb: 0.5 }}>
-              {diff.path}
-            </Typography>
-            {diff.type === "changed" ? (
-              <>
-                <Box data-value-type="source" sx={{ fontSize: "0.85rem" }}>
-                  {diff.sourceValue}
-                </Box>
-                <Box data-value-type="target" sx={{ fontSize: "0.85rem" }}>
-                  {diff.targetValue}
-                </Box>
-              </>
-            ) : (
-              <Box sx={{ fontSize: "0.85rem" }}>
-                {diff.type === "added" ? diff.targetValue : diff.sourceValue}
-              </Box>
-            )}
-          </Box>
-        );
-      })}
-    </Box>
+    <ul className="list-none m-0 p-0 space-y-2">
+      {diffs.map((diff, index) => (
+        <li
+          key={index}
+          data-diff-type={diff.type}
+          className={`p-3 rounded-md ${typeClasses[diff.type]}`}
+        >
+          <span className="text-xs font-bold block">{DIFF_LABELS[diff.type]}</span>
+          <span className="text-sm font-mono block mb-1">{diff.path}</span>
+          {diff.type === "changed" ? (
+            <>
+              <div data-value-type="source" className="text-sm">
+                {diff.sourceValue}
+              </div>
+              <div data-value-type="target" className="text-sm">
+                {diff.targetValue}
+              </div>
+            </>
+          ) : (
+            <div className="text-sm">
+              {diff.type === "added" ? diff.targetValue : diff.sourceValue}
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
   );
 }

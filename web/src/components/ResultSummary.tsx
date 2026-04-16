@@ -1,8 +1,3 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
-import Alert from "@mui/material/Alert";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useCompareStore } from "@/stores/compareStore";
 
 export function ResultSummary() {
@@ -11,10 +6,10 @@ export function ResultSummary() {
 
   if (isComparing) {
     return (
-      <Box sx={{ mt: 2, display: "flex", alignItems: "center", gap: 1 }}>
-        <CircularProgress size={20} />
-        <Typography>比較中...</Typography>
-      </Box>
+      <div className="mt-4 flex items-center gap-2">
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+        <span className="text-sm text-gray-600">比較中...</span>
+      </div>
     );
   }
 
@@ -22,7 +17,8 @@ export function ResultSummary() {
     return null;
   }
 
-  const isPerfectMatch = result.match && result.score === 1.0 && result.diffs.length === 0;
+  const isPerfectMatch =
+    result.match && result.score === 1.0 && result.diffs.length === 0;
   const isPartialMatch = result.match && result.diffs.length > 0;
 
   const label = isPerfectMatch
@@ -41,22 +37,23 @@ export function ResultSummary() {
         ? "success"
         : "warning";
 
+  const severityClasses: Record<string, string> = {
+    success: "bg-green-50 border-green-200 text-green-700",
+    info: "bg-blue-50 border-blue-200 text-blue-700",
+    warning: "bg-yellow-50 border-yellow-200 text-yellow-700",
+  };
+
   return (
-    <Box sx={{ mt: 2 }}>
-      <Alert
-        severity={severity}
+    <div className="mt-4">
+      <div
+        className={`rounded-md border px-4 py-3 text-sm ${severityClasses[severity]}`}
         data-testid={isPerfectMatch ? "match-success" : undefined}
-        icon={isPerfectMatch ? <CheckCircleIcon /> : undefined}
-        sx={{ mb: 1 }}
+        role="alert"
       >
         {label}
-      </Alert>
-      <Typography>
-        スコア: {result.score}
-      </Typography>
-      <Typography>
-        差分件数: {result.diffs.length}
-      </Typography>
-    </Box>
+      </div>
+      <p className="mt-2 text-sm text-gray-700">スコア: {result.score}</p>
+      <p className="text-sm text-gray-700">差分件数: {result.diffs.length}</p>
+    </div>
   );
 }

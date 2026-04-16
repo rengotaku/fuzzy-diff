@@ -1,12 +1,17 @@
 import type { DiffItem } from "verify-ai";
 import type { TextSegment } from "@/utils/highlightMapper";
-import { diffColors } from "@/theme/diffColors";
 
 interface HighlightedTextProps {
   segments: TextSegment[];
   hoveredDiffItem?: DiffItem | null;
   onHoverDiffItem?: (item: DiffItem | null) => void;
 }
+
+const diffColors = {
+  added: { background: "#d4f4dd", text: "#16a34a" },
+  removed: { background: "#fdd4d4", text: "#dc2626" },
+  changed: { background: "#dbeafe", text: "#1d4ed8" },
+} as const;
 
 const blinkKeyframes = `
 @keyframes diff-blink {

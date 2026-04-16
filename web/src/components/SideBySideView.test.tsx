@@ -2,7 +2,11 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@/test/test-utils";
 import { SideBySideView } from "./SideBySideView";
 import type { DiffItem } from "verify-ai";
-import { diffColors } from "@/theme/diffColors";
+const diffColors = {
+  added: { background: "#d4f4dd", text: "#16a34a" },
+  removed: { background: "#fdd4d4", text: "#dc2626" },
+  changed: { background: "#dbeafe", text: "#1d4ed8" },
+} as const;
 
 describe("SideBySideView", () => {
   // --- 基本レンダリング ---
