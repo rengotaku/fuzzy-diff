@@ -9,6 +9,7 @@ export interface DiffLine {
   readonly text: string;
   readonly type: LineType;
   readonly segments: TextSegment[];
+  readonly lineNumber: number;
 }
 
 /**
@@ -51,6 +52,7 @@ export function buildUnifiedLines(
 
   // 結果を組み立て
   const result: DiffLine[] = [];
+  let lineNumber = 1;
 
   for (const pair of pairs) {
     if (pair.sourceIdx !== null && pair.targetIdx !== null) {
@@ -59,22 +61,22 @@ export function buildUnifiedLines(
       const hasDiff = sSpans.length > 0 || tSpans.length > 0;
 
       if (hasDiff) {
-        result.push(makeDiffLine(sourceLines[pair.sourceIdx], "changed-source", sSpans));
-        result.push(makeDiffLine(targetLines[pair.targetIdx], "changed-target", tSpans));
+        result.push(makeDiffLine(sourceLines[pair.sourceIdx], "changed-source", sSpans, lineNumber++));
+        result.push(makeDiffLine(targetLines[pair.targetIdx], "changed-target", tSpans, lineNumber++));
       } else if (sourceLines[pair.sourceIdx] === targetLines[pair.targetIdx]) {
         // 完全一致
-        result.push(makeDiffLine(sourceLines[pair.sourceIdx], "unchanged", []));
+        result.push(makeDiffLine(sourceLines[pair.sourceIdx], "unchanged", [], lineNumber++));
       } else {
         // テキストは違うが差分値なし（フォーマット違いだが値は同じ）→ 両方表示
-        result.push(makeDiffLine(sourceLines[pair.sourceIdx], "changed-source", []));
-        result.push(makeDiffLine(targetLines[pair.targetIdx], "changed-target", []));
+        result.push(makeDiffLine(sourceLines[pair.sourceIdx], "changed-source", [], lineNumber++));
+        result.push(makeDiffLine(targetLines[pair.targetIdx], "changed-target", [], lineNumber++));
       }
     } else if (pair.sourceIdx !== null) {
       const spans = sourceLineSpans[pair.sourceIdx];
-      result.push(makeDiffLine(sourceLines[pair.sourceIdx], "removed", spans));
+      result.push(makeDiffLine(sourceLines[pair.sourceIdx], "removed", spans, lineNumber++));
     } else if (pair.targetIdx !== null) {
       const spans = targetLineSpans[pair.targetIdx];
-      result.push(makeDiffLine(targetLines[pair.targetIdx], "added", spans));
+      result.push(makeDiffLine(targetLines[pair.targetIdx], "added", spans, lineNumber++));
     }
   }
 
@@ -251,10 +253,12 @@ function makeDiffLine(
   text: string,
   type: LineType,
   spans: HighlightSpan[],
+  lineNumber: number,
 ): DiffLine {
   return {
     text,
     type,
     segments: splitToSegments(text, spans),
+    lineNumber,
   };
 }

@@ -10,37 +10,12 @@ interface InlineViewProps {
   diffs: readonly DiffItem[];
 }
 
-const containerStyle: React.CSSProperties = {
-  width: "100%",
-  fontFamily: "monospace",
-  fontSize: "13px",
-  border: "1px solid #e0e0e0",
-  borderRadius: "4px",
-  overflow: "auto",
-};
-
-const emptyStyle: React.CSSProperties = {
-  color: "#9e9e9e",
-  fontStyle: "italic",
-  padding: "12px",
-};
-
-const lineColors: Record<DiffLine["type"], React.CSSProperties> = {
-  unchanged: {
-    backgroundColor: "transparent",
-  },
-  removed: {
-    backgroundColor: "rgb(255, 235, 238)",
-  },
-  added: {
-    backgroundColor: "rgb(232, 245, 233)",
-  },
-  "changed-source": {
-    backgroundColor: "rgb(255, 235, 238)",
-  },
-  "changed-target": {
-    backgroundColor: "rgb(232, 245, 233)",
-  },
+const lineBgClass: Record<DiffLine["type"], string> = {
+  unchanged: "",
+  removed: "bg-red-50",
+  added: "bg-green-50",
+  "changed-source": "bg-red-50",
+  "changed-target": "bg-green-50",
 };
 
 const prefixMap: Record<DiffLine["type"], string> = {
@@ -63,16 +38,19 @@ function InlineLine({
   return (
     <div
       data-line-type={line.type}
-      style={{
-        ...lineColors[line.type],
-        padding: "1px 8px",
-        whiteSpace: "pre-wrap",
-        wordBreak: "break-word",
-        minHeight: "1.4em",
-        borderBottom: "1px solid rgba(0,0,0,0.04)",
-      }}
+      data-line-row
+      className={`flex items-baseline px-2 py-px whitespace-pre-wrap break-words min-h-[1.4em] border-b border-black/[0.04] hover:bg-gray-50 transition ${lineBgClass[line.type]}`}
     >
-      <span style={{ color: "#999", userSelect: "none", marginRight: "8px" }}>
+      <span
+        data-line-number
+        className="w-8 min-w-8 inline-block text-right pr-2 text-gray-400 select-none text-xs"
+      >
+        {line.lineNumber}
+      </span>
+      <span
+        data-prefix
+        className="text-gray-400 select-none mr-2"
+      >
         {prefixMap[line.type]}
       </span>
       <HighlightedText
@@ -90,8 +68,11 @@ export function InlineView({ source, target, diffs }: InlineViewProps) {
 
   if (!source && !target) {
     return (
-      <div style={containerStyle} data-testid="inline-view">
-        <span style={emptyStyle}>テキストなし</span>
+      <div
+        data-testid="inline-view"
+        className="font-mono w-full text-[13px] border border-gray-200 rounded overflow-auto"
+      >
+        <span className="text-gray-400 italic p-3 block">テキストなし</span>
       </div>
     );
   }
@@ -99,7 +80,10 @@ export function InlineView({ source, target, diffs }: InlineViewProps) {
   const lines = buildUnifiedLines(source, target, diffs);
 
   return (
-    <div style={containerStyle} data-testid="inline-view">
+    <div
+      data-testid="inline-view"
+      className="font-mono w-full text-[13px] border border-gray-200 rounded overflow-auto"
+    >
       {lines.map((line, index) => (
         <InlineLine
           key={index}
