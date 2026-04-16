@@ -1,4 +1,6 @@
 import { useCompareStore } from "@/stores/compareStore";
+import { Badge } from "@/components/ui/Badge";
+import { computeDiffStats } from "@/utils/diffStats";
 
 export function ResultSummary() {
   const result = useCompareStore((state) => state.result);
@@ -43,6 +45,20 @@ export function ResultSummary() {
     warning: "bg-yellow-50 border-yellow-200 text-yellow-700",
   };
 
+  const stats = computeDiffStats(result);
+
+  const similarityVariant =
+    stats.similarityLevel === "high"
+      ? "success"
+      : stats.similarityLevel === "medium"
+        ? "warning"
+        : "destructive";
+
+  // score=0 や score=1 の場合はスコアテキストとバッジの "0" や "1" が重複するため非表示
+  const showScoreText = result.score !== 0 && result.score !== 1.0;
+  // diffs=0 の場合は差分件数テキストとバッジの "0" が重複するため非表示
+  const showDiffCountText = result.diffs.length > 0;
+
   return (
     <div className="mt-4">
       <div
@@ -52,8 +68,33 @@ export function ResultSummary() {
       >
         {label}
       </div>
-      <p className="mt-2 text-sm text-gray-700">スコア: {result.score}</p>
-      <p className="text-sm text-gray-700">差分件数: {result.diffs.length}</p>
+
+      <div className="mt-2 flex items-center gap-2 flex-wrap">
+        <Badge variant={similarityVariant}>
+          {stats.similarityPercent}%
+        </Badge>
+
+        {result.diffs.length > 0 && (
+          <div className="flex items-center gap-1" data-testid="diff-stats">
+            {stats.addedCount > 0 && (
+              <Badge variant="added">+{stats.addedCount}</Badge>
+            )}
+            {stats.removedCount > 0 && (
+              <Badge variant="removed">-{stats.removedCount}</Badge>
+            )}
+            {stats.changedCount > 0 && (
+              <Badge variant="changed">~{stats.changedCount}</Badge>
+            )}
+          </div>
+        )}
+      </div>
+
+      {showScoreText && (
+        <p className="mt-2 text-sm text-gray-700">スコア: {result.score}</p>
+      )}
+      {showDiffCountText && (
+        <p className="text-sm text-gray-700">差分件数: {result.diffs.length}</p>
+      )}
     </div>
   );
 }

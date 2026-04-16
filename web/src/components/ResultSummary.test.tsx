@@ -306,11 +306,9 @@ describe("ResultSummary", () => {
         return selector ? (selector as (s: typeof state) => unknown)(state) : state;
       });
 
-      const { container } = render(<ResultSummary />);
-      // CheckCircle アイコンまたは同等のアイコンが表示される
-      const icon = container.querySelector("[data-testid='CheckCircleIcon']") ??
-                   container.querySelector("svg.MuiSvgIcon-root");
-      expect(icon).not.toBeNull();
+      render(<ResultSummary />);
+      // 完全一致時に match-success のテストIDが存在する
+      expect(screen.getByTestId("match-success")).toBeInTheDocument();
     });
 
     it("完全一致時に「完全一致」のテキストが表示される", () => {
@@ -358,7 +356,8 @@ describe("ResultSummary", () => {
       });
 
       render(<ResultSummary />);
-      expect(screen.getByText(/100/)).toBeInTheDocument();
+      // 差分件数テキストが表示される
+      expect(screen.getByText(/差分件数: 100/)).toBeInTheDocument();
     });
   });
 

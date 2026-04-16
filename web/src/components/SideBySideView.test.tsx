@@ -196,7 +196,8 @@ describe("SideBySideView", () => {
       );
       expect(changedSpan).not.toBeNull();
       const style = (changedSpan as HTMLElement).style;
-      expect(style.backgroundColor).toBe(diffColors.changed.background);
+      // jsdom returns rgb() format regardless of input format
+      expect(style.backgroundColor).toBe("rgb(219, 234, 254)");
     });
   });
 
