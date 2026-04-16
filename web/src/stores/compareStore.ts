@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { ComparisonResult } from "verify-ai";
+import type { ComparisonResult, DiffItem } from "verify-ai";
 import type { DiffViewMode } from "@/utils/highlightMapper";
 
 interface CompareState {
@@ -9,12 +9,14 @@ interface CompareState {
   isComparing: boolean;
   error: string | null;
   viewMode: DiffViewMode;
+  hoveredDiffItem: DiffItem | null;
   setSource: (source: string) => void;
   setTarget: (target: string) => void;
   setResult: (result: ComparisonResult | null) => void;
   setIsComparing: (isComparing: boolean) => void;
   setError: (error: string | null) => void;
   setViewMode: (viewMode: DiffViewMode) => void;
+  setHoveredDiffItem: (item: DiffItem | null) => void;
   reset: () => void;
 }
 
@@ -25,6 +27,7 @@ const initialState = {
   isComparing: false,
   error: null,
   viewMode: "side-by-side" as DiffViewMode,
+  hoveredDiffItem: null as DiffItem | null,
 };
 
 export const useCompareStore = create<CompareState>((set) => ({
@@ -35,5 +38,6 @@ export const useCompareStore = create<CompareState>((set) => ({
   setIsComparing: (isComparing) => set({ isComparing }),
   setError: (error) => set({ error }),
   setViewMode: (viewMode) => set({ viewMode }),
+  setHoveredDiffItem: (item) => set({ hoveredDiffItem: item }),
   reset: () => set(initialState),
 }));

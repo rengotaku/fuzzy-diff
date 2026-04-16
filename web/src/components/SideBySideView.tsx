@@ -1,6 +1,7 @@
 import type { DiffItem } from "verify-ai";
 import { findHighlightSpans, splitToSegments } from "@/utils/highlightMapper";
 import { HighlightedText } from "@/components/HighlightedText";
+import { useCompareStore } from "@/stores/compareStore";
 
 interface SideBySideViewProps {
   source: string;
@@ -36,11 +37,15 @@ function Pane({
   diffs,
   side,
   testId,
+  hoveredDiffItem,
+  onHoverDiffItem,
 }: {
   text: string;
   diffs: readonly DiffItem[];
   side: "source" | "target";
   testId: string;
+  hoveredDiffItem: DiffItem | null;
+  onHoverDiffItem: (item: DiffItem | null) => void;
 }) {
   if (!text) {
     return (
@@ -55,16 +60,37 @@ function Pane({
 
   return (
     <div data-testid={testId} style={paneStyle}>
-      <HighlightedText segments={segments} />
+      <HighlightedText
+        segments={segments}
+        hoveredDiffItem={hoveredDiffItem}
+        onHoverDiffItem={onHoverDiffItem}
+      />
     </div>
   );
 }
 
 export function SideBySideView({ source, target, diffs }: SideBySideViewProps) {
+  const hoveredDiffItem = useCompareStore((s) => s.hoveredDiffItem);
+  const setHoveredDiffItem = useCompareStore((s) => s.setHoveredDiffItem);
+
   return (
     <div style={containerStyle}>
-      <Pane text={source} diffs={diffs} side="source" testId="source-pane" />
-      <Pane text={target} diffs={diffs} side="target" testId="target-pane" />
+      <Pane
+        text={source}
+        diffs={diffs}
+        side="source"
+        testId="source-pane"
+        hoveredDiffItem={hoveredDiffItem}
+        onHoverDiffItem={setHoveredDiffItem}
+      />
+      <Pane
+        text={target}
+        diffs={diffs}
+        side="target"
+        testId="target-pane"
+        hoveredDiffItem={hoveredDiffItem}
+        onHoverDiffItem={setHoveredDiffItem}
+      />
     </div>
   );
 }

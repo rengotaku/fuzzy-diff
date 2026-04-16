@@ -1,0 +1,260 @@
+import type { DiffItem } from "verify-ai";
+import type { HighlightSpan } from "./highlightMapper";
+import { findHighlightSpans, splitToSegments } from "./highlightMapper";
+import type { TextSegment } from "./highlightMapper";
+
+export type LineType = "unchanged" | "removed" | "added" | "changed-source" | "changed-target";
+
+export interface DiffLine {
+  readonly text: string;
+  readonly type: LineType;
+  readonly segments: TextSegment[];
+}
+
+/**
+ * source と target を行単位で比較し、レコード単位でペアリングされた行リストを返す。
+ *
+ * CSV vs JSON など異フォーマットでも、DiffItem の値をブリッジにして
+ * 同じレコードの行同士を対にして表示する。
+ */
+export function buildUnifiedLines(
+  source: string,
+  target: string,
+  diffs: readonly DiffItem[],
+): DiffLine[] {
+  if (!source && !target) return [];
+
+  const sourceLines = source ? source.split("\n") : [];
+  const targetLines = target ? target.split("\n") : [];
+
+  // ハイライト span を計算
+  const sourceSpans = source ? findHighlightSpans(source, [...diffs], "source") : [];
+  const targetSpans = target ? findHighlightSpans(target, [...diffs], "target") : [];
+
+  const sourceLineSpans = assignSpansToLines(source, sourceLines, sourceSpans);
+  const targetLineSpans = assignSpansToLines(target, targetLines, targetSpans);
+
+  // 構造文字のみの行（[], {}, 空行）を除外
+  const sourceIndices = sourceLines
+    .map((_, i) => i)
+    .filter((i) => !isStructuralLine(sourceLines[i]));
+  const targetIndices = targetLines
+    .map((_, i) => i)
+    .filter((i) => !isStructuralLine(targetLines[i]));
+  const pairs = pairRecordLines(
+    sourceLines,
+    targetLines,
+    sourceIndices,
+    targetIndices,
+    diffs,
+  );
+
+  // 結果を組み立て
+  const result: DiffLine[] = [];
+
+  for (const pair of pairs) {
+    if (pair.sourceIdx !== null && pair.targetIdx !== null) {
+      const sSpans = sourceLineSpans[pair.sourceIdx];
+      const tSpans = targetLineSpans[pair.targetIdx];
+      const hasDiff = sSpans.length > 0 || tSpans.length > 0;
+
+      if (hasDiff) {
+        result.push(makeDiffLine(sourceLines[pair.sourceIdx], "changed-source", sSpans));
+        result.push(makeDiffLine(targetLines[pair.targetIdx], "changed-target", tSpans));
+      } else if (sourceLines[pair.sourceIdx] === targetLines[pair.targetIdx]) {
+        // 完全一致
+        result.push(makeDiffLine(sourceLines[pair.sourceIdx], "unchanged", []));
+      } else {
+        // テキストは違うが差分値なし（フォーマット違いだが値は同じ）→ 両方表示
+        result.push(makeDiffLine(sourceLines[pair.sourceIdx], "changed-source", []));
+        result.push(makeDiffLine(targetLines[pair.targetIdx], "changed-target", []));
+      }
+    } else if (pair.sourceIdx !== null) {
+      const spans = sourceLineSpans[pair.sourceIdx];
+      result.push(makeDiffLine(sourceLines[pair.sourceIdx], "removed", spans));
+    } else if (pair.targetIdx !== null) {
+      const spans = targetLineSpans[pair.targetIdx];
+      result.push(makeDiffLine(targetLines[pair.targetIdx], "added", spans));
+    }
+  }
+
+  return result;
+}
+
+interface LinePair {
+  readonly sourceIdx: number | null;
+  readonly targetIdx: number | null;
+}
+
+/**
+ * DiffItem の値をブリッジにしてレコード行をペアリングする。
+ * 1. DiffItem の sourceValue/targetValue を含む行同士をペアにする
+ * 2. 残った行は共通する部分文字列で最良マッチを探す
+ */
+function pairRecordLines(
+  sourceLines: string[],
+  targetLines: string[],
+  sourceIndices: number[],
+  targetIndices: number[],
+  diffs: readonly DiffItem[],
+): LinePair[] {
+  const usedSource = new Set<number>();
+  const usedTarget = new Set<number>();
+  const pairMap = new Map<number, number>(); // sourceIdx → targetIdx
+
+  // Step 1: DiffItem の値でペアリング
+  for (const diff of diffs) {
+    const sv = diff.sourceValue;
+    const tv = diff.targetValue;
+
+    let si: number | null = null;
+    let ti: number | null = null;
+
+    if (sv) {
+      for (const idx of sourceIndices) {
+        if (!usedSource.has(idx) && sourceLines[idx].includes(sv)) {
+          si = idx;
+          break;
+        }
+      }
+    }
+
+    if (tv) {
+      for (const idx of targetIndices) {
+        if (!usedTarget.has(idx) && targetLines[idx].includes(tv)) {
+          ti = idx;
+          break;
+        }
+      }
+    }
+
+    if (si !== null && ti !== null && !pairMap.has(si)) {
+      pairMap.set(si, ti);
+      usedSource.add(si);
+      usedTarget.add(ti);
+    }
+  }
+
+  // Step 2: 残った行を共有値でペアリング
+  for (const si of sourceIndices) {
+    if (usedSource.has(si)) continue;
+    const sTokens = extractTokens(sourceLines[si]);
+    if (sTokens.length === 0) continue;
+
+    let bestTi: number | null = null;
+    let bestScore = 0;
+
+    for (const ti of targetIndices) {
+      if (usedTarget.has(ti)) continue;
+      const tTokens = extractTokens(targetLines[ti]);
+      const shared = countSharedTokens(sTokens, tTokens);
+      if (shared > bestScore) {
+        bestScore = shared;
+        bestTi = ti;
+      }
+    }
+
+    if (bestTi !== null && bestScore > 0) {
+      pairMap.set(si, bestTi);
+      usedSource.add(si);
+      usedTarget.add(bestTi);
+    }
+  }
+
+  // Step 3: ペアリスト生成（source の出現順）
+  const result: LinePair[] = [];
+  const emittedTarget = new Set<number>();
+
+  for (const si of sourceIndices) {
+    const ti = pairMap.get(si);
+    if (ti !== undefined) {
+      result.push({ sourceIdx: si, targetIdx: ti });
+      emittedTarget.add(ti);
+    } else {
+      result.push({ sourceIdx: si, targetIdx: null });
+    }
+  }
+
+  // 残りの target 行（ペアなし）
+  for (const ti of targetIndices) {
+    if (!emittedTarget.has(ti)) {
+      result.push({ sourceIdx: null, targetIdx: ti });
+    }
+  }
+
+  return result;
+}
+
+/** JSON/YAML の構造文字のみの行かどうか判定する */
+function isStructuralLine(line: string): boolean {
+  const trimmed = line.trim();
+  return trimmed === "" || /^[\[\]{},\s]*$/.test(trimmed);
+}
+
+/** 行からトークン（値）を抽出する */
+function extractTokens(line: string): string[] {
+  const tokens: string[] = [];
+
+  // "value" 形式
+  const quoted = line.matchAll(/"([^"]+)"/g);
+  for (const m of quoted) {
+    tokens.push(m[1]);
+  }
+
+  // CSV/TSV の値（カンマ/タブ区切り）
+  const csvParts = line.split(/[,\t]/).map((s) => s.trim()).filter(Boolean);
+  for (const part of csvParts) {
+    const clean = part.replace(/^["'{[\s]+|["'}\]\s]+$/g, "");
+    if (clean && !tokens.includes(clean)) {
+      tokens.push(clean);
+    }
+  }
+
+  return tokens.filter((t) => t.length > 0);
+}
+
+/** 2つのトークン集合の共通要素数を返す */
+function countSharedTokens(a: string[], b: string[]): number {
+  const setB = new Set(b);
+  return a.filter((t) => setB.has(t)).length;
+}
+
+/** 各行に属する HighlightSpan を振り分け、行内オフセットに変換する */
+function assignSpansToLines(
+  fullText: string,
+  lines: string[],
+  spans: HighlightSpan[],
+): HighlightSpan[][] {
+  if (!fullText) return lines.map(() => []);
+
+  const lineOffsets: number[] = [];
+  let offset = 0;
+  for (const line of lines) {
+    lineOffsets.push(offset);
+    offset += line.length + 1; // +1 for \n
+  }
+
+  return lines.map((line, i) => {
+    const lineStart = lineOffsets[i];
+    const lineEnd = lineStart + line.length;
+    return spans
+      .filter((s) => s.start >= lineStart && s.end <= lineEnd)
+      .map((s) => ({
+        ...s,
+        start: s.start - lineStart,
+        end: s.end - lineStart,
+      }));
+  });
+}
+
+function makeDiffLine(
+  text: string,
+  type: LineType,
+  spans: HighlightSpan[],
+): DiffLine {
+  return {
+    text,
+    type,
+    segments: splitToSegments(text, spans),
+  };
+}
