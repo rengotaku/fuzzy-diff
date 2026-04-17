@@ -12,7 +12,7 @@ export function CompareForm() {
   const { runCompare } = useCompare();
 
   return (
-    <form noValidate autoComplete="off">
+    <form noValidate autoComplete="off" data-testid="compare-form">
       <div className="mb-4">
         <label
           htmlFor="source-textarea"
