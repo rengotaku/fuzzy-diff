@@ -10,6 +10,58 @@ describe("DiffViewSwitcher", () => {
     useCompareStore.getState().reset();
   });
 
+  // --- ラッパー要素 ---
+
+  describe("ラッパー要素", () => {
+    it("data-testid='diff-view-switcher' がラッパー div に付与されている", () => {
+      render(<DiffViewSwitcher />);
+      const wrapper = screen.getByTestId("diff-view-switcher");
+      expect(wrapper).toBeInTheDocument();
+      expect(wrapper).toHaveAttribute("role", "group");
+    });
+  });
+
+  // --- アイコン表示（US5: FR-010） ---
+
+  describe("アイコン表示", () => {
+    it("リストボタンに SVG アイコン (data-testid='icon-list') が表示される", () => {
+      render(<DiffViewSwitcher />);
+      const icon = screen.getByTestId("icon-list");
+      expect(icon).toBeInTheDocument();
+      // SVG 要素であること
+      expect(icon.tagName.toLowerCase()).toBe("svg");
+    });
+
+    it("side-by-side ボタンに SVG アイコン (data-testid='icon-side-by-side') が表示される", () => {
+      render(<DiffViewSwitcher />);
+      const icon = screen.getByTestId("icon-side-by-side");
+      expect(icon).toBeInTheDocument();
+      expect(icon.tagName.toLowerCase()).toBe("svg");
+    });
+
+    it("インラインボタンに SVG アイコン (data-testid='icon-inline') が表示される", () => {
+      render(<DiffViewSwitcher />);
+      const icon = screen.getByTestId("icon-inline");
+      expect(icon).toBeInTheDocument();
+      expect(icon.tagName.toLowerCase()).toBe("svg");
+    });
+
+    it("各ボタンにアイコンとラベルテキストの両方が含まれる", () => {
+      render(<DiffViewSwitcher />);
+      const listButton = screen.getByRole("button", { name: /リスト/i });
+      expect(listButton.querySelector("svg")).not.toBeNull();
+      expect(listButton).toHaveTextContent("リスト");
+
+      const sideButton = screen.getByRole("button", { name: /side-by-side/i });
+      expect(sideButton.querySelector("svg")).not.toBeNull();
+      expect(sideButton).toHaveTextContent("side-by-side");
+
+      const inlineButton = screen.getByRole("button", { name: /インライン/i });
+      expect(inlineButton.querySelector("svg")).not.toBeNull();
+      expect(inlineButton).toHaveTextContent("インライン");
+    });
+  });
+
   // --- 3つのビューモード表示 ---
 
   describe("ビューモード表示", () => {
