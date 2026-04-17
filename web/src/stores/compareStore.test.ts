@@ -124,7 +124,12 @@ describe("useCompareStore", () => {
         diffs: [
           { type: "added", path: "row[0].name", sourceValue: null, targetValue: "new" },
           { type: "removed", path: "row[1].age", sourceValue: "30", targetValue: null },
-          { type: "changed", path: "row[2].city", sourceValue: "Tokyo", targetValue: "Osaka" },
+          {
+            type: "changed",
+            path: "row[2].city",
+            sourceValue: "Tokyo",
+            targetValue: "Osaka",
+          },
         ],
         sourceFormat: { type: "json", confidence: 0.9 },
         targetFormat: { type: "json", confidence: 0.9 },

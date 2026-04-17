@@ -7,7 +7,11 @@ describe("Card", () => {
 
   describe("基本レンダリング", () => {
     it("children を正しくレンダリングする", () => {
-      render(<Card><p>テスト内容</p></Card>);
+      render(
+        <Card>
+          <p>テスト内容</p>
+        </Card>
+      );
       expect(screen.getByText("テスト内容")).toBeInTheDocument();
     });
 
@@ -91,7 +95,11 @@ describe("CardHeader", () => {
 
   describe("基本レンダリング", () => {
     it("children を正しくレンダリングする", () => {
-      render(<CardHeader><span>ヘッダー内容</span></CardHeader>);
+      render(
+        <CardHeader>
+          <span>ヘッダー内容</span>
+        </CardHeader>
+      );
       expect(screen.getByText("ヘッダー内容")).toBeInTheDocument();
     });
 
@@ -139,7 +147,11 @@ describe("CardContent", () => {
 
   describe("基本レンダリング", () => {
     it("children を正しくレンダリングする", () => {
-      render(<CardContent><div>コンテンツ内容</div></CardContent>);
+      render(
+        <CardContent>
+          <div>コンテンツ内容</div>
+        </CardContent>
+      );
       expect(screen.getByText("コンテンツ内容")).toBeInTheDocument();
     });
 

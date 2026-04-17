@@ -57,9 +57,7 @@ export function HighlightedText({
             style={{
               backgroundColor: colors.background,
               color: colors.text,
-              animation: isBlinking
-                ? "diff-blink 0.6s ease-in-out infinite"
-                : undefined,
+              animation: isBlinking ? "diff-blink 0.6s ease-in-out infinite" : undefined,
               cursor: onHoverDiffItem ? "pointer" : undefined,
             }}
             onMouseEnter={() => onHoverDiffItem?.(diffItem)}

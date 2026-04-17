@@ -8,8 +8,10 @@ const DIFF_LABELS: Record<DiffItem["type"], string> = {
 
 const typeClasses: Record<DiffItem["type"], string> = {
   added: "bg-diff-added-bg text-diff-added-text border-l-4 border-diff-added-text",
-  removed: "bg-diff-removed-bg text-diff-removed-text border-l-4 border-diff-removed-text",
-  changed: "bg-diff-changed-bg text-diff-changed-text border-l-4 border-diff-changed-text",
+  removed:
+    "bg-diff-removed-bg text-diff-removed-text border-l-4 border-diff-removed-text",
+  changed:
+    "bg-diff-changed-bg text-diff-changed-text border-l-4 border-diff-changed-text",
 };
 
 interface DiffListProps {

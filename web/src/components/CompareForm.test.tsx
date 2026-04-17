@@ -101,7 +101,7 @@ describe("CompareForm", () => {
           setTarget: mockSetTarget,
         };
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return selector ? (selector as (s: any) => unknown)(state) : state;
+        return selector ? (selector as (s: any) => unknown)(state) : state;
       });
 
       render(<CompareForm />);
@@ -122,7 +122,7 @@ describe("CompareForm", () => {
           setTarget: mockSetTarget,
         };
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return selector ? (selector as (s: any) => unknown)(state) : state;
+        return selector ? (selector as (s: any) => unknown)(state) : state;
       });
 
       render(<CompareForm />);
@@ -169,7 +169,7 @@ describe("CompareForm", () => {
           setTarget: mockSetTarget,
         };
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return selector ? (selector as (s: any) => unknown)(state) : state;
+        return selector ? (selector as (s: any) => unknown)(state) : state;
       });
 
       render(<CompareForm />);

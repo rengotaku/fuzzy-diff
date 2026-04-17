@@ -63,10 +63,7 @@ export function findHighlightSpans(
  * テキストを HighlightSpan[] に基づいてセグメントに分割する。
  * spans は start 昇順でソート済みであることを前提とする。
  */
-export function splitToSegments(
-  text: string,
-  spans: HighlightSpan[]
-): TextSegment[] {
+export function splitToSegments(text: string, spans: HighlightSpan[]): TextSegment[] {
   if (!text) {
     return [];
   }

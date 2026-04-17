@@ -68,7 +68,11 @@ describe("Button", () => {
     });
 
     it("icon variant では size クラスが適用されない", () => {
-      render(<Button variant="icon" size="lg">X</Button>);
+      render(
+        <Button variant="icon" size="lg">
+          X
+        </Button>
+      );
       const button = screen.getByRole("button");
       // icon variant では sizeClasses を適用しない
       expect(button.className).not.toContain("px-6");
@@ -155,7 +159,11 @@ describe("Button", () => {
 
     it("disabled 時にクリックしても onClick が呼ばれない", () => {
       const handleClick = vi.fn();
-      render(<Button onClick={handleClick} disabled>Click</Button>);
+      render(
+        <Button onClick={handleClick} disabled>
+          Click
+        </Button>
+      );
       fireEvent.click(screen.getByRole("button"));
       expect(handleClick).not.toHaveBeenCalled();
     });

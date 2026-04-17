@@ -2,11 +2,6 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@/test/test-utils";
 import { SideBySideView } from "./SideBySideView";
 import type { DiffItem } from "verify-ai";
-const diffColors = {
-  added: { background: "#d4f4dd", text: "#16a34a" },
-  removed: { background: "#fdd4d4", text: "#dc2626" },
-  changed: { background: "#dbeafe", text: "#1d4ed8" },
-} as const;
 
 describe("SideBySideView", () => {
   // --- 基本レンダリング ---
@@ -16,9 +11,7 @@ describe("SideBySideView", () => {
       const source = "name,age\nAlice,30";
       const target = '{"name":"Alice","age":30}';
       const diffs: DiffItem[] = [];
-      render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
-      );
+      render(<SideBySideView source={source} target={target} diffs={diffs} />);
       expect(screen.getByText(/Alice,30/)).toBeInTheDocument();
       expect(screen.getByText(/"Alice"/)).toBeInTheDocument();
     });
@@ -28,15 +21,11 @@ describe("SideBySideView", () => {
       const target = "target text here";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
       // 左右ペインは data-testid で区別される
-      const sourcePane = container.querySelector(
-        "[data-testid='source-pane']",
-      );
-      const targetPane = container.querySelector(
-        "[data-testid='target-pane']",
-      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const targetPane = container.querySelector("[data-testid='target-pane']");
       expect(sourcePane).not.toBeNull();
       expect(targetPane).not.toBeNull();
       expect(sourcePane?.textContent).toContain("source text here");
@@ -59,11 +48,9 @@ describe("SideBySideView", () => {
         },
       ];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
-      const highlighted = container.querySelectorAll(
-        "[data-diff-type='changed']",
-      );
+      const highlighted = container.querySelectorAll("[data-diff-type='changed']");
       expect(highlighted.length).toBeGreaterThanOrEqual(1);
     });
 
@@ -79,14 +66,10 @@ describe("SideBySideView", () => {
         },
       ];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
-      const sourcePane = container.querySelector(
-        "[data-testid='source-pane']",
-      );
-      const changedSpan = sourcePane?.querySelector(
-        "[data-diff-type='changed']",
-      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const changedSpan = sourcePane?.querySelector("[data-diff-type='changed']");
       expect(changedSpan).not.toBeNull();
       expect(changedSpan?.textContent).toBe("100");
     });
@@ -103,14 +86,10 @@ describe("SideBySideView", () => {
         },
       ];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
-      const targetPane = container.querySelector(
-        "[data-testid='target-pane']",
-      );
-      const changedSpan = targetPane?.querySelector(
-        "[data-diff-type='changed']",
-      );
+      const targetPane = container.querySelector("[data-testid='target-pane']");
+      const changedSpan = targetPane?.querySelector("[data-diff-type='changed']");
       expect(changedSpan).not.toBeNull();
       expect(changedSpan?.textContent).toBe("200");
     });
@@ -127,20 +106,12 @@ describe("SideBySideView", () => {
         },
       ];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
-      const sourcePane = container.querySelector(
-        "[data-testid='source-pane']",
-      );
-      const targetPane = container.querySelector(
-        "[data-testid='target-pane']",
-      );
-      const sourceHighlight = sourcePane?.querySelector(
-        "[data-diff-type='removed']",
-      );
-      const targetHighlight = targetPane?.querySelector(
-        "[data-diff-type='removed']",
-      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const targetPane = container.querySelector("[data-testid='target-pane']");
+      const sourceHighlight = sourcePane?.querySelector("[data-diff-type='removed']");
+      const targetHighlight = targetPane?.querySelector("[data-diff-type='removed']");
       expect(sourceHighlight).not.toBeNull();
       expect(sourceHighlight?.textContent).toBe("Bob");
       expect(targetHighlight).toBeNull();
@@ -158,20 +129,12 @@ describe("SideBySideView", () => {
         },
       ];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
-      const sourcePane = container.querySelector(
-        "[data-testid='source-pane']",
-      );
-      const targetPane = container.querySelector(
-        "[data-testid='target-pane']",
-      );
-      const sourceHighlight = sourcePane?.querySelector(
-        "[data-diff-type='added']",
-      );
-      const targetHighlight = targetPane?.querySelector(
-        "[data-diff-type='added']",
-      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const targetPane = container.querySelector("[data-testid='target-pane']");
+      const sourceHighlight = sourcePane?.querySelector("[data-diff-type='added']");
+      const targetHighlight = targetPane?.querySelector("[data-diff-type='added']");
       expect(sourceHighlight).toBeNull();
       expect(targetHighlight).not.toBeNull();
       expect(targetHighlight?.textContent).toBe("Alice");
@@ -189,11 +152,9 @@ describe("SideBySideView", () => {
         },
       ];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
-      const changedSpan = container.querySelector(
-        "[data-diff-type='changed']",
-      );
+      const changedSpan = container.querySelector("[data-diff-type='changed']");
       expect(changedSpan).not.toBeNull();
       const style = (changedSpan as HTMLElement).style;
       // jsdom returns rgb() format regardless of input format
@@ -216,14 +177,10 @@ describe("SideBySideView", () => {
         },
       ];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
-      const sourcePane = container.querySelector(
-        "[data-testid='source-pane']",
-      );
-      const changedSpan = sourcePane?.querySelector(
-        "[data-diff-type='changed']",
-      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const changedSpan = sourcePane?.querySelector("[data-diff-type='changed']");
       // ハイライトされるのは値 "30" のみ、括弧やコロンは含まない
       expect(changedSpan?.textContent).toBe("30");
     });
@@ -240,14 +197,10 @@ describe("SideBySideView", () => {
         },
       ];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
-      const sourcePane = container.querySelector(
-        "[data-testid='source-pane']",
-      );
-      const changedSpan = sourcePane?.querySelector(
-        "[data-diff-type='changed']",
-      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const changedSpan = sourcePane?.querySelector("[data-diff-type='changed']");
       expect(changedSpan?.textContent).toBe("30");
     });
   });
@@ -259,7 +212,7 @@ describe("SideBySideView", () => {
       const text = "name,age\nAlice,30";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={text} target={text} diffs={diffs} />,
+        <SideBySideView source={text} target={text} diffs={diffs} />
       );
       const highlighted = container.querySelectorAll("[data-diff-type]");
       expect(highlighted).toHaveLength(0);
@@ -274,36 +227,26 @@ describe("SideBySideView", () => {
     it("source が空の場合に source 側に「テキストなし」が表示される", () => {
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source="" target="some text" diffs={diffs} />,
+        <SideBySideView source="" target="some text" diffs={diffs} />
       );
-      const sourcePane = container.querySelector(
-        "[data-testid='source-pane']",
-      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
       expect(sourcePane?.textContent).toContain("テキストなし");
     });
 
     it("target が空の場合に target 側に「テキストなし」が表示される", () => {
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source="some text" target="" diffs={diffs} />,
+        <SideBySideView source="some text" target="" diffs={diffs} />
       );
-      const targetPane = container.querySelector(
-        "[data-testid='target-pane']",
-      );
+      const targetPane = container.querySelector("[data-testid='target-pane']");
       expect(targetPane?.textContent).toContain("テキストなし");
     });
 
     it("両方が空の場合に両側に「テキストなし」が表示される", () => {
       const diffs: DiffItem[] = [];
-      const { container } = render(
-        <SideBySideView source="" target="" diffs={diffs} />,
-      );
-      const sourcePane = container.querySelector(
-        "[data-testid='source-pane']",
-      );
-      const targetPane = container.querySelector(
-        "[data-testid='target-pane']",
-      );
+      const { container } = render(<SideBySideView source="" target="" diffs={diffs} />);
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const targetPane = container.querySelector("[data-testid='target-pane']");
       expect(sourcePane?.textContent).toContain("テキストなし");
       expect(targetPane?.textContent).toContain("テキストなし");
     });
@@ -324,20 +267,16 @@ describe("SideBySideView", () => {
         },
       ];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
-      const sourcePane = container.querySelector(
-        "[data-testid='source-pane']",
-      );
-      const changedSpan = sourcePane?.querySelector(
-        "[data-diff-type='changed']",
-      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const changedSpan = sourcePane?.querySelector("[data-diff-type='changed']");
       expect(changedSpan?.textContent).toBe("太郎");
     });
 
     it("HTML 特殊文字を含むテキストがエスケープされて表示される", () => {
-      const source = '<div>old</div>';
-      const target = '<div>new</div>';
+      const source = "<div>old</div>";
+      const target = "<div>new</div>";
       const diffs: DiffItem[] = [
         {
           type: "changed",
@@ -346,9 +285,7 @@ describe("SideBySideView", () => {
           targetValue: "new",
         },
       ];
-      render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
-      );
+      render(<SideBySideView source={source} target={target} diffs={diffs} />);
       // HTML がテキストとして表示される（実行されない）
       const matches = screen.getAllByText(/<div>/);
       expect(matches.length).toBeGreaterThanOrEqual(1);
@@ -378,26 +315,16 @@ describe("SideBySideView", () => {
         },
       ];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
-      const sourcePane = container.querySelector(
-        "[data-testid='source-pane']",
-      );
-      const changedSpans = sourcePane?.querySelectorAll(
-        "[data-diff-type='changed']",
-      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const changedSpans = sourcePane?.querySelectorAll("[data-diff-type='changed']");
       expect(changedSpans?.length).toBe(3);
     });
 
     it("大量の差分（100件）を表示してもクラッシュしない", () => {
-      const sourceLines = Array.from(
-        { length: 100 },
-        (_, i) => `field${i}: old${i}`,
-      );
-      const targetLines = Array.from(
-        { length: 100 },
-        (_, i) => `field${i}: new${i}`,
-      );
+      const sourceLines = Array.from({ length: 100 }, (_, i) => `field${i}: old${i}`);
+      const targetLines = Array.from({ length: 100 }, (_, i) => `field${i}: new${i}`);
       const source = sourceLines.join("\n");
       const target = targetLines.join("\n");
       const diffs: DiffItem[] = Array.from({ length: 100 }, (_, i) => ({
@@ -407,14 +334,10 @@ describe("SideBySideView", () => {
         targetValue: `new${i}`,
       }));
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
-      const sourcePane = container.querySelector(
-        "[data-testid='source-pane']",
-      );
-      const changedSpans = sourcePane?.querySelectorAll(
-        "[data-diff-type='changed']",
-      );
+      const sourcePane = container.querySelector("[data-testid='source-pane']");
+      const changedSpans = sourcePane?.querySelectorAll("[data-diff-type='changed']");
       expect(changedSpans?.length).toBe(100);
     });
   });
@@ -427,7 +350,7 @@ describe("SideBySideView", () => {
       const target = "line1\nline2\nline3";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
       const sourcePane = container.querySelector("[data-testid='source-pane']");
       const lineNumbers = sourcePane?.querySelectorAll("[data-line-number]");
@@ -443,7 +366,7 @@ describe("SideBySideView", () => {
       const target = "aaa\nbbb";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
       const targetPane = container.querySelector("[data-testid='target-pane']");
       const lineNumbers = targetPane?.querySelectorAll("[data-line-number]");
@@ -458,7 +381,7 @@ describe("SideBySideView", () => {
       const target = "hello";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
       const sourcePane = container.querySelector("[data-testid='source-pane']");
       const lineNumEl = sourcePane?.querySelector("[data-line-number]") as HTMLElement;
@@ -474,7 +397,7 @@ describe("SideBySideView", () => {
       const target = "line1\nline2";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
       const sourcePane = container.querySelector("[data-testid='source-pane']");
       const lineRows = sourcePane?.querySelectorAll("[data-line-row]");
@@ -492,10 +415,14 @@ describe("SideBySideView", () => {
       const target = "text";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
-      const sourcePane = container.querySelector("[data-testid='source-pane']") as HTMLElement;
-      const targetPane = container.querySelector("[data-testid='target-pane']") as HTMLElement;
+      const sourcePane = container.querySelector(
+        "[data-testid='source-pane']"
+      ) as HTMLElement;
+      const targetPane = container.querySelector(
+        "[data-testid='target-pane']"
+      ) as HTMLElement;
       expect(sourcePane.className).toMatch(/font-mono/);
       expect(targetPane.className).toMatch(/font-mono/);
     });
@@ -507,14 +434,22 @@ describe("SideBySideView", () => {
 
   describe("同期スクロール（US3）", () => {
     it("左ペインをスクロールすると右ペインも同期する", () => {
-      const sourceLines = Array.from({ length: 50 }, (_, i) => `source-line-${i}`).join("\n");
-      const targetLines = Array.from({ length: 50 }, (_, i) => `target-line-${i}`).join("\n");
+      const sourceLines = Array.from({ length: 50 }, (_, i) => `source-line-${i}`).join(
+        "\n"
+      );
+      const targetLines = Array.from({ length: 50 }, (_, i) => `target-line-${i}`).join(
+        "\n"
+      );
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={sourceLines} target={targetLines} diffs={diffs} />,
+        <SideBySideView source={sourceLines} target={targetLines} diffs={diffs} />
       );
-      const sourcePane = container.querySelector("[data-testid='source-pane']") as HTMLElement;
-      const targetPane = container.querySelector("[data-testid='target-pane']") as HTMLElement;
+      const sourcePane = container.querySelector(
+        "[data-testid='source-pane']"
+      ) as HTMLElement;
+      const targetPane = container.querySelector(
+        "[data-testid='target-pane']"
+      ) as HTMLElement;
       expect(sourcePane).not.toBeNull();
       expect(targetPane).not.toBeNull();
 
@@ -527,14 +462,22 @@ describe("SideBySideView", () => {
     });
 
     it("右ペインをスクロールすると左ペインも同期する", () => {
-      const sourceLines = Array.from({ length: 50 }, (_, i) => `source-line-${i}`).join("\n");
-      const targetLines = Array.from({ length: 50 }, (_, i) => `target-line-${i}`).join("\n");
+      const sourceLines = Array.from({ length: 50 }, (_, i) => `source-line-${i}`).join(
+        "\n"
+      );
+      const targetLines = Array.from({ length: 50 }, (_, i) => `target-line-${i}`).join(
+        "\n"
+      );
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={sourceLines} target={targetLines} diffs={diffs} />,
+        <SideBySideView source={sourceLines} target={targetLines} diffs={diffs} />
       );
-      const sourcePane = container.querySelector("[data-testid='source-pane']") as HTMLElement;
-      const targetPane = container.querySelector("[data-testid='target-pane']") as HTMLElement;
+      const sourcePane = container.querySelector(
+        "[data-testid='source-pane']"
+      ) as HTMLElement;
+      const targetPane = container.querySelector(
+        "[data-testid='target-pane']"
+      ) as HTMLElement;
 
       Object.defineProperty(targetPane, "scrollTop", { value: 200, writable: true });
       targetPane.dispatchEvent(new Event("scroll"));
@@ -546,10 +489,14 @@ describe("SideBySideView", () => {
       const longLine = "x".repeat(500);
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={longLine} target={longLine} diffs={diffs} />,
+        <SideBySideView source={longLine} target={longLine} diffs={diffs} />
       );
-      const sourcePane = container.querySelector("[data-testid='source-pane']") as HTMLElement;
-      const targetPane = container.querySelector("[data-testid='target-pane']") as HTMLElement;
+      const sourcePane = container.querySelector(
+        "[data-testid='source-pane']"
+      ) as HTMLElement;
+      const targetPane = container.querySelector(
+        "[data-testid='target-pane']"
+      ) as HTMLElement;
 
       Object.defineProperty(sourcePane, "scrollLeft", { value: 50, writable: true });
       Object.defineProperty(sourcePane, "scrollTop", { value: 0, writable: true });
@@ -565,7 +512,7 @@ describe("SideBySideView", () => {
       const target = "line1";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
       const targetPane = container.querySelector("[data-testid='target-pane']");
       // プレースホルダー行は data-placeholder 属性を持つ
@@ -579,7 +526,7 @@ describe("SideBySideView", () => {
       const target = "line1\nline2\nline3";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
       const sourcePane = container.querySelector("[data-testid='source-pane']");
       const placeholders = sourcePane?.querySelectorAll("[data-placeholder]");
@@ -592,7 +539,7 @@ describe("SideBySideView", () => {
       const target = "line1";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
       const targetPane = container.querySelector("[data-testid='target-pane']");
       const placeholder = targetPane?.querySelector("[data-placeholder]") as HTMLElement;
@@ -606,7 +553,7 @@ describe("SideBySideView", () => {
       const target = "line1";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
       const targetPane = container.querySelector("[data-testid='target-pane']");
       const placeholder = targetPane?.querySelector("[data-placeholder]") as HTMLElement;
@@ -620,7 +567,7 @@ describe("SideBySideView", () => {
       const target = "line1";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
       const targetPane = container.querySelector("[data-testid='target-pane']");
       const placeholder = targetPane?.querySelector("[data-placeholder]");
@@ -639,7 +586,7 @@ describe("SideBySideView", () => {
       const target = "a\nb\nc";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
       const sourcePane = container.querySelector("[data-testid='source-pane']");
       const lineNumbers = sourcePane?.querySelectorAll("[data-line-number]");
@@ -655,13 +602,13 @@ describe("SideBySideView", () => {
       const target = "x\ny";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
       const targetPane = container.querySelector("[data-testid='target-pane']");
       // プレースホルダーでない行番号だけを収集
       const allLineNums = targetPane?.querySelectorAll("[data-line-number]");
       const nonEmptyLineNums = Array.from(allLineNums ?? []).filter(
-        (el) => el.textContent?.trim() !== "",
+        (el) => el.textContent?.trim() !== ""
       );
       expect(nonEmptyLineNums.length).toBe(2);
       expect(nonEmptyLineNums[0].textContent).toBe("1");
@@ -673,7 +620,7 @@ describe("SideBySideView", () => {
       const target = "a\nb\nc";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <SideBySideView source={source} target={target} diffs={diffs} />,
+        <SideBySideView source={source} target={target} diffs={diffs} />
       );
       const sourcePane = container.querySelector("[data-testid='source-pane']");
       const targetPane = container.querySelector("[data-testid='target-pane']");
@@ -681,7 +628,7 @@ describe("SideBySideView", () => {
       // source 側は 1..5
       const sourceLineNums = sourcePane?.querySelectorAll("[data-line-number]");
       const sourceNonEmpty = Array.from(sourceLineNums ?? []).filter(
-        (el) => el.textContent?.trim() !== "",
+        (el) => el.textContent?.trim() !== ""
       );
       expect(sourceNonEmpty.length).toBe(5);
       expect(sourceNonEmpty[4].textContent).toBe("5");
@@ -689,7 +636,7 @@ describe("SideBySideView", () => {
       // target 側は 1..3（プレースホルダーを除く）
       const targetLineNums = targetPane?.querySelectorAll("[data-line-number]");
       const targetNonEmpty = Array.from(targetLineNums ?? []).filter(
-        (el) => el.textContent?.trim() !== "",
+        (el) => el.textContent?.trim() !== ""
       );
       expect(targetNonEmpty.length).toBe(3);
       expect(targetNonEmpty[2].textContent).toBe("3");

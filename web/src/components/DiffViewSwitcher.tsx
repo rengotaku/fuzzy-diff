@@ -19,7 +19,11 @@ export function DiffViewSwitcher() {
   ];
 
   return (
-    <div className="inline-flex rounded-md bg-gray-100 p-1" role="group" data-testid="diff-view-switcher">
+    <div
+      className="inline-flex rounded-md bg-gray-100 p-1"
+      role="group"
+      data-testid="diff-view-switcher"
+    >
       {modes.map((mode) => (
         <button
           key={mode.value}

@@ -86,9 +86,7 @@ describe("ResultSummary", () => {
       const result: ComparisonResult = {
         score: 0.5,
         match: false,
-        diffs: [
-          { type: "changed", path: "row[0]", sourceValue: "a", targetValue: "b" },
-        ],
+        diffs: [{ type: "changed", path: "row[0]", sourceValue: "a", targetValue: "b" }],
         sourceFormat: { type: "plain", confidence: 1.0 },
         targetFormat: { type: "plain", confidence: 1.0 },
       };
@@ -128,9 +126,7 @@ describe("ResultSummary", () => {
       const result: ComparisonResult = {
         score: 0.0,
         match: false,
-        diffs: [
-          { type: "removed", path: "row[0]", sourceValue: "a", targetValue: null },
-        ],
+        diffs: [{ type: "removed", path: "row[0]", sourceValue: "a", targetValue: null }],
         sourceFormat: { type: "plain", confidence: 1.0 },
         targetFormat: { type: "plain", confidence: 1.0 },
       };
@@ -222,8 +218,7 @@ describe("ResultSummary", () => {
       render(<ResultSummary />);
       // ローディングインジケータまたは「比較中」テキストが表示される
       expect(
-        screen.getByText(/比較中|loading/i) ||
-        screen.getByRole("progressbar")
+        screen.getByText(/比較中|loading/i) || screen.getByRole("progressbar")
       ).toBeInTheDocument();
     });
   });
@@ -274,9 +269,7 @@ describe("ResultSummary", () => {
       const result: ComparisonResult = {
         score: 0.5,
         match: false,
-        diffs: [
-          { type: "changed", path: "row[0]", sourceValue: "a", targetValue: "b" },
-        ],
+        diffs: [{ type: "changed", path: "row[0]", sourceValue: "a", targetValue: "b" }],
         sourceFormat: { type: "plain", confidence: 1.0 },
         targetFormat: { type: "plain", confidence: 1.0 },
       };
@@ -418,9 +411,7 @@ describe("ResultSummary", () => {
       const result: ComparisonResult = {
         score: 0.65,
         match: true,
-        diffs: [
-          { type: "changed", path: "a", sourceValue: "x", targetValue: "y" },
-        ],
+        diffs: [{ type: "changed", path: "a", sourceValue: "x", targetValue: "y" }],
         sourceFormat: { type: "plain", confidence: 1.0 },
         targetFormat: { type: "plain", confidence: 1.0 },
       };
@@ -442,9 +433,7 @@ describe("ResultSummary", () => {
       const result: ComparisonResult = {
         score: 0.5,
         match: false,
-        diffs: [
-          { type: "changed", path: "a", sourceValue: "x", targetValue: "y" },
-        ],
+        diffs: [{ type: "changed", path: "a", sourceValue: "x", targetValue: "y" }],
         sourceFormat: { type: "plain", confidence: 1.0 },
         targetFormat: { type: "plain", confidence: 1.0 },
       };
@@ -491,9 +480,7 @@ describe("ResultSummary", () => {
       const result: ComparisonResult = {
         score: 0.0,
         match: false,
-        diffs: [
-          { type: "removed", path: "a", sourceValue: "x", targetValue: null },
-        ],
+        diffs: [{ type: "removed", path: "a", sourceValue: "x", targetValue: null }],
         sourceFormat: { type: "plain", confidence: 1.0 },
         targetFormat: { type: "plain", confidence: 1.0 },
       };
@@ -565,9 +552,7 @@ describe("ResultSummary", () => {
       const result: ComparisonResult = {
         score: 0.8,
         match: true,
-        diffs: [
-          { type: "changed", path: "a", sourceValue: "x", targetValue: "y" },
-        ],
+        diffs: [{ type: "changed", path: "a", sourceValue: "x", targetValue: "y" }],
         sourceFormat: { type: "plain", confidence: 1.0 },
         targetFormat: { type: "plain", confidence: 1.0 },
       };
@@ -610,9 +595,7 @@ describe("ResultSummary", () => {
       const result: ComparisonResult = {
         score: 0.7,
         match: false,
-        diffs: [
-          { type: "added", path: "a", sourceValue: null, targetValue: "new" },
-        ],
+        diffs: [{ type: "added", path: "a", sourceValue: null, targetValue: "new" }],
         sourceFormat: { type: "plain", confidence: 1.0 },
         targetFormat: { type: "plain", confidence: 1.0 },
       };
@@ -633,9 +616,7 @@ describe("ResultSummary", () => {
       const result: ComparisonResult = {
         score: 0.5,
         match: false,
-        diffs: [
-          { type: "removed", path: "a", sourceValue: "x", targetValue: null },
-        ],
+        diffs: [{ type: "removed", path: "a", sourceValue: "x", targetValue: null }],
         sourceFormat: { type: "plain", confidence: 1.0 },
         targetFormat: { type: "plain", confidence: 1.0 },
       };
@@ -656,9 +637,7 @@ describe("ResultSummary", () => {
       const result: ComparisonResult = {
         score: 0.6,
         match: false,
-        diffs: [
-          { type: "changed", path: "a", sourceValue: "x", targetValue: "y" },
-        ],
+        diffs: [{ type: "changed", path: "a", sourceValue: "x", targetValue: "y" }],
         sourceFormat: { type: "plain", confidence: 1.0 },
         targetFormat: { type: "plain", confidence: 1.0 },
       };

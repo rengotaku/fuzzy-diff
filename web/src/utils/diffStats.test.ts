@@ -1,12 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { computeDiffStats } from "./diffStats";
 import type { ComparisonResult } from "verify-ai";
-import type { DiffStats, SimilarityLevel } from "./diffStats";
 
 // ヘルパー: テスト用 ComparisonResult を生成
-function makeResult(
-  overrides: Partial<ComparisonResult> = {},
-): ComparisonResult {
+function makeResult(overrides: Partial<ComparisonResult> = {}): ComparisonResult {
   return {
     score: 0.5,
     match: false,
@@ -96,7 +93,7 @@ describe("computeDiffStats", () => {
             { type: "added", path: "a", sourceValue: null, targetValue: "x" },
             { type: "added", path: "b", sourceValue: null, targetValue: "y" },
           ],
-        }),
+        })
       );
       expect(stats.addedCount).toBe(2);
       expect(stats.removedCount).toBe(0);
@@ -106,10 +103,8 @@ describe("computeDiffStats", () => {
     it("removed のみの diffs を正しくカウント", () => {
       const stats = computeDiffStats(
         makeResult({
-          diffs: [
-            { type: "removed", path: "a", sourceValue: "x", targetValue: null },
-          ],
-        }),
+          diffs: [{ type: "removed", path: "a", sourceValue: "x", targetValue: null }],
+        })
       );
       expect(stats.addedCount).toBe(0);
       expect(stats.removedCount).toBe(1);
@@ -124,7 +119,7 @@ describe("computeDiffStats", () => {
             { type: "changed", path: "b", sourceValue: "1", targetValue: "2" },
             { type: "changed", path: "c", sourceValue: "p", targetValue: "q" },
           ],
-        }),
+        })
       );
       expect(stats.addedCount).toBe(0);
       expect(stats.removedCount).toBe(0);
@@ -141,7 +136,7 @@ describe("computeDiffStats", () => {
             { type: "added", path: "d", sourceValue: null, targetValue: "z" },
             { type: "changed", path: "e", sourceValue: "p", targetValue: "q" },
           ],
-        }),
+        })
       );
       expect(stats.addedCount).toBe(2);
       expect(stats.removedCount).toBe(1);
@@ -161,9 +156,7 @@ describe("computeDiffStats", () => {
     });
 
     it("完全一致（score=1.0, diffs=[]）", () => {
-      const stats = computeDiffStats(
-        makeResult({ score: 1.0, match: true, diffs: [] }),
-      );
+      const stats = computeDiffStats(makeResult({ score: 1.0, match: true, diffs: [] }));
       expect(stats.similarityPercent).toBe(100);
       expect(stats.similarityLevel).toBe("high");
       expect(stats.addedCount).toBe(0);

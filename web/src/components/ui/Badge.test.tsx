@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@/test/test-utils";
 import { Badge } from "./Badge";
-import type { BadgeVariant, BadgeSize } from "./Badge";
+import type { BadgeVariant } from "./Badge";
 
 describe("Badge", () => {
   // --- variant ごとのクラス適用 ---
@@ -16,9 +16,21 @@ describe("Badge", () => {
       { variant: "success", expectedClass: "bg-green-100", label: "success → green" },
       { variant: "warning", expectedClass: "bg-yellow-100", label: "warning → yellow" },
       { variant: "destructive", expectedClass: "bg-red-100", label: "destructive → red" },
-      { variant: "added", expectedClass: "bg-diff-added-bg", label: "added → diff-added" },
-      { variant: "removed", expectedClass: "bg-diff-removed-bg", label: "removed → diff-removed" },
-      { variant: "changed", expectedClass: "bg-diff-changed-bg", label: "changed → diff-changed" },
+      {
+        variant: "added",
+        expectedClass: "bg-diff-added-bg",
+        label: "added → diff-added",
+      },
+      {
+        variant: "removed",
+        expectedClass: "bg-diff-removed-bg",
+        label: "removed → diff-removed",
+      },
+      {
+        variant: "changed",
+        expectedClass: "bg-diff-changed-bg",
+        label: "changed → diff-changed",
+      },
     ];
 
     for (const { variant, expectedClass, label } of variantExpectations) {
@@ -104,7 +116,7 @@ describe("Badge", () => {
       render(
         <Badge>
           <span data-testid="inner">nested</span>
-        </Badge>,
+        </Badge>
       );
       expect(screen.getByTestId("inner")).toBeInTheDocument();
       expect(screen.getByText("nested")).toBeInTheDocument();
@@ -114,7 +126,7 @@ describe("Badge", () => {
       render(
         <Badge>
           +3 <span>added</span>
-        </Badge>,
+        </Badge>
       );
       expect(screen.getByText("added")).toBeInTheDocument();
     });

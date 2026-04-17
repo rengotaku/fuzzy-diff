@@ -35,15 +35,11 @@ vi.mock("@/components/DiffList", () => ({
 }));
 
 vi.mock("@/components/DiffViewSwitcher", () => ({
-  DiffViewSwitcher: () => (
-    <div data-testid="diff-view-switcher">DiffViewSwitcher</div>
-  ),
+  DiffViewSwitcher: () => <div data-testid="diff-view-switcher">DiffViewSwitcher</div>,
 }));
 
 vi.mock("@/components/SideBySideView", () => ({
-  SideBySideView: () => (
-    <div data-testid="side-by-side-view">SideBySideView</div>
-  ),
+  SideBySideView: () => <div data-testid="side-by-side-view">SideBySideView</div>,
 }));
 
 vi.mock("@/components/InlineView", () => ({
@@ -70,7 +66,7 @@ function createResult(overrides?: Partial<ComparisonResult>): ComparisonResult {
 
 function mockStoreWithResult(
   result: ComparisonResult | null,
-  overrides?: Record<string, unknown>,
+  overrides?: Record<string, unknown>
 ) {
   mockUseCompareStore.mockImplementation((selector) => {
     const state = {
@@ -318,17 +314,13 @@ describe("App", () => {
 
   describe("エッジケース", () => {
     it("結果が空の diffs の場合でもカードは表示される", () => {
-      mockStoreWithResult(
-        createResult({ diffs: [], score: 1.0, match: true }),
-      );
+      mockStoreWithResult(createResult({ diffs: [], score: 1.0, match: true }));
       render(<App />);
       expect(screen.getByTestId("card")).toBeInTheDocument();
     });
 
     it("diffs が空の場合でもコピーボタンは表示される", () => {
-      mockStoreWithResult(
-        createResult({ diffs: [], score: 1.0, match: true }),
-      );
+      mockStoreWithResult(createResult({ diffs: [], score: 1.0, match: true }));
       render(<App />);
       expect(screen.getByTestId("copy-button")).toBeInTheDocument();
     });

@@ -47,10 +47,7 @@ function InlineLine({
       >
         {line.lineNumber}
       </span>
-      <span
-        data-prefix
-        className="text-gray-400 select-none mr-2"
-      >
+      <span data-prefix className="text-gray-400 select-none mr-2">
         {prefixMap[line.type]}
       </span>
       <HighlightedText

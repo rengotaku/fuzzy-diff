@@ -19,7 +19,12 @@ describe("DiffList", () => {
       const diffs: DiffItem[] = [
         { type: "added", path: "row[0].name", sourceValue: null, targetValue: "Alice" },
         { type: "removed", path: "row[1].age", sourceValue: "30", targetValue: null },
-        { type: "changed", path: "row[2].city", sourceValue: "Tokyo", targetValue: "Osaka" },
+        {
+          type: "changed",
+          path: "row[2].city",
+          sourceValue: "Tokyo",
+          targetValue: "Osaka",
+        },
       ];
       render(<DiffList diffs={diffs} />);
       expect(screen.getByText(/row\[0\]\.name/)).toBeInTheDocument();
@@ -52,7 +57,12 @@ describe("DiffList", () => {
 
     it("changed の差分に識別可能な視覚的スタイルが適用される", () => {
       const diffs: DiffItem[] = [
-        { type: "changed", path: "row[2].city", sourceValue: "Tokyo", targetValue: "Osaka" },
+        {
+          type: "changed",
+          path: "row[2].city",
+          sourceValue: "Tokyo",
+          targetValue: "Osaka",
+        },
       ];
       const { container } = render(<DiffList diffs={diffs} />);
       const changedElement = container.querySelector("[data-diff-type='changed']");
@@ -125,7 +135,12 @@ describe("DiffList", () => {
 
     it("changed の差分で sourceValue と targetValue の両方が表示される", () => {
       const diffs: DiffItem[] = [
-        { type: "changed", path: "row[0].city", sourceValue: "Tokyo", targetValue: "Osaka" },
+        {
+          type: "changed",
+          path: "row[0].city",
+          sourceValue: "Tokyo",
+          targetValue: "Osaka",
+        },
       ];
       render(<DiffList diffs={diffs} />);
       expect(screen.getByText(/Tokyo/)).toBeInTheDocument();
@@ -134,7 +149,12 @@ describe("DiffList", () => {
 
     it("changed の差分で元の値と変更後の値が区別できる", () => {
       const diffs: DiffItem[] = [
-        { type: "changed", path: "row[0].city", sourceValue: "Tokyo", targetValue: "Osaka" },
+        {
+          type: "changed",
+          path: "row[0].city",
+          sourceValue: "Tokyo",
+          targetValue: "Osaka",
+        },
       ];
       const { container } = render(<DiffList diffs={diffs} />);
       // sourceValue と targetValue が別々の要素に表示される
@@ -167,7 +187,12 @@ describe("DiffList", () => {
   describe("パス表示", () => {
     it("各差分のパスが表示される", () => {
       const diffs: DiffItem[] = [
-        { type: "added", path: "data.users[0].email", sourceValue: null, targetValue: "a@b.com" },
+        {
+          type: "added",
+          path: "data.users[0].email",
+          sourceValue: null,
+          targetValue: "a@b.com",
+        },
       ];
       render(<DiffList diffs={diffs} />);
       expect(screen.getByText(/data\.users\[0\]\.email/)).toBeInTheDocument();
@@ -175,7 +200,12 @@ describe("DiffList", () => {
 
     it("特殊文字を含むパスが正しく表示される", () => {
       const diffs: DiffItem[] = [
-        { type: "changed", path: "row[0].名前", sourceValue: "太郎", targetValue: "花子" },
+        {
+          type: "changed",
+          path: "row[0].名前",
+          sourceValue: "太郎",
+          targetValue: "花子",
+        },
       ];
       render(<DiffList diffs={diffs} />);
       expect(screen.getByText(/名前/)).toBeInTheDocument();
@@ -212,7 +242,12 @@ describe("DiffList", () => {
 
     it("Unicode/絵文字を含む値を正しく表示する", () => {
       const diffs: DiffItem[] = [
-        { type: "changed", path: "row[0].name", sourceValue: "太郎", targetValue: "花子" },
+        {
+          type: "changed",
+          path: "row[0].name",
+          sourceValue: "太郎",
+          targetValue: "花子",
+        },
       ];
       render(<DiffList diffs={diffs} />);
       expect(screen.getByText(/太郎/)).toBeInTheDocument();
@@ -233,7 +268,12 @@ describe("DiffList", () => {
 
     it("HTML 特殊文字を含む値がエスケープされて表示される", () => {
       const diffs: DiffItem[] = [
-        { type: "changed", path: "row[0]", sourceValue: "<script>alert('xss')</script>", targetValue: "safe" },
+        {
+          type: "changed",
+          path: "row[0]",
+          sourceValue: "<script>alert('xss')</script>",
+          targetValue: "safe",
+        },
       ];
       render(<DiffList diffs={diffs} />);
       // スクリプトタグがテキストとして表示され、実行されないことを確認
@@ -243,7 +283,12 @@ describe("DiffList", () => {
 
     it("SQL 特殊文字を含む値を正しく表示する", () => {
       const diffs: DiffItem[] = [
-        { type: "added", path: "row[0]", sourceValue: null, targetValue: "Robert'; DROP TABLE users;--" },
+        {
+          type: "added",
+          path: "row[0]",
+          sourceValue: null,
+          targetValue: "Robert'; DROP TABLE users;--",
+        },
       ];
       render(<DiffList diffs={diffs} />);
       expect(screen.getByText(/Robert/)).toBeInTheDocument();

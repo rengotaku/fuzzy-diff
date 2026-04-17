@@ -22,7 +22,7 @@ interface PaneLine {
 function buildPaneLines(
   text: string,
   diffs: readonly DiffItem[],
-  side: "source" | "target",
+  side: "source" | "target"
 ): PaneLine[] {
   const lines = text.split("\n");
   const spans = findHighlightSpans(text, [...diffs], side);
@@ -53,7 +53,7 @@ function buildPaneLinesFromPairs(
   pairs: SideBySideLinePair[],
   side: "source" | "target",
   text: string,
-  diffs: readonly DiffItem[],
+  diffs: readonly DiffItem[]
 ): PaneLine[] {
   if (!text) return [];
 
@@ -81,9 +81,15 @@ function buildPaneLinesFromPairs(
     const lineIdx = lines.findIndex((l, idx) => {
       // 行番号に基づいて正確にインデックスを特定
       if (side === "source") {
-        return l === lineText && (pair.leftLineNumber === null || idx + 1 === pair.leftLineNumber);
+        return (
+          l === lineText &&
+          (pair.leftLineNumber === null || idx + 1 === pair.leftLineNumber)
+        );
       } else {
-        return l === lineText && (pair.rightLineNumber === null || idx + 1 === pair.rightLineNumber);
+        return (
+          l === lineText &&
+          (pair.rightLineNumber === null || idx + 1 === pair.rightLineNumber)
+        );
       }
     });
 

@@ -11,7 +11,7 @@ import type { DiffItem } from "verify-ai";
 
 type CopyStatus = "idle" | "success" | "error";
 
-function buildDiffText(diffs: DiffItem[]): string {
+function buildDiffText(diffs: readonly DiffItem[]): string {
   return diffs
     .map((diff) => {
       const parts: string[] = [`[${diff.type}] ${diff.path}`];
@@ -84,18 +84,10 @@ function App() {
             </div>
             {viewMode === "list" && <DiffList diffs={result.diffs} />}
             {viewMode === "side-by-side" && (
-              <SideBySideView
-                source={source}
-                target={target}
-                diffs={result.diffs}
-              />
+              <SideBySideView source={source} target={target} diffs={result.diffs} />
             )}
             {viewMode === "inline" && (
-              <InlineView
-                source={source}
-                target={target}
-                diffs={result.diffs}
-              />
+              <InlineView source={source} target={target} diffs={result.diffs} />
             )}
           </CardContent>
         </Card>

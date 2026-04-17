@@ -70,15 +70,11 @@ export function ResultSummary() {
       </div>
 
       <div className="mt-2 flex items-center gap-2 flex-wrap">
-        <Badge variant={similarityVariant}>
-          {stats.similarityPercent}%
-        </Badge>
+        <Badge variant={similarityVariant}>{stats.similarityPercent}%</Badge>
 
         {result.diffs.length > 0 && (
           <div className="flex items-center gap-1" data-testid="diff-stats">
-            {stats.addedCount > 0 && (
-              <Badge variant="added">+{stats.addedCount}</Badge>
-            )}
+            {stats.addedCount > 0 && <Badge variant="added">+{stats.addedCount}</Badge>}
             {stats.removedCount > 0 && (
               <Badge variant="removed">-{stats.removedCount}</Badge>
             )}

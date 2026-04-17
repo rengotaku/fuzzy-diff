@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { buildUnifiedLines, buildSideBySidePairs } from "./lineDiff";
-import type { SideBySideLinePair } from "./lineDiff";
+
 import type { DiffItem } from "verify-ai";
 
 describe("lineDiff 拡張: lineNumber フィールド", () => {
@@ -237,7 +237,7 @@ describe("buildSideBySidePairs（US3: Side-by-Side ペア生成）", () => {
       const pairs = buildSideBySidePairs(source, target, diffs);
       // source にしかない行では right が null またはプレースホルダー
       const placeholderPairs = pairs.filter(
-        (p) => p.right === null || p.right.isPlaceholder,
+        (p) => p.right === null || p.right.isPlaceholder
       );
       expect(placeholderPairs.length).toBeGreaterThan(0);
     });
@@ -248,7 +248,7 @@ describe("buildSideBySidePairs（US3: Side-by-Side ペア生成）", () => {
       const diffs: DiffItem[] = [];
       const pairs = buildSideBySidePairs(source, target, diffs);
       const placeholderPairs = pairs.filter(
-        (p) => p.left === null || p.left.isPlaceholder,
+        (p) => p.left === null || p.left.isPlaceholder
       );
       expect(placeholderPairs.length).toBeGreaterThan(0);
     });
@@ -260,7 +260,7 @@ describe("buildSideBySidePairs（US3: Side-by-Side ペア生成）", () => {
       const pairs = buildSideBySidePairs(source, target, diffs);
       // right がプレースホルダーのペアを探す
       const placeholderPair = pairs.find(
-        (p) => p.right === null || (p.right !== null && p.right.isPlaceholder),
+        (p) => p.right === null || (p.right !== null && p.right.isPlaceholder)
       );
       expect(placeholderPair).toBeDefined();
       if (placeholderPair!.right === null) {
@@ -293,12 +293,10 @@ describe("buildSideBySidePairs（US3: Side-by-Side ペア生成）", () => {
       const pairs = buildSideBySidePairs(source, target, diffs);
       // Bob,40 の行に対応する right がプレースホルダー
       const removedPair = pairs.find(
-        (p) => p.left !== null && p.left.text.includes("Bob"),
+        (p) => p.left !== null && p.left.text.includes("Bob")
       );
       expect(removedPair).toBeDefined();
-      expect(
-        removedPair!.right === null || removedPair!.right.isPlaceholder,
-      ).toBe(true);
+      expect(removedPair!.right === null || removedPair!.right.isPlaceholder).toBe(true);
     });
 
     it("added 差分で left 側がプレースホルダーになる", () => {
@@ -309,12 +307,10 @@ describe("buildSideBySidePairs（US3: Side-by-Side ペア生成）", () => {
       ];
       const pairs = buildSideBySidePairs(source, target, diffs);
       const addedPair = pairs.find(
-        (p) => p.right !== null && p.right.text.includes("Alice"),
+        (p) => p.right !== null && p.right.text.includes("Alice")
       );
       expect(addedPair).toBeDefined();
-      expect(
-        addedPair!.left === null || addedPair!.left.isPlaceholder,
-      ).toBe(true);
+      expect(addedPair!.left === null || addedPair!.left.isPlaceholder).toBe(true);
     });
   });
 

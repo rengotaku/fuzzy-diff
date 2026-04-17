@@ -14,7 +14,7 @@ describe("InlineView", () => {
         { type: "changed", path: "age", sourceValue: "30", targetValue: "25" },
       ];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
       const view = container.querySelector("[data-testid='inline-view']");
       expect(view).not.toBeNull();
@@ -30,11 +30,9 @@ describe("InlineView", () => {
         { type: "changed", path: "age", sourceValue: "30", targetValue: "25" },
       ];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
-      const unchangedLines = container.querySelectorAll(
-        "[data-line-type='unchanged']",
-      );
+      const unchangedLines = container.querySelectorAll("[data-line-type='unchanged']");
       expect(unchangedLines.length).toBeGreaterThanOrEqual(1);
       expect(unchangedLines[0].textContent).toContain("header");
     });
@@ -50,12 +48,10 @@ describe("InlineView", () => {
         { type: "changed", path: "price", sourceValue: "100", targetValue: "200" },
       ];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
       const allLines = container.querySelectorAll("[data-line-type]");
-      const types = Array.from(allLines).map((el) =>
-        el.getAttribute("data-line-type"),
-      );
+      const types = Array.from(allLines).map((el) => el.getAttribute("data-line-type"));
       // changed-source と changed-target が含まれる
       expect(types).toContain("changed-source");
       expect(types).toContain("changed-target");
@@ -68,11 +64,9 @@ describe("InlineView", () => {
         { type: "changed", path: "name", sourceValue: "Alice", targetValue: "Bob" },
       ];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
-      const changedSource = container.querySelector(
-        "[data-line-type='changed-source']",
-      );
+      const changedSource = container.querySelector("[data-line-type='changed-source']");
       const highlight = changedSource?.querySelector("[data-diff-type='changed']");
       expect(highlight).not.toBeNull();
       expect(highlight?.textContent).toBe("Alice");
@@ -85,11 +79,9 @@ describe("InlineView", () => {
         { type: "changed", path: "name", sourceValue: "Alice", targetValue: "Bob" },
       ];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
-      const changedTarget = container.querySelector(
-        "[data-line-type='changed-target']",
-      );
+      const changedTarget = container.querySelector("[data-line-type='changed-target']");
       const highlight = changedTarget?.querySelector("[data-diff-type='changed']");
       expect(highlight).not.toBeNull();
       expect(highlight?.textContent).toBe("Bob");
@@ -104,11 +96,9 @@ describe("InlineView", () => {
       const target = "line1\nline3";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
-      const removedLines = container.querySelectorAll(
-        "[data-line-type='removed']",
-      );
+      const removedLines = container.querySelectorAll("[data-line-type='removed']");
       expect(removedLines.length).toBeGreaterThanOrEqual(1);
       expect(removedLines[0].textContent).toContain("line2");
     });
@@ -118,11 +108,9 @@ describe("InlineView", () => {
       const target = "line1\nline2\nline3";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
-      const addedLines = container.querySelectorAll(
-        "[data-line-type='added']",
-      );
+      const addedLines = container.querySelectorAll("[data-line-type='added']");
       expect(addedLines.length).toBeGreaterThanOrEqual(1);
       expect(addedLines[0].textContent).toContain("line2");
     });
@@ -136,7 +124,7 @@ describe("InlineView", () => {
       const target = "new line";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
       const removedLine = container.querySelector("[data-line-type='removed']");
       expect(removedLine?.textContent).toContain("- ");
@@ -147,7 +135,7 @@ describe("InlineView", () => {
       const target = "old line\nnew line";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
       const addedLine = container.querySelector("[data-line-type='added']");
       expect(addedLine?.textContent).toContain("+ ");
@@ -161,11 +149,9 @@ describe("InlineView", () => {
       const text = "line1\nline2";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <InlineView source={text} target={text} diffs={diffs} />,
+        <InlineView source={text} target={text} diffs={diffs} />
       );
-      const unchangedLines = container.querySelectorAll(
-        "[data-line-type='unchanged']",
-      );
+      const unchangedLines = container.querySelectorAll("[data-line-type='unchanged']");
       expect(unchangedLines).toHaveLength(2);
       const highlighted = container.querySelectorAll("[data-diff-type]");
       expect(highlighted).toHaveLength(0);
@@ -176,9 +162,7 @@ describe("InlineView", () => {
 
   describe("両方空の場合", () => {
     it("「テキストなし」が表示される", () => {
-      const { container } = render(
-        <InlineView source="" target="" diffs={[]} />,
-      );
+      const { container } = render(<InlineView source="" target="" diffs={[]} />);
       expect(container.textContent).toContain("テキストなし");
     });
   });
@@ -193,11 +177,9 @@ describe("InlineView", () => {
         { type: "changed", path: "名前", sourceValue: "太郎", targetValue: "花子" },
       ];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
-      const changedSource = container.querySelector(
-        "[data-line-type='changed-source']",
-      );
+      const changedSource = container.querySelector("[data-line-type='changed-source']");
       expect(changedSource?.textContent).toContain("太郎");
     });
 
@@ -210,13 +192,13 @@ describe("InlineView", () => {
         { type: "changed", path: "city", sourceValue: "Tokyo", targetValue: "Osaka" },
       ];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
       const changedSourceLines = container.querySelectorAll(
-        "[data-line-type='changed-source']",
+        "[data-line-type='changed-source']"
       );
       const changedTargetLines = container.querySelectorAll(
-        "[data-line-type='changed-target']",
+        "[data-line-type='changed-target']"
       );
       expect(changedSourceLines.length).toBe(3);
       expect(changedTargetLines.length).toBe(3);
@@ -234,7 +216,7 @@ describe("InlineView", () => {
         targetValue: `new${i}`,
       }));
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
       const allLines = container.querySelectorAll("[data-line-type]");
       expect(allLines.length).toBeGreaterThanOrEqual(100);
@@ -247,7 +229,7 @@ describe("InlineView", () => {
         { type: "changed", path: "age", sourceValue: "30", targetValue: "25" },
       ];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
       const allLines = container.querySelectorAll("[data-line-type]");
       expect(allLines.length).toBeGreaterThanOrEqual(1);
@@ -262,7 +244,7 @@ describe("InlineView", () => {
       const target = "line1\nline2\nline3";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
       const lineNumberElements = container.querySelectorAll("[data-line-number]");
       expect(lineNumberElements.length).toBe(3);
@@ -278,7 +260,7 @@ describe("InlineView", () => {
         { type: "changed", path: "value", sourceValue: "old", targetValue: "new" },
       ];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
       const lineNumberElements = container.querySelectorAll("[data-line-number]");
       expect(lineNumberElements.length).toBeGreaterThanOrEqual(2);
@@ -293,7 +275,7 @@ describe("InlineView", () => {
       const target = "aaa\nbbb";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
       const lineNumberElements = container.querySelectorAll("[data-line-number]");
       expect(lineNumberElements.length).toBeGreaterThan(0);
@@ -309,7 +291,7 @@ describe("InlineView", () => {
       const target = "old line\nnew line";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
       // プレフィックス表示用要素に text-gray-400 等のグレークラスが適用されていること
       const prefixElements = container.querySelectorAll("[data-prefix]");
@@ -325,7 +307,7 @@ describe("InlineView", () => {
       const target = "line1";
       const diffs: DiffItem[] = [];
       const { container } = render(
-        <InlineView source={source} target={target} diffs={diffs} />,
+        <InlineView source={source} target={target} diffs={diffs} />
       );
       const view = container.querySelector("[data-testid='inline-view']") as HTMLElement;
       expect(view).not.toBeNull();
