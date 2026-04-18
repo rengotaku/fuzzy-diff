@@ -3,13 +3,14 @@ import type { ReactNode } from "react";
 interface CardProps {
   readonly children: ReactNode;
   readonly className?: string;
+  readonly "data-testid"?: string;
 }
 
-export function Card({ children, className = "" }: CardProps) {
+export function Card({ children, className = "", "data-testid": dataTestId = "card" }: CardProps) {
   return (
     <div
       className={`rounded-lg border border-gray-200 bg-white shadow-sm ${className}`}
-      data-testid="card"
+      data-testid={dataTestId}
     >
       {children}
     </div>
