@@ -81,7 +81,7 @@ function App() {
         <>
           <Card data-testid="summary-card" className="mt-4">
             <CardContent>
-              <div data-testid="summary-grid" className="grid grid-cols-1 gap-4">
+              <div data-testid="summary-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div data-testid="summary-col-left">
                   <p className="text-sm font-medium mb-1">{label}</p>
                   <p className="text-xs text-gray-600 truncate">
