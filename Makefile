@@ -1,4 +1,7 @@
-.PHONY: test build lint coverage
+.PHONY: dev test build lint coverage
+
+dev:
+	cd web && npm run dev
 
 test:
 	npx vitest run
