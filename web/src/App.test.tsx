@@ -708,4 +708,49 @@ describe("App", () => {
       expect(mockReset).toHaveBeenCalledTimes(2);
     });
   });
+
+  // =============================================================
+  // T022: レスポンシブグリッド（US3: FR-006）
+  // =============================================================
+
+  describe("レスポンシブグリッド（US3: FR-006 / T022）", () => {
+    it("summary-grid の className に grid-cols-1 が含まれる（モバイル: 1カラム）", () => {
+      mockStoreWithResult(createResult());
+      render(<App />);
+      const grid = screen.getByTestId("summary-grid");
+      expect(grid.className).toContain("grid-cols-1");
+    });
+
+    it("summary-grid の className に md:grid-cols-2 が含まれる（タブレット: 2カラム）", () => {
+      mockStoreWithResult(createResult());
+      render(<App />);
+      const grid = screen.getByTestId("summary-grid");
+      expect(grid.className).toContain("md:grid-cols-2");
+    });
+
+    it("summary-grid の className に lg:grid-cols-3 が含まれる（デスクトップ: 3カラム）", () => {
+      mockStoreWithResult(createResult());
+      render(<App />);
+      const grid = screen.getByTestId("summary-grid");
+      expect(grid.className).toContain("lg:grid-cols-3");
+    });
+
+    it("summary-grid の className にレスポンシブ全3段階（grid-cols-1 / md:grid-cols-2 / lg:grid-cols-3）が同時に含まれる", () => {
+      mockStoreWithResult(createResult());
+      render(<App />);
+      const grid = screen.getByTestId("summary-grid");
+      expect(grid.className).toContain("grid-cols-1");
+      expect(grid.className).toContain("md:grid-cols-2");
+      expect(grid.className).toContain("lg:grid-cols-3");
+    });
+
+    it("結果が空の diffs の場合でもレスポンシブクラスが適用される", () => {
+      mockStoreWithResult(createResult({ diffs: [], score: 1.0, match: true }));
+      render(<App />);
+      const grid = screen.getByTestId("summary-grid");
+      expect(grid.className).toContain("grid-cols-1");
+      expect(grid.className).toContain("md:grid-cols-2");
+      expect(grid.className).toContain("lg:grid-cols-3");
+    });
+  });
 });
