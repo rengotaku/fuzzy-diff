@@ -2,8 +2,7 @@ import { compare } from "verify-ai";
 import { useCompareStore } from "@/stores/compareStore";
 
 export function useCompare() {
-  const { setResult, setIsComparing, setError } =
-    useCompareStore.getState();
+  const { setResult, setIsComparing, setError } = useCompareStore.getState();
 
   const runCompare = () => {
     const currentSource = useCompareStore.getState().source;

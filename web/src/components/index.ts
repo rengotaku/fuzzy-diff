@@ -5,3 +5,6 @@ export { HighlightedText } from "./HighlightedText";
 export { SideBySideView } from "./SideBySideView";
 export { InlineView } from "./InlineView";
 export { DiffViewSwitcher } from "./DiffViewSwitcher";
+export { Badge } from "./ui/Badge";
+export { Card, CardHeader, CardContent } from "./ui/Card";
+export { Button } from "./ui/Button";

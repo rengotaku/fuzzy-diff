@@ -1,22 +1,12 @@
-* {
-  box-sizing: border-box;
-}
+@import "tailwindcss";
 
-body {
-  margin: 0;
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
-  line-height: 1.6;
-  color: #333;
-  background: #fff;
-}
-
-a {
-  color: #0066cc;
-}
-
-a:hover {
-  color: #004499;
+@theme {
+  --color-diff-added-bg: #d4f4dd;
+  --color-diff-added-text: #16a34a;
+  --color-diff-removed-bg: #fdd4d4;
+  --color-diff-removed-text: #dc2626;
+  --color-diff-changed-bg: #dbeafe;
+  --color-diff-changed-text: #1d4ed8;
+  --color-diff-unchanged-bg: #f3f4f6;
+  --color-diff-unchanged-text: #6b7280;
 }

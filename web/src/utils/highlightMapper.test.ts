@@ -1,9 +1,6 @@
 import { describe, it, expect } from "vitest";
 import type { DiffItem } from "verify-ai";
-import {
-  findHighlightSpans,
-  splitToSegments,
-} from "./highlightMapper";
+import { findHighlightSpans, splitToSegments } from "./highlightMapper";
 import type { HighlightSpan } from "./highlightMapper";
 
 describe("findHighlightSpans", () => {
@@ -185,7 +182,12 @@ describe("findHighlightSpans", () => {
     it("特殊文字（括弧、カンマ等）を含む値の位置を正しく特定する", () => {
       const text = '{"desc": "price (100)"}';
       const diffs: DiffItem[] = [
-        { type: "changed", path: "desc", sourceValue: "price (100)", targetValue: "price (200)" },
+        {
+          type: "changed",
+          path: "desc",
+          sourceValue: "price (100)",
+          targetValue: "price (200)",
+        },
       ];
       const spans = findHighlightSpans(text, diffs, "source");
       expect(spans).toHaveLength(1);
@@ -194,7 +196,12 @@ describe("findHighlightSpans", () => {
 
     it("diffItem への参照を保持する", () => {
       const text = '{"name": "Alice"}';
-      const diff: DiffItem = { type: "changed", path: "name", sourceValue: "Alice", targetValue: "Bob" };
+      const diff: DiffItem = {
+        type: "changed",
+        path: "name",
+        sourceValue: "Alice",
+        targetValue: "Bob",
+      };
       const spans = findHighlightSpans(text, [diff], "source");
       expect(spans).toHaveLength(1);
       expect(spans[0].diffItem).toBe(diff);
@@ -218,7 +225,12 @@ describe("splitToSegments", () => {
         start: 0,
         end: 5,
         diffType: "changed",
-        diffItem: { type: "changed", path: "x", sourceValue: "hello", targetValue: "world" },
+        diffItem: {
+          type: "changed",
+          path: "x",
+          sourceValue: "hello",
+          targetValue: "world",
+        },
       };
       const segments = splitToSegments("hello", [span]);
       expect(segments).toHaveLength(1);
@@ -232,7 +244,12 @@ describe("splitToSegments", () => {
         start: 6,
         end: 11,
         diffType: "changed",
-        diffItem: { type: "changed", path: "x", sourceValue: "world", targetValue: "earth" },
+        diffItem: {
+          type: "changed",
+          path: "x",
+          sourceValue: "world",
+          targetValue: "earth",
+        },
       };
       const segments = splitToSegments("hello world end", [span]);
       expect(segments).toHaveLength(3);
@@ -255,13 +272,23 @@ describe("splitToSegments", () => {
           start: 0,
           end: 5,
           diffType: "changed",
-          diffItem: { type: "changed", path: "name", sourceValue: "Alice", targetValue: "Bob" },
+          diffItem: {
+            type: "changed",
+            path: "name",
+            sourceValue: "Alice",
+            targetValue: "Bob",
+          },
         },
         {
           start: 9,
           end: 11,
           diffType: "changed",
-          diffItem: { type: "changed", path: "age", sourceValue: "30", targetValue: "25" },
+          diffItem: {
+            type: "changed",
+            path: "age",
+            sourceValue: "30",
+            targetValue: "25",
+          },
         },
       ];
       const segments = splitToSegments(text, spans);
@@ -317,7 +344,12 @@ describe("splitToSegments", () => {
           start: 0,
           end: 3,
           diffType: "changed",
-          diffItem: { type: "changed", path: "a", sourceValue: "abc", targetValue: "xyz" },
+          diffItem: {
+            type: "changed",
+            path: "a",
+            sourceValue: "abc",
+            targetValue: "xyz",
+          },
         },
         {
           start: 3,

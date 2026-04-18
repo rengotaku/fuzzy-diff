@@ -51,7 +51,12 @@ describe("useCompare", () => {
         score: 0.75,
         match: false,
         diffs: [
-          { type: "changed" as const, path: "row[0].name", sourceValue: "A", targetValue: "B" },
+          {
+            type: "changed" as const,
+            path: "row[0].name",
+            sourceValue: "A",
+            targetValue: "B",
+          },
         ],
         sourceFormat: { type: "plain" as const, confidence: 1.0 },
         targetFormat: { type: "plain" as const, confidence: 1.0 },

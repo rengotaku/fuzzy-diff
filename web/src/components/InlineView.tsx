@@ -1,6 +1,8 @@
 import type { DiffItem } from "verify-ai";
-import { findHighlightSpans, splitToSegments } from "@/utils/highlightMapper";
+import { buildUnifiedLines } from "@/utils/lineDiff";
+import type { DiffLine } from "@/utils/lineDiff";
 import { HighlightedText } from "@/components/HighlightedText";
+import { useCompareStore } from "@/stores/compareStore";
 
 interface InlineViewProps {
   source: string;
@@ -8,64 +10,85 @@ interface InlineViewProps {
   diffs: readonly DiffItem[];
 }
 
-const paneStyle: React.CSSProperties = {
-  flex: 1,
-  padding: "12px",
-  fontFamily: "monospace",
-  whiteSpace: "pre-wrap",
-  wordBreak: "break-word",
-  overflow: "auto",
-  border: "1px solid #e0e0e0",
-  borderRadius: "4px",
-  minHeight: "100px",
+const lineBgClass: Record<DiffLine["type"], string> = {
+  unchanged: "",
+  removed: "bg-red-50",
+  added: "bg-green-50",
+  "changed-source": "bg-red-50",
+  "changed-target": "bg-green-50",
 };
 
-const containerStyle: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "16px",
-  width: "100%",
+const prefixMap: Record<DiffLine["type"], string> = {
+  unchanged: "  ",
+  removed: "- ",
+  added: "+ ",
+  "changed-source": "- ",
+  "changed-target": "+ ",
 };
 
-const emptyStyle: React.CSSProperties = {
-  color: "#9e9e9e",
-  fontStyle: "italic",
-};
-
-function Pane({
-  text,
-  diffs,
-  side,
-  testId,
+function InlineLine({
+  line,
+  hoveredDiffItem,
+  onHoverDiffItem,
 }: {
-  text: string;
-  diffs: readonly DiffItem[];
-  side: "source" | "target";
-  testId: string;
+  line: DiffLine;
+  hoveredDiffItem: DiffItem | null;
+  onHoverDiffItem: (item: DiffItem | null) => void;
 }) {
-  if (!text) {
-    return (
-      <div data-testid={testId} style={paneStyle}>
-        <span style={emptyStyle}>テキストなし</span>
-      </div>
-    );
-  }
-
-  const spans = findHighlightSpans(text, [...diffs], side);
-  const segments = splitToSegments(text, spans);
-
   return (
-    <div data-testid={testId} style={paneStyle}>
-      <HighlightedText segments={segments} />
+    <div
+      data-line-type={line.type}
+      data-line-row
+      className={`flex items-baseline px-2 py-px whitespace-pre-wrap break-words min-h-[1.4em] border-b border-black/[0.04] hover:bg-gray-50 transition ${lineBgClass[line.type]}`}
+    >
+      <span
+        data-line-number
+        className="w-8 min-w-8 inline-block text-right pr-2 text-gray-400 select-none text-xs"
+      >
+        {line.lineNumber}
+      </span>
+      <span data-prefix className="text-gray-400 select-none mr-2">
+        {prefixMap[line.type]}
+      </span>
+      <HighlightedText
+        segments={line.segments}
+        hoveredDiffItem={hoveredDiffItem}
+        onHoverDiffItem={onHoverDiffItem}
+      />
     </div>
   );
 }
 
 export function InlineView({ source, target, diffs }: InlineViewProps) {
+  const hoveredDiffItem = useCompareStore((s) => s.hoveredDiffItem);
+  const setHoveredDiffItem = useCompareStore((s) => s.setHoveredDiffItem);
+
+  if (!source && !target) {
+    return (
+      <div
+        data-testid="inline-view"
+        className="font-mono w-full text-[13px] border border-gray-200 rounded overflow-auto"
+      >
+        <span className="text-gray-400 italic p-3 block">テキストなし</span>
+      </div>
+    );
+  }
+
+  const lines = buildUnifiedLines(source, target, diffs);
+
   return (
-    <div style={containerStyle}>
-      <Pane text={source} diffs={diffs} side="source" testId="source-pane" />
-      <Pane text={target} diffs={diffs} side="target" testId="target-pane" />
+    <div
+      data-testid="inline-view"
+      className="font-mono w-full text-[13px] border border-gray-200 rounded overflow-auto"
+    >
+      {lines.map((line, index) => (
+        <InlineLine
+          key={index}
+          line={line}
+          hoveredDiffItem={hoveredDiffItem}
+          onHoverDiffItem={setHoveredDiffItem}
+        />
+      ))}
     </div>
   );
 }

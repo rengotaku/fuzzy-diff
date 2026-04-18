@@ -101,7 +101,7 @@ describe("CompareForm", () => {
           setTarget: mockSetTarget,
         };
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return selector ? (selector as (s: any) => unknown)(state) : state;
+        return selector ? (selector as (s: any) => unknown)(state) : state;
       });
 
       render(<CompareForm />);
@@ -122,7 +122,7 @@ describe("CompareForm", () => {
           setTarget: mockSetTarget,
         };
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return selector ? (selector as (s: any) => unknown)(state) : state;
+        return selector ? (selector as (s: any) => unknown)(state) : state;
       });
 
       render(<CompareForm />);
@@ -169,7 +169,7 @@ describe("CompareForm", () => {
           setTarget: mockSetTarget,
         };
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return selector ? (selector as (s: any) => unknown)(state) : state;
+        return selector ? (selector as (s: any) => unknown)(state) : state;
       });
 
       render(<CompareForm />);
@@ -179,6 +179,155 @@ describe("CompareForm", () => {
     it("エラーがない場合エラーメッセージが表示されない", () => {
       render(<CompareForm />);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    });
+  });
+
+  // --- data-testid ---
+
+  describe("data-testid", () => {
+    it("フォーム要素に data-testid='compare-form' が付与されている", () => {
+      render(<CompareForm />);
+      const form = screen.getByTestId("compare-form");
+      expect(form).toBeInTheDocument();
+      expect(form.tagName.toLowerCase()).toBe("form");
+    });
+  });
+
+  // --- Source/Target ラベル表示（US6: FR-013）---
+
+  describe("Source/Target ラベル表示", () => {
+    it("'Source' ラベルテキストが表示される", () => {
+      render(<CompareForm />);
+      expect(screen.getByText("Source")).toBeInTheDocument();
+    });
+
+    it("'Target' ラベルテキストが表示される", () => {
+      render(<CompareForm />);
+      expect(screen.getByText("Target")).toBeInTheDocument();
+    });
+
+    it("Source ラベルが source テキストエリアに紐付いている", () => {
+      render(<CompareForm />);
+      const label = screen.getByText("Source");
+      expect(label.tagName.toLowerCase()).toBe("label");
+      expect(label).toHaveAttribute("for", "source-textarea");
+    });
+
+    it("Target ラベルが target テキストエリアに紐付いている", () => {
+      render(<CompareForm />);
+      const label = screen.getByText("Target");
+      expect(label.tagName.toLowerCase()).toBe("label");
+      expect(label).toHaveAttribute("for", "target-textarea");
+    });
+  });
+
+  // --- クリアボタン（US6: FR-014）---
+
+  describe("クリアボタン", () => {
+    it("source にテキストがある場合、クリアボタンが表示される", () => {
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = {
+          source: "some text",
+          target: "",
+          isComparing: false,
+          error: null,
+          setSource: mockSetSource,
+          setTarget: mockSetTarget,
+        };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return selector ? (selector as (s: any) => unknown)(state) : state;
+      });
+
+      render(<CompareForm />);
+      const clearButtons = screen.getAllByRole("button", { name: /クリア/i });
+      expect(clearButtons.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it("source が空の場合、source のクリアボタンが表示されない", () => {
+      render(<CompareForm />);
+      // source と target の両方が空なので、クリアボタンは0個
+      const clearButtons = screen.queryAllByRole("button", { name: /クリア/i });
+      expect(clearButtons.length).toBe(0);
+    });
+
+    it("target にテキストがある場合、クリアボタンが表示される", () => {
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = {
+          source: "",
+          target: "some text",
+          isComparing: false,
+          error: null,
+          setSource: mockSetSource,
+          setTarget: mockSetTarget,
+        };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return selector ? (selector as (s: any) => unknown)(state) : state;
+      });
+
+      render(<CompareForm />);
+      const clearButtons = screen.getAllByRole("button", { name: /クリア/i });
+      expect(clearButtons.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it("source のクリアボタンをクリックすると setSource('') が呼ばれる", async () => {
+      const user = userEvent.setup();
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = {
+          source: "hello world",
+          target: "",
+          isComparing: false,
+          error: null,
+          setSource: mockSetSource,
+          setTarget: mockSetTarget,
+        };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return selector ? (selector as (s: any) => unknown)(state) : state;
+      });
+
+      render(<CompareForm />);
+      const clearButtons = screen.getAllByRole("button", { name: /クリア/i });
+      await user.click(clearButtons[0]);
+      expect(mockSetSource).toHaveBeenCalledWith("");
+    });
+
+    it("target のクリアボタンをクリックすると setTarget('') が呼ばれる", async () => {
+      const user = userEvent.setup();
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = {
+          source: "",
+          target: "hello world",
+          isComparing: false,
+          error: null,
+          setSource: mockSetSource,
+          setTarget: mockSetTarget,
+        };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return selector ? (selector as (s: any) => unknown)(state) : state;
+      });
+
+      render(<CompareForm />);
+      const clearButtons = screen.getAllByRole("button", { name: /クリア/i });
+      await user.click(clearButtons[0]);
+      expect(mockSetTarget).toHaveBeenCalledWith("");
+    });
+
+    it("source と target の両方にテキストがある場合、クリアボタンが2つ表示される", () => {
+      mockUseCompareStore.mockImplementation((selector) => {
+        const state = {
+          source: "source text",
+          target: "target text",
+          isComparing: false,
+          error: null,
+          setSource: mockSetSource,
+          setTarget: mockSetTarget,
+        };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return selector ? (selector as (s: any) => unknown)(state) : state;
+      });
+
+      render(<CompareForm />);
+      const clearButtons = screen.getAllByRole("button", { name: /クリア/i });
+      expect(clearButtons.length).toBe(2);
     });
   });
 
